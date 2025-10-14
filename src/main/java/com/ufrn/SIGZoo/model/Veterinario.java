@@ -1,0 +1,49 @@
+package com.ufrn.SIGZoo.model;
+
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+
+@Entity
+@PrimaryKeyJoinColumn(name = "funcionario_id")
+public class Veterinario extends Funcionario {
+
+    @Column(unique = true, nullable = false)
+    private String crmv;
+
+    @OneToMany(mappedBy = "veterinario") // Relacionamento bidirecional
+    private List<Animal> pacientes;
+
+    private int qtdPacientes = 0;
+
+    public String getCrmv() {
+        return crmv;
+    }
+    public void setCrmv(String crmv) {
+        this.crmv = crmv;
+    }
+    public int getQtdPacientes() {
+        return qtdPacientes;
+    }
+    public void setQtdPacientes(int qtdPacientes) {
+        this.qtdPacientes = qtdPacientes;
+    }
+    public List<Animal> getPacientes() {
+        return pacientes;
+    }
+    public void setPacientes(List<Animal> pacientes) {
+        this.pacientes = pacientes;
+    }
+    
+    public void incrementarPacientes() {
+        this.qtdPacientes++;
+    }
+    public void decrementarPacientes() {
+        if (this.qtdPacientes > 0) {
+            this.qtdPacientes--;
+        }
+    }
+}
