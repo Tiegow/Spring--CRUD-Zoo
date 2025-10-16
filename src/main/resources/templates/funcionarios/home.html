@@ -6,32 +6,78 @@
     <title>Funcionários</title>
 
     <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/funcionariosPages/home.css}" rel="stylesheet">
 </head>
 <body>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Nome</th>
-                <th scope="col">CPF</th>
-                <th scope="col">Especialização</th>
-                <th scope="col">Data de Nascimento</th>
-                <th scope="col">Data de Ingresso</th>
-                <th scope="col">Remuneração</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="funcionario : ${funcionarios}">
-                <td th:text="${funcionario.id}"></td>
-                <td th:text="${funcionario.nome}"></td>
-                <td th:text="${funcionario.cpf}"></td>
-                <td th:text="${funcionario.especializacao}"></td>
-                <td th:text="${funcionario.nascimento}"></td>
-                <td th:text="${funcionario.dataIngresso}"></td>
-                <td th:text="${funcionario.remuneracao}"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container mt-4">
+        <h1 class="mb-4">Funcionários</h1>
+    </div>
+
+    <div class="container d-flex justify-content-around mb-2">
+        <div class="d-flex align-items-start gap-2 w-100">
+            <label class="visually-hidden" for="filtro-tipo">Filtrar por</label>
+            <select id="filtro-tipo" class="form-select form-select-sm me-2" style="max-width:220px;">
+                <option value="Filtros" selected>Filtros</option>
+                <option value="Remuneração">Remuneração</option>
+                <option value="Especialização">Especialização</option>
+            </select>
+
+            <div id="filtro-dinamico" class="d-flex gap-2 align-items-center me-2">
+                <div class="d-none" id="espec">
+                    <label for="filtro-especializacao">Especialização:</label>
+                    <input type="text" id="filtro-especializacao" placeholder="Ex: Aves">
+                </div>
+
+                <div class="d-none" id="remun">
+                    <label for="filtro-remuneracao">Remuneração:</label>
+                    <input type="text" id="filtro-remuneracao-maior-que" placeholder="Maior que:">
+                    <input type="text" id="filtro-remuneracao-menor-que" placeholder="Menor que:">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button id="btn-aplicar-filtro" class="btn btn-primary btn-sm">Filtrar</button>
+                <button id="btn-limpar-filtro" class="btn btn-outline-secondary btn-sm">Limpar</button>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <a th:href="@{/funcionarios/novo}"
+                 class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow add-funcionario-btn"
+                 title="Adicionar funcionário">
+                <span class="mb-1">+</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Especialização</th>
+                    <th scope="col">Data de Nascimento</th>
+                    <th scope="col">Data de Ingresso</th>
+                    <th scope="col">Remuneração</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-funcionarios">
+                <tr th:each="funcionario : ${funcionarios}">
+                    <td th:text="${funcionario.id}"></td>
+                    <td th:text="${funcionario.nome}"></td>
+                    <td th:text="${funcionario.cpf}"></td>
+                    <td th:text="${funcionario.especializacao}"></td>
+                    <td th:text="${funcionario.nascimento}"></td>
+                    <td th:text="${funcionario.dataIngresso}"></td>
+                    <td th:text="${funcionario.remuneracao}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/funcionariosPages/home.js}"></script>
 </body>
 </html>

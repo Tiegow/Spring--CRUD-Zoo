@@ -20,4 +20,9 @@ public class FuncionarioPagesController {
         model.addAttribute("funcionarios", funcionarioService.listarTodos());
         return "funcionarios/home";
     }
+
+    @GetMapping("/novo")
+    public String novoFuncionario() {
+        return "funcionarios/novo";
+    }
 }

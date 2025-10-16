@@ -47,22 +47,6 @@ public class VeterinarioController {
         return ResponseEntity.ok(novoVeterinario);
     }
 
-    @PostMapping("/criarTest")
-    public ResponseEntity<Veterinario> cadastrarVeterinarioTest() {
-        Veterinario veterinario = new Veterinario();
-
-        veterinario.setNome("Afonso");
-        veterinario.setCrmv("CRMV-SP 12345");
-        veterinario.setCpf("123.456.789-00");
-        veterinario.setEspecializacao("Aves");
-        veterinario.setRemuneracao(4500.00f);
-        veterinario.setNascimento(java.time.LocalDate.of(1990, 5, 20));
-        veterinario.setDataIngresso(java.time.LocalDate.of(2020, 3, 15));
-
-        Veterinario novoVeterinario = veterinarioService.criar(veterinario);
-        return ResponseEntity.ok(novoVeterinario);
-    }
-
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<Veterinario> atualizarVeterinario(@PathVariable Integer id, @RequestBody Veterinario veterinario) {
         Veterinario vetAtualizado = veterinarioService.atualizar(id, veterinario);

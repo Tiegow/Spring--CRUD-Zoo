@@ -35,6 +35,8 @@ public class TratadorService {
             throw new RNException("CPF já cadastrado no sistema.");
         }
 
+        tratador.setDataIngresso(java.time.LocalDate.now());
+
         return tratadorRepository.save(tratador);
     }
 

@@ -2,6 +2,7 @@ package com.ufrn.SIGZoo.model.entity;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -21,8 +22,10 @@ public class Tratador extends Funcionario {
     )
     private List<Recinto> recintosAtribuidos;
 
-    private int qtdRecintosAtribuidos = 0;
+    @Column(nullable = false)
     private String turno;
+
+    private int qtdRecintosAtribuidos = 0;
 
     public int getQtdRecintosAtribuidos() {
         return qtdRecintosAtribuidos;

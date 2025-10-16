@@ -32,6 +32,9 @@ public class FuncionarioService {
 
     @Transactional(readOnly = true)
     public List<Funcionario> listarPorEspecializacao(String especializacao) {
+        if (especializacao.equals("") || especializacao.isEmpty() || especializacao.isBlank() || especializacao.equals(null)) {
+            return listarTodos();
+        }
         return funcionarioRepository.findByEspecializacao(especializacao);
     }
 

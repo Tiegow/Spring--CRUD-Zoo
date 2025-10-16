@@ -34,6 +34,8 @@ public class VeterinarioService {
             throw new RNException("CRMV já cadastrado no sistema.");
         }
 
+        veterinario.setDataIngresso(java.time.LocalDate.now());
+
         return veterinarioRepository.save(veterinario);
     }
 
