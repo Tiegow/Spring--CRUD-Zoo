@@ -1,4 +1,4 @@
-package com.ufrn.SIGZoo.model;
+package com.ufrn.SIGZoo.model.entity;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class Tratador extends Funcionario {
     )
     private List<Recinto> recintosAtribuidos;
 
-    private int qtdRecintosAtribuidos;
+    private int qtdRecintosAtribuidos = 0;
     private String turno;
 
     public int getQtdRecintosAtribuidos() {

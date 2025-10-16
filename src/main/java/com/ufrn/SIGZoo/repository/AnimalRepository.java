@@ -3,7 +3,7 @@ package com.ufrn.SIGZoo.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ufrn.SIGZoo.model.Animal;
+import com.ufrn.SIGZoo.model.entity.Animal;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Integer> {

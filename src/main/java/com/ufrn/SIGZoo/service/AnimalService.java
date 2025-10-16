@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ufrn.SIGZoo.model.Animal;
-import com.ufrn.SIGZoo.model.Veterinario;
+import com.ufrn.SIGZoo.model.entity.Animal;
+import com.ufrn.SIGZoo.model.entity.Veterinario;
 import com.ufrn.SIGZoo.repository.AnimalRepository;
 import com.ufrn.SIGZoo.repository.VeterinarioRepository;
 

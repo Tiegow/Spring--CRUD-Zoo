@@ -1,4 +1,6 @@
-package com.ufrn.SIGZoo.controller;
+package com.ufrn.SIGZoo.controller.api;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,21 +12,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufrn.SIGZoo.model.Veterinario;
+import com.ufrn.SIGZoo.model.entity.Veterinario;
 import com.ufrn.SIGZoo.service.VeterinarioService;
 
 @RestController
-@RequestMapping("veterinarios")
+@RequestMapping("/api/veterinarios")
 public class VeterinarioController {
 
     @Autowired
     private VeterinarioService veterinarioService;
 
+    @GetMapping("")
+    public ResponseEntity<List<Veterinario>> listarTodosVeterinarios() {
+        List<Veterinario> veterinarios = veterinarioService.listarTodos();
+        return ResponseEntity.ok(veterinarios);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Veterinario> getVeterinarioById(@PathVariable Integer id) {
+    public ResponseEntity<Veterinario> buscarVeterinarioPorId(@PathVariable Integer id) {
         Veterinario veterinario = veterinarioService.buscarPorId(id).orElse(null);
 
         return veterinario == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(veterinario);
+    }
+
+    @GetMapping("/listarPorQtdPacientes")
+    public ResponseEntity<List<Veterinario>> listarVeterinariosPorQtdPacientes() {
+        List<Veterinario> veterinarios = veterinarioService.listarPorQtdPacientes();
+        return ResponseEntity.ok(veterinarios);
     }
 
     @PostMapping("/criar")
@@ -52,6 +66,9 @@ public class VeterinarioController {
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<Veterinario> atualizarVeterinario(@PathVariable Integer id, @RequestBody Veterinario veterinario) {
         Veterinario vetAtualizado = veterinarioService.atualizar(id, veterinario);
-        return ResponseEntity.ok(vetAtualizado);
+        if (vetAtualizado != null) {
+            return ResponseEntity.ok(vetAtualizado);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

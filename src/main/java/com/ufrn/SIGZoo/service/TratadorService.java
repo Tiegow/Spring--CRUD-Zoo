@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ufrn.SIGZoo.exception.RNException;
-import com.ufrn.SIGZoo.model.Recinto;
-import com.ufrn.SIGZoo.model.Tratador;
+import com.ufrn.SIGZoo.model.entity.Recinto;
+import com.ufrn.SIGZoo.model.entity.Tratador;
 import com.ufrn.SIGZoo.repository.FuncionarioRepository;
 import com.ufrn.SIGZoo.repository.RecintoRepository;
 import com.ufrn.SIGZoo.repository.TratadorRepository;
@@ -59,6 +59,11 @@ public class TratadorService {
     }
 
     @Transactional(readOnly = true)
+    public List<Tratador> listarTodos() {
+        return tratadorRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
     public Optional<Tratador> buscarPorId(Integer id) {
         return tratadorRepository.findById(id);
     }
@@ -96,11 +101,16 @@ public class TratadorService {
 
     @Transactional(readOnly = true)
     public List<Tratador> buscarTratadoresOciosos() {
-        return tratadorRepository.findByQtdRecintosAtribuidos(0);
+        return tratadorRepository.findAllByQtdRecintosAtribuidos(0);
     }
 
     @Transactional(readOnly = true)
-    public List<Tratador> buscarPorTurno(String turno) {
-        return tratadorRepository.findByTurno(turno);
+    public List<Tratador> listarPorTurno(String turno) {
+        return tratadorRepository.findAllByTurno(turno);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Tratador> listarPorQtdRecintos() {
+        return tratadorRepository.findAllByOrderByQtdRecintosAtribuidosDesc();
     }
 }

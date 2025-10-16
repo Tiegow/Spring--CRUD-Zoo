@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ufrn.SIGZoo.model.Funcionario;
-import com.ufrn.SIGZoo.model.Tratador;
-import com.ufrn.SIGZoo.model.Veterinario;
+import com.ufrn.SIGZoo.model.entity.Funcionario;
+import com.ufrn.SIGZoo.model.entity.Tratador;
+import com.ufrn.SIGZoo.model.entity.Veterinario;
 import com.ufrn.SIGZoo.repository.FuncionarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;

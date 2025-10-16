@@ -1,4 +1,4 @@
-package com.ufrn.SIGZoo.controller;
+package com.ufrn.SIGZoo.controller.api;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufrn.SIGZoo.model.Funcionario;
+import com.ufrn.SIGZoo.model.entity.Funcionario;
 import com.ufrn.SIGZoo.service.FuncionarioService;
 
 @RestController
-@RequestMapping("funcionarios")
+@RequestMapping("/api/funcionarios")
 public class FuncionariosController {
 
     @Autowired

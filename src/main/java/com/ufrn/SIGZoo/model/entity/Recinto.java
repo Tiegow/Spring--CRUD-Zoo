@@ -1,4 +1,4 @@
-package com.ufrn.SIGZoo.model;
+package com.ufrn.SIGZoo.model.entity;
 
 import java.util.List;
 
