@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários - Tratador</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4"><i class="fa-solid fa-shield-cat me-2"></i><span th:text="${tratador.nome}"></span> - Tratador</h1>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Detalhes do Funcionário</h5>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Nome:</dt>
+                            <dd class="col-sm-8" th:text="${tratador.nome}"></dd>
+
+                            <dt class="col-sm-4">CPF:</dt>
+                            <dd class="col-sm-8" th:text="${tratador.cpf}"></dd>
+
+                            <dt class="col-sm-4">Nascimento:</dt>
+                            <dd class="col-sm-8" th:text="${#temporals.format(tratador.nascimento, 'dd/MM/yyyy')}"></dd>   
+                            
+                            <dt class="col-sm-4">Data de Ingresso:</dt>
+                            <dd class="col-sm-8" th:text="${#temporals.format(tratador.dataIngresso, 'dd/MM/yyyy')}"></dd>                             
+                        </dl>
+                    </div>
+
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Especialidade:</dt>
+                            <dd class="col-sm-8" th:text="${tratador.especializacao}"></dd>
+
+                            <dt class="col-sm-4">Turno:</dt>
+                            <dd class="col-sm-8" th:text="${tratador.turno}"></dd>                            
+
+                            <dt class="col-sm-4">N° de Recintos:</dt>
+                            <dd class="col-sm-8" th:text="${tratador.qtdRecintosAtribuidos}"></dd>           
+                            
+                            <dt class="col-sm-4">Remuneração:</dt>
+                            <dd class="col-sm-8" th:text="${tratador.remuneracao}"></dd>                                
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <a th:href="@{/funcionarios}" class="btn btn-secondary me-2">
+                        <i class="fa-solid fa-arrow-left me-1"></i>Voltar
+                    </a>
+
+                    <a th:href="@{/funcionarios/tratador/editar/{id}(id=${tratador.id})}" class="btn btn-primary me-2">
+                        <i class="fa-solid fa-pen-to-square me-1"></i>Editar
+                    </a>
+
+                    <button type="button" class="btn btn-danger me-2" id="delete-btn" th:attr="data-id=${tratador.id}">
+                        <i class="fa-solid fa-trash me-1"></i>Deletar
+                    </button>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/funcionariosPages/tratadorDetalhes.js}"></script>
+</body>
+</html>

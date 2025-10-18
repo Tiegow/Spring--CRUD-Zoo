@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários - Editar</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-1">Editar Registro - Funcionário</h1>
+        <p class="mb-4"><i class="fa-solid fa-user-nurse me-2"></i><span th:text="${veterinario.nome}"></span> - Veterinário</p>
+    </div>
+
+    <div class="container edit-form">
+        <form id="edit-form" th:attr="data-id=${veterinario.id}">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input required type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo" th:value="${veterinario.nome}">
+            </div>
+
+            <div class="mb-3">
+                <label for="nascimento" class="form-label">Data de Nascimento:</label>
+                <input type="date" class="form-control" id="nascimento" name="nascimento" th:value="${veterinario.nascimento}">
+            </div>
+
+            <div class="mb-3">
+                <label for="nascimento" class="form-label">Data de Ingresso:</label>
+                <input type="date" class="form-control" id="ingresso" name="dataIngresso" th:value="${veterinario.dataIngresso}">
+            </div>            
+
+            <div class="mb-3">
+                <label for="cpf" class="form-label">CPF:</label>
+                <input required type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00" th:value="${veterinario.cpf}">
+            </div>
+
+            <div class="mb-3">
+                <label for="especializacao" class="form-label">Especialização:</label>
+                <input type="text" class="form-control" id="especializacao" name="especializacao" placeholder="Ex: Aves" th:value="${veterinario.especializacao}">
+            </div>
+
+            <div class="mb-3">
+                <label for="remuneracao" class="form-label">Remuneração:</label>
+                <input type="number" class="form-control" id="remuneracao" name="remuneracao" placeholder="0.00" th:value="${veterinario.remuneracao}">
+            </div>
+
+            <div class="mb-3">
+                <label for="crmv" class="form-label">CRMV:</label>
+                <input required type="text" class="form-control" id="crmv" name="crmv" placeholder="Ex: CRMV-SP 12345" th:value="${veterinario.crmv}">
+            </div>
+
+            <button id="edit-submit" type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/funcionarios}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/funcionariosPages/veterinarioEditar.js}"></script>
+</body>
+</html>

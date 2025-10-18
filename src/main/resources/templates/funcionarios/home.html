@@ -6,6 +6,7 @@
     <title>Funcionários</title>
 
     <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
     <link th:href="@{/css/funcionariosPages/home.css}" rel="stylesheet">
 </head>
 <body>
@@ -20,6 +21,7 @@
                 <option value="Filtros" selected>Filtros</option>
                 <option value="Remuneração">Remuneração</option>
                 <option value="Especialização">Especialização</option>
+                <option value="Ociosos">Tratadores Ociosos</option>
             </select>
 
             <div id="filtro-dinamico" class="d-flex gap-2 align-items-center me-2">
@@ -41,11 +43,11 @@
             </div>
         </div>
 
-        <div class="d-flex align-items-center">
+        <div>
             <a th:href="@{/funcionarios/novo}"
                  class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow add-funcionario-btn"
                  title="Adicionar funcionário">
-                <span class="mb-1">+</span>
+                <span><i class="fa-solid fa-plus fa-xs"></i></span>
             </a>
         </div>
     </div>
@@ -69,9 +71,20 @@
                     <td th:text="${funcionario.nome}"></td>
                     <td th:text="${funcionario.cpf}"></td>
                     <td th:text="${funcionario.especializacao}"></td>
-                    <td th:text="${funcionario.nascimento}"></td>
-                    <td th:text="${funcionario.dataIngresso}"></td>
+                    <td th:text="${#temporals.format(funcionario.nascimento, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(funcionario.dataIngresso, 'dd/MM/yyyy')}"></td>
                     <td th:text="${funcionario.remuneracao}"></td>
+
+                    <td>
+                        <div th:switch="${funcionario.cargo}">
+                            <a th:case="'Veterinario'" th:href="@{/funcionarios/veterinario/{id}(id=${funcionario.id})}">
+                                <i class="fa-solid fa-circle-info fa-lg"></i>
+                            </a>
+                            <a th:case="'Tratador'" th:href="@{/funcionarios/tratador/{id}(id=${funcionario.id})}">
+                                <i class="fa-solid fa-circle-info fa-lg"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

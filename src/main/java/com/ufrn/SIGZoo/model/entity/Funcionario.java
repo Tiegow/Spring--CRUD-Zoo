@@ -71,4 +71,6 @@ public abstract class Funcionario {
     public void setDataIngresso(LocalDate dataIngresso) {
         this.dataIngresso = dataIngresso;
     }
+
+    public abstract String getCargo();
 }

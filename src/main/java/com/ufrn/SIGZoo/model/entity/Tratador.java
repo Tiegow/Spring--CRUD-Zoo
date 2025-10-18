@@ -54,4 +54,9 @@ public class Tratador extends Funcionario {
             this.qtdRecintosAtribuidos--;
         }
     }
+
+    @Override
+    public String getCargo() {
+        return "Tratador";
+    }
 }

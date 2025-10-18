@@ -46,4 +46,9 @@ public class Veterinario extends Funcionario {
             this.qtdPacientes--;
         }
     }
+
+    @Override
+    public String getCargo() {
+        return "Veterinario";
+    }    
 }
