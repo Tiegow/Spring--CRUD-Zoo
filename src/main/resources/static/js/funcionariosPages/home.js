@@ -2,23 +2,21 @@ const tabela = document.getElementById('tabela-funcionarios');
 
 document.getElementById('filtro-tipo').addEventListener('change', function() {
     const tipo = this.value;
-    const filtroDinamico = document.getElementById('filtro-dinamico');
-    filtroDinamico.querySelectorAll('div').forEach(div => div.classList.add('d-none'));
+
+    const filtroEspecializacao = document.getElementById('espec');
+    const filtroRemuneracao = document.getElementById('remun');
+    
+    filtroEspecializacao.classList.add('d-none');
+    filtroRemuneracao.classList.add('d-none');
 
     switch (tipo) {
-        case 'Especialização': {
-            const filtro = document.getElementById('espec');
-            filtro.classList.remove('d-none');
+        case 'Especialização':
+            filtroEspecializacao.classList.remove('d-none');
             break;
-        }
-        case 'Remuneração': {
-            const filtro = document.getElementById('remun');
-            filtro.classList.remove('d-none');
+        
+        case 'Remuneração':
+            filtroRemuneracao.classList.remove('d-none');
             break;
-        }
-        default:
-            document.getElementById('espec').classList.add('d-none');
-            document.getElementById('remun').classList.add('d-none');
     }
 });
 

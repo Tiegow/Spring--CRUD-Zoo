@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animais - Novo</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Novo Animal</h1>
+    </div>
+
+    <div class="container add-form">
+        <form id="add-form">
+            <div class="mb-3">
+                <label for="select-especie" class="form-label">Espécie:</label>
+                <select  id="select-especie" name="especieId" class="form-select form-select-sm" style="max-width:220px;">
+                    <option value="" selected>Selecione a Espécie</option>
+                    <!-- TODO: MOSTRAR ESPÉCIES AQUI -->
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="select-recinto" class="form-label">Recinto:</label>
+                <select  id="select-recinto" name="recintoId" class="form-select form-select-sm" style="max-width:220px;">
+                    <option value="" selected>Selecione o Recinto</option>
+                    <!-- TODO: MOSTRAR RECINTOS AQUI -->
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="select-veterinario" class="form-label">Veterinário:</label>
+                <select id="select-veterinario" name="veterinarioId" class="form-select form-select-sm" style="max-width:220px;">
+                    <option value="" selected>Selecione o Veterinário</option>
+                    <option th:each="vet : ${veterinarios}" th:value="${vet.id}" th:text="${vet.nome}"></option>
+                </select>
+            </div>            
+
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input required type="text" class="form-control" id="nome" name="nome" placeholder="Nome">
+            </div>
+
+            <div class="mb-3">
+                <label for="nascimento" class="form-label">Data de Nascimento:</label>
+                <input type="date" class="form-control" id="nascimento" name="nascimento">
+            </div>
+
+            <div class="mb-3 d-flex align-items-center gap-2" id="sexo">
+                <label for="sexo">Sexo:</label>
+                <div class="form-check mt-1">
+                    <input class="form-check-input" type="radio" name="sexo" id="sexo-macho" value="M">
+                    <label class="form-check-label" for="sexo-macho">Macho</label>
+                </div>
+                <div class="form-check mt-1">
+                    <input class="form-check-input" type="radio" name="sexo" id="sexo-femea" value="F">
+                    <label class="form-check-label" for="sexo-femea">Fêmea</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="origem" class="form-label">Origem:</label>
+                <input type="text" class="form-control" id="origem" name="origem" placeholder="Ex: Resgate de área vulnerável">
+            </div>
+
+            <button id="add-submit" type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/animais}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/animaisPages/novo.js}"></script>
+</body>
+</html>

@@ -2,9 +2,12 @@ package com.ufrn.SIGZoo.model.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
@@ -14,6 +17,7 @@ public class Veterinario extends Funcionario {
     @Column(unique = true, nullable = false)
     private String crmv;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "veterinario") // Relacionamento bidirecional
     private List<Animal> pacientes;
 
@@ -51,4 +55,11 @@ public class Veterinario extends Funcionario {
     public String getCargo() {
         return "Veterinario";
     }    
+
+    @PreRemove
+    private void preRemove() {
+        for (Animal animal : pacientes) {
+            animal.setVeterinario(null);
+        }
+    }
 }

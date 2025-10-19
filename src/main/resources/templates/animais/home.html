@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animais</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Animais</h1>
+    </div>
+
+    <div class="container d-flex justify-content-around mb-2">
+        <div class="d-flex align-items-start gap-2 w-100">
+            <label class="visually-hidden" for="filtro-tipo">Filtrar por</label>
+            <select id="filtro-tipo" class="form-select form-select-sm me-2" style="max-width:220px;">
+                <option value="Filtros" selected>Filtros</option>
+                <option value="Especie">Especie</option>
+                <option value="Sexo">Sexo</option>
+            </select>
+
+            <div id="filtro-dinamico" class="d-flex gap-2 align-items-center me-2">
+                <div class="d-none" id="especie">
+                    <label for="filtro-especie">Espécie:</label>
+                    <input type="text" id="filtro-especie" placeholder="Ex: Elefante Africano">
+                </div>
+
+                <div class="d-none d-flex align-items-center gap-2" id="sexo">
+                    <label>Sexo:</label>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="radio" name="filtro-sexo" id="sexo-macho" value="M">
+                        <label class="form-check-label" for="sexo-macho">Macho</label>
+                    </div>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="radio" name="filtro-sexo" id="sexo-femea" value="F">
+                        <label class="form-check-label" for="sexo-femea">Fêmea</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button id="btn-aplicar-filtro" class="btn btn-primary btn-sm">Filtrar</button>
+                <button id="btn-limpar-filtro" class="btn btn-outline-secondary btn-sm">Limpar</button>
+            </div>
+        </div>
+
+        <div>
+            <a th:href="@{/animais/novo}"
+                 class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow add-animal-btn"
+                 title="Adicionar animal">
+                <span><i class="fa-solid fa-plus fa-xs"></i></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <!-- <th scope="col">Espécie</th> -->
+                    <th scope="col">Data de Nascimento</th>
+                    <th scope="col">Sexo</th>
+                    <th scope="col">Origem</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-animais">
+                <tr th:each="animal : ${animais}">
+                    <td th:text="${animal.id}"></td>
+                    <td th:text="${animal.nome}"></td>
+                    <!-- <td th:text="${animal.especie}"></td> -->
+                    <td th:text="${#temporals.format(animal.nascimento, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${animal.sexo}"></td>
+                    <td th:text="${animal.origem}"></td>
+
+                    <td>
+                        <a th:href="@{/animais/{id}(id=${animal.id})}">
+                            <i class="fa-solid fa-circle-info fa-lg"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/animaisPages/home.js}"></script>
+</body>
+</html>
