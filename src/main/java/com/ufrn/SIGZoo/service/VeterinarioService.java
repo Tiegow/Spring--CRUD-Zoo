@@ -1,13 +1,14 @@
 package com.ufrn.SIGZoo.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ufrn.SIGZoo.exception.RNException;
+import com.ufrn.SIGZoo.model.dto.VeterinarioDTO;
 import com.ufrn.SIGZoo.model.entity.Veterinario;
 import com.ufrn.SIGZoo.repository.FuncionarioRepository;
 import com.ufrn.SIGZoo.repository.VeterinarioRepository;
@@ -24,7 +25,7 @@ public class VeterinarioService {
     private VeterinarioRepository veterinarioRepository;
 
     @Transactional
-    public Veterinario criar(Veterinario veterinario) {
+    public VeterinarioDTO criar(VeterinarioDTO veterinario) {
 
         if (funcionarioRepository.existsByCpf(veterinario.getCpf())) {
             throw new RNException("CPF já cadastrado no sistema.");
@@ -34,30 +35,43 @@ public class VeterinarioService {
             throw new RNException("CRMV já cadastrado no sistema.");
         }
 
-        veterinario.setDataIngresso(java.time.LocalDate.now());
+        Veterinario novoVet = veterinario.toEntity();
 
-        return veterinarioRepository.save(veterinario);
+        novoVet.setDataIngresso(java.time.LocalDate.now());
+
+        veterinarioRepository.save(novoVet);
+
+        return toDTO(novoVet);
     }
 
     @Transactional
-    public Veterinario atualizar(Integer id, Veterinario vetAtualizado) {
-        Veterinario vetExistente = veterinarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Veterinário não encontrado."));
+    public VeterinarioDTO atualizar(Integer id, VeterinarioDTO vetAtualizadoDto) {
+        Veterinario vetExistente = veterinarioRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Veterinário não encontrado."));
 
-        funcionarioRepository.findByCpf(vetAtualizado.getCpf()).ifPresent(funcPresente -> {
+        funcionarioRepository.findByCpf(vetAtualizadoDto.getCpf()).ifPresent(funcPresente -> {
             if (!funcPresente.getId().equals(vetExistente.getId())) {
                 throw new RNException("CPF já cadastrado para outro funcionário.");
             }
         });
 
-        veterinarioRepository.findByCrmv(vetAtualizado.getCrmv()).ifPresent(funcPresente -> {
-            if (!funcPresente.getId().equals(vetExistente.getId())) {
+        veterinarioRepository.findByCrmv(vetAtualizadoDto.getCrmv()).ifPresent(vetPresente -> { 
+            if (!vetPresente.getId().equals(vetExistente.getId())) {
                 throw new RNException("CRMV já cadastrado para outro veterinário.");
             }
         });   
 
-        vetAtualizado.setId(vetExistente.getId());
+        vetExistente.setNome(vetAtualizadoDto.getNome());
+        vetExistente.setCpf(vetAtualizadoDto.getCpf()); 
+        vetExistente.setCrmv(vetAtualizadoDto.getCrmv()); 
+        vetExistente.setEspecializacao(vetAtualizadoDto.getEspecializacao());
+        vetExistente.setNascimento(vetAtualizadoDto.getNascimento());
+        vetExistente.setRemuneracao(vetAtualizadoDto.getRemuneracao());
+        vetExistente.setDataIngresso(vetAtualizadoDto.getDataIngresso());
 
-        return veterinarioRepository.save(vetAtualizado);
+        Veterinario vetSalvo = veterinarioRepository.save(vetExistente);
+
+        return toDTO(vetSalvo);
     }
 
     @Transactional
@@ -66,17 +80,41 @@ public class VeterinarioService {
     }
 
     @Transactional(readOnly = true)
-    public List<Veterinario> listarTodos() {
-        return veterinarioRepository.findAll();
+    public List<VeterinarioDTO> listarTodos() {
+        return listDTO(veterinarioRepository.findAll());
     }
 
     @Transactional(readOnly = true)
-    public Optional<Veterinario> buscarPorId(Integer id) {
-        return veterinarioRepository.findById(id);
+    public VeterinarioDTO buscarPorId(Integer id) {
+        Veterinario vet = veterinarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Veterinário não encontrado."));
+        return toDTO(vet);
     }
 
     @Transactional(readOnly = true)
-    public List<Veterinario> listarPorQtdPacientes() {
-        return veterinarioRepository.findAllByOrderByQtdPacientesDesc();
+    public List<VeterinarioDTO> listarPorQtdPacientes() {
+        return listDTO(veterinarioRepository.findAllByOrderByQtdPacientesDesc());
+    }
+
+    private VeterinarioDTO toDTO(Veterinario vet) {
+        if (vet == null) {
+            return null;
+        }
+        VeterinarioDTO dto = new VeterinarioDTO();
+
+        dto.setId(vet.getId());
+        dto.setCpf(vet.getCpf());
+        dto.setCrmv(vet.getCrmv());
+        dto.setDataIngresso(vet.getDataIngresso());
+        dto.setEspecializacao(vet.getEspecializacao());
+        dto.setNascimento(vet.getNascimento());
+        dto.setNome(vet.getNome());
+        dto.setRemuneracao(vet.getRemuneracao());
+        dto.setQtdPacientes(vet.getQtdPacientes());
+
+        return dto;
+    }    
+
+    private List<VeterinarioDTO> listDTO(List<Veterinario> vets) {
+        return vets.stream().map(this::toDTO).collect(Collectors.toList());
     }
 }

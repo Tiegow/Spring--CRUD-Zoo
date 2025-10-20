@@ -46,6 +46,11 @@ public class FuncionarioService {
         return listaMaior;
     }
 
+    @Transactional(readOnly = true)
+    public long obterQtdFuncionarios() {
+        return funcionarioRepository.count();
+    }
+
     // Método "despachante" para deletar um funcionário
     @Transactional
     public void deletarFuncionario(Integer id) {

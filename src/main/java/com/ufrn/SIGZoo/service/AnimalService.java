@@ -114,6 +114,11 @@ public class AnimalService {
         return toDTO(animal);
     }
 
+    @Transactional(readOnly = true)
+    public long obterQtdAnimais() {
+        return animalRepository.count();
+    }    
+
     @Transactional
     public Animal atribuirVeterinario(Integer animalId, Integer veterinarioId) {
         Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));

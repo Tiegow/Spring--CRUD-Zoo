@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGZOO</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="">SIGZoo - Início</h1>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md">
+                        <a th:href="@{/funcionarios}" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" aria-label="Funcionários">
+                            <i class="fa-solid fa-user me-2" aria-hidden="true"></i>
+                            <span>Funcionários</span>
+                        </a>
+                    </div>
+
+                    <div class="col-12 col-md">
+                        <a th:href="@{/animais}" class="btn btn-success w-100 d-flex align-items-center justify-content-center" aria-label="Animais">
+                            <i class="fa-solid fa-paw me-2" aria-hidden="true"></i>
+                            <span>Animais</span>
+                        </a>
+                    </div>
+
+                    <div class="col-12 col-md">
+                        <a th:href="@{/especies}" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center" aria-label="Catálogo de espécies">
+                            <i class="fa-solid fa-book me-2" aria-hidden="true"></i>
+                            <span>Catálogo de espécies</span>
+                        </a>
+                    </div>
+
+                    <div class="col-12 col-md">
+                        <a th:href="@{/eventos}" class="btn btn-warning w-100 d-flex align-items-center justify-content-center" aria-label="Eventos">
+                            <i class="fa-solid fa-calendar-days me-2" aria-hidden="true"></i>
+                            <span>Eventos</span>
+                        </a>
+                    </div>
+
+                    <div class="col-12 col-md">
+                        <a th:href="@{/recintos}" class="btn btn-info w-100 d-flex align-items-center justify-content-center" aria-label="Recintos">
+                            <i class="fa-solid fa-building me-2" aria-hidden="true"></i>
+                            <span>Recintos</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4 class="mb-4">Visão Geral</h4>
+
+                <div class="row">
+                    
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="card shadow-sm border-left-success">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                            Total de Animais
+                                        </div>
+                                        <div class="h4 mb-0 fw-bold text-gray-800" th:text="${qtdAnimais}">150</div>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-paw fa-2x text-success-emphasis"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="card shadow-sm border-left-primary">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                                            Funcionários Ativos
+                                        </div>
+                                        <div class="h4 mb-0 fw-bold text-gray-800" th:text="${qtdFuncionarios}">24</div>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-user fa-2x text-primary-emphasis"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="card shadow-sm border-left-warning">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                            Eventos Agendados
+                                        </div>
+                                        <div class="h4 mb-0 fw-bold text-gray-800">5</div>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-calendar-days fa-2x text-warning-emphasis"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="card shadow-sm border-left-secondary">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-xs fw-bold text-secondary text-uppercase mb-1">
+                                            Espécies Catalogadas
+                                        </div>
+                                        <div class="h4 mb-0 fw-bold text-gray-800">85</div>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-book fa-2x text-secondary-emphasis"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="card shadow-sm border-left-info">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-xs fw-bold text-info text-uppercase mb-1">
+                                            Total de Recintos
+                                        </div>
+                                        <div class="h4 mb-0 fw-bold text-gray-800">42</div>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-building fa-2x text-info-emphasis"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+        </div>
+    </div>
+
+
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

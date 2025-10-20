@@ -5,13 +5,7 @@ import java.time.LocalDate;
 import com.ufrn.SIGZoo.model.entity.Animal;
 
 public class AnimalDTO {
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
     private Integer id;
 
     private String nome;
@@ -23,6 +17,14 @@ public class AnimalDTO {
     private Integer veterinarioId;
     // private Integer especieId; 
     // private Integer recintoId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }    
 
     public String getNome() {
         return nome;
