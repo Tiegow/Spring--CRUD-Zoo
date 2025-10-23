@@ -27,6 +27,7 @@ public class VeterinarioController {
     @GetMapping("")
     public ResponseEntity<List<VeterinarioDTO>> listarTodosVeterinarios() {
         List<VeterinarioDTO> veterinarios = veterinarioService.listarTodos();
+        
         return ResponseEntity.ok(veterinarios);
     }
 

@@ -15,6 +15,7 @@ public class VeterinarioDTO {
     private float remuneracao; 
     private String crmv;
     private int qtdPacientes;
+    private String cargo = "Veterinario";
 
     public String getNome() {
         return nome;
@@ -70,6 +71,9 @@ public class VeterinarioDTO {
     public void setId(Integer id) {
         this.id = id;
     }    
+    public String getCargo() {
+        return this.cargo;
+    }
 
     public Veterinario toEntity() {
         Veterinario vet = new Veterinario();

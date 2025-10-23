@@ -15,6 +15,7 @@ form.addEventListener('submit', (event) => {
     .then(response => {
         if (response.ok) {
             window.location.href = '/funcionarios';
+            alert('Informações atualizadas com sucesso.');
             return;
         }
         return response.json()

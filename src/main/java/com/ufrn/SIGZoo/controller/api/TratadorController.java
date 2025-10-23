@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufrn.SIGZoo.model.entity.Tratador;
+import com.ufrn.SIGZoo.model.dto.TratadorDTO;
 import com.ufrn.SIGZoo.service.TratadorService;
 
 @RestController
@@ -25,47 +25,50 @@ public class TratadorController {
     private TratadorService tratadorService;
 
     @GetMapping("")
-    public ResponseEntity<List<Tratador>> listarTodosTratadores() {
-        List<Tratador> tratadores = tratadorService.listarTodos();
+    public ResponseEntity<List<TratadorDTO>> listarTodosTratadores() {
+        List<TratadorDTO> tratadores = tratadorService.listarTodos();
+
         return ResponseEntity.ok(tratadores);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tratador> buscarTratadorPorId(@PathVariable Integer id) {
-        Tratador tratador = tratadorService.buscarPorId(id).orElse(null);
-        if (tratador != null) {
-            return ResponseEntity.ok(tratador);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<TratadorDTO> buscarTratadorPorId(@PathVariable Integer id) {
+        TratadorDTO tratador = tratadorService.buscarPorId(id);
+
+        return ResponseEntity.ok(tratador);
     }
 
     @GetMapping("/listarPorTurno/{turno}")
-    public ResponseEntity<List<Tratador>> listarTratadoresPorTurno(@PathVariable String turno) {
-        List<Tratador> tratadores = tratadorService.listarPorTurno(turno);
+    public ResponseEntity<List<TratadorDTO>> listarTratadoresPorTurno(@PathVariable String turno) {
+        List<TratadorDTO> tratadores = tratadorService.listarPorTurno(turno);
+
         return ResponseEntity.ok(tratadores);
     }
 
     @GetMapping("/listarPorQtdRecintos")
-    public ResponseEntity<List<Tratador>> listarTratadoresPorQtdRecintos() {
-        List<Tratador> tratadores = tratadorService.listarPorQtdRecintos();
+    public ResponseEntity<List<TratadorDTO>> listarTratadoresPorQtdRecintos() {
+        List<TratadorDTO> tratadores = tratadorService.listarPorQtdRecintos();
+
         return ResponseEntity.ok(tratadores);
     }
 
     @GetMapping("/listarOciosos")
-    public ResponseEntity<List<Tratador>> listarTratadoresOciosos() {
-        List<Tratador> tratadores = tratadorService.buscarTratadoresOciosos();
+    public ResponseEntity<List<TratadorDTO>> listarTratadoresOciosos() {
+        List<TratadorDTO> tratadores = tratadorService.buscarTratadoresOciosos();
+
         return ResponseEntity.ok(tratadores);
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<Tratador> criarTratador(@RequestBody Tratador tratador) {
-        Tratador novoTratador = tratadorService.criar(tratador);
+    public ResponseEntity<TratadorDTO> criarTratador(@RequestBody TratadorDTO tratador) {
+        TratadorDTO novoTratador = tratadorService.criar(tratador);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(novoTratador);
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Tratador> atualizarTratador(@PathVariable Integer id, @RequestBody Tratador tratador) {
-        Tratador tratadorAtualizado = tratadorService.atualizar(id, tratador);
+    public ResponseEntity<TratadorDTO> atualizarTratador(@PathVariable Integer id, @RequestBody TratadorDTO tratador) {
+        TratadorDTO tratadorAtualizado = tratadorService.atualizar(id, tratador);
         if (tratadorAtualizado != null) {
             return ResponseEntity.ok(tratadorAtualizado);
         }

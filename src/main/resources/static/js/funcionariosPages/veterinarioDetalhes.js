@@ -8,6 +8,7 @@ deleteBtn.addEventListener('click', () => {
     }).then(response => {
         if (response.ok) {
             window.location.href = '/funcionarios'; 
+            alert('Registro deletado com sucesso.');
         } else {
             alert('Falha ao deletar o registro.');
         }

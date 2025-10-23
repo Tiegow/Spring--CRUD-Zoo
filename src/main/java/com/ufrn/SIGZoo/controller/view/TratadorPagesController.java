@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ufrn.SIGZoo.model.entity.Tratador;
+import com.ufrn.SIGZoo.model.dto.TratadorDTO;
 import com.ufrn.SIGZoo.service.TratadorService;
 
-import jakarta.persistence.EntityNotFoundException;
 
 @Controller
 @RequestMapping("/funcionarios/tratador")
@@ -21,7 +20,7 @@ public class TratadorPagesController {
 
     @GetMapping("/{id}")
     public String detalhesTratador(@PathVariable Integer id, Model model) {
-        Tratador trat = tratadorService.buscarPorId(id).orElseThrow(() -> new EntityNotFoundException("Tratador não encontrado."));
+        TratadorDTO trat = tratadorService.buscarPorId(id);
         model.addAttribute("tratador", trat);
 
         return "funcionarios/tratador/detalhes";
@@ -29,7 +28,7 @@ public class TratadorPagesController {
 
     @GetMapping("/editar/{id}")
     public String editarTratador(@PathVariable Integer id, Model model) {
-        Tratador trat = tratadorService.buscarPorId(id).orElseThrow(() -> new EntityNotFoundException("Tratador não encontrado."));
+        TratadorDTO trat = tratadorService.buscarPorId(id);
         model.addAttribute("tratador", trat);
 
         return "funcionarios/tratador/editar";

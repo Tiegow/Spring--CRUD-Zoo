@@ -41,7 +41,7 @@
                             <dd class="col-sm-8" th:text="${#temporals.format(animal.nascimento, 'dd/MM/yyyy')}"></dd>   
 
                             <dt class="col-sm-4">Veterinário:</dt>
-                            <dd class="col-sm-8" th:text="${animal.veterinarioNome}"></dd>   
+                            <dd class="col-sm-8"><a th:text="${animal.veterinarioNome}" th:href="@{/funcionarios/veterinario/{id}(id=${animal.veterinarioId})}"></a></dd>   
                         </dl>
                     </div>
                 </div>

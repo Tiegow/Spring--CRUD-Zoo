@@ -23,6 +23,9 @@ public class Animal {
     @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
+    private String sexo;
+
     //TODO: Especie especie;
     //TODO: Recinto recinto;
 
@@ -32,7 +35,6 @@ public class Animal {
     private Veterinario veterinario;
 
     private LocalDate nascimento;
-    private String sexo;
     private String origem;
 
     public Integer getId() {

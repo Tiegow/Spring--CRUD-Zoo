@@ -1,13 +1,14 @@
 package com.ufrn.SIGZoo.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ufrn.SIGZoo.exception.RNException;
+import com.ufrn.SIGZoo.model.dto.TratadorDTO;
 import com.ufrn.SIGZoo.model.entity.Recinto;
 import com.ufrn.SIGZoo.model.entity.Tratador;
 import com.ufrn.SIGZoo.repository.FuncionarioRepository;
@@ -29,7 +30,7 @@ public class TratadorService {
     private RecintoRepository recintoRepository;
 
     @Transactional
-    public Tratador criar(Tratador tratador) {
+    public TratadorDTO criar(TratadorDTO tratador) {
 
         if (funcionarioRepository.existsByCpf(tratador.getCpf())) {
             throw new RNException("CPF já cadastrado no sistema.");
@@ -37,22 +38,34 @@ public class TratadorService {
 
         tratador.setDataIngresso(java.time.LocalDate.now());
 
-        return tratadorRepository.save(tratador);
+        Tratador novoTrat = tratador.toEntity();
+
+        tratadorRepository.save(novoTrat);
+
+        return toDTO(novoTrat);
     }
 
     @Transactional
-    public Tratador atualizar(Integer id, Tratador tratadorAtualizado) {
+    public TratadorDTO atualizar(Integer id, TratadorDTO tratadorAtualizadoDto) {
         Tratador tratadorExistente = tratadorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Tratador não encontrado."));
 
-        funcionarioRepository.findByCpf(tratadorAtualizado.getCpf()).ifPresent(funcPresente -> {
+        funcionarioRepository.findByCpf(tratadorAtualizadoDto.getCpf()).ifPresent(funcPresente -> {
             if (!funcPresente.getId().equals(tratadorExistente.getId())) {
                 throw new RNException("CPF já cadastrado para outro funcionário.");
             }
         });
         
-        tratadorAtualizado.setId(tratadorExistente.getId());
+        tratadorExistente.setNome(tratadorAtualizadoDto.getNome());
+        tratadorExistente.setCpf(tratadorAtualizadoDto.getCpf()); 
+        tratadorExistente.setEspecializacao(tratadorAtualizadoDto.getEspecializacao());
+        tratadorExistente.setNascimento(tratadorAtualizadoDto.getNascimento());
+        tratadorExistente.setRemuneracao(tratadorAtualizadoDto.getRemuneracao());
+        tratadorExistente.setDataIngresso(tratadorAtualizadoDto.getDataIngresso());  
+        tratadorExistente.setTurno(tratadorAtualizadoDto.getTurno());    
+        
+        Tratador tratadorSalvo = tratadorRepository.save(tratadorExistente);
 
-        return tratadorRepository.save(tratadorAtualizado);
+        return toDTO(tratadorSalvo);
     }
 
     @Transactional
@@ -61,13 +74,14 @@ public class TratadorService {
     }
 
     @Transactional(readOnly = true)
-    public List<Tratador> listarTodos() {
-        return tratadorRepository.findAll();
+    public List<TratadorDTO> listarTodos() {
+        return listDTO(tratadorRepository.findAll());
     }
 
     @Transactional(readOnly = true)
-    public Optional<Tratador> buscarPorId(Integer id) {
-        return tratadorRepository.findById(id);
+    public TratadorDTO buscarPorId(Integer id) {
+        Tratador trat = tratadorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Tratador não encontrado."));
+        return toDTO(trat);
     }
 
     @Transactional
@@ -102,17 +116,40 @@ public class TratadorService {
     }
 
     @Transactional(readOnly = true)
-    public List<Tratador> buscarTratadoresOciosos() {
-        return tratadorRepository.findAllByQtdRecintosAtribuidos(0);
+    public List<TratadorDTO> buscarTratadoresOciosos() {
+        return listDTO(tratadorRepository.findAllByQtdRecintosAtribuidos(0));
     }
 
     @Transactional(readOnly = true)
-    public List<Tratador> listarPorTurno(String turno) {
-        return tratadorRepository.findAllByTurno(turno);
+    public List<TratadorDTO> listarPorTurno(String turno) {
+        return listDTO(tratadorRepository.findAllByTurno(turno));
     }
 
     @Transactional(readOnly = true)
-    public List<Tratador> listarPorQtdRecintos() {
-        return tratadorRepository.findAllByOrderByQtdRecintosAtribuidosDesc();
+    public List<TratadorDTO> listarPorQtdRecintos() {
+        return listDTO(tratadorRepository.findAllByOrderByQtdRecintosAtribuidosDesc());
+    }
+
+    private TratadorDTO toDTO(Tratador trat) {
+        if (trat == null) {
+            return null;
+        }
+        TratadorDTO dto = new TratadorDTO();
+
+        dto.setId(trat.getId());
+        dto.setCpf(trat.getCpf());
+        dto.setDataIngresso(trat.getDataIngresso());
+        dto.setEspecializacao(trat.getEspecializacao());
+        dto.setNascimento(trat.getNascimento());
+        dto.setNome(trat.getNome());
+        dto.setRemuneracao(trat.getRemuneracao());
+        dto.setTurno(trat.getTurno());
+        dto.setQtdRecintosAtribuidos(trat.getQtdRecintosAtribuidos());
+
+        return dto;        
+    }
+
+    private List<TratadorDTO> listDTO(List<Tratador> trats) {
+        return trats.stream().map(this::toDTO).collect(Collectors.toList());
     }
 }

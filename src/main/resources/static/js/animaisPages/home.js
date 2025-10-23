@@ -37,8 +37,6 @@ document.getElementById('btn-aplicar-filtro').addEventListener('click', function
                 .then(data => {
                     criarTabela(data, tabela);
                 });
-        } else {
-            alert('Por favor, selecione uma opção de sexo.');
         }
     }
 });
