@@ -3,6 +3,9 @@ package com.ufrn.SIGZoo.controller.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,8 +28,8 @@ public class AnimalController {
     private AnimalService animalService;
 
     @GetMapping("")
-    public ResponseEntity<List<AnimalDTO>> listarTodos() {
-        List<AnimalDTO> animais = animalService.listarTodos();
+    public ResponseEntity<Page<AnimalDTO>> listarTodos(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+        Page<AnimalDTO> animais = animalService.listarTodos(pageable);
         return ResponseEntity.ok(animais);
     }
 

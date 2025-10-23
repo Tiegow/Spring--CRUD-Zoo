@@ -69,8 +69,8 @@
                 </tr>
             </thead>
             <tbody id="tabela-animais">
-                <tr th:each="animal : ${animais}">
-                    <td th:text="${animal.id}"></td>
+                <tr th:each="animal : ${animalPage.content}">
+                    <td th:text="${animal.id}"></td>    
                     <td th:text="${animal.nome}"></td>
                     <!-- <td th:text="${animal.especie}"></td> -->
                     <td th:text="${#temporals.format(animal.nascimento, 'dd/MM/yyyy')}"></td>
@@ -85,6 +85,19 @@
                 </tr>
             </tbody>
         </table>
+        <nav aria-label="Page navigation" th:if="${animalPage.totalPages > 1}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${animalPage.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{/animais(page=${animalPage.number - 1}, size=${animalPage.size}, sort=${param.sort})}">Anterior</a>
+                </li>
+
+                <li class="page-item disabled"><span class="page-link" th:text="|Página ${animalPage.number + 1} de ${animalPage.totalPages}|"></span></li>
+
+                <li class="page-item" th:classappend="${animalPage.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{/animais(page=${animalPage.number + 1}, size=${animalPage.size}, sort=${param.sort})}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
