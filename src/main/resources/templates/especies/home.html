@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espécies</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+    <link th:href="@{/css/especiesPages/home.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4"><a th:href="@{/}"><i class="fa-solid fa-angle-left"></i></a>Espécies</h1>
+    </div>
+
+    <div class="container d-flex justify-content-around mb-2">
+        <div class="d-flex align-items-start gap-2 w-100">
+            <label class="visually-hidden" for="filtro-tipo">Filtrar por</label>
+            <select id="filtro-tipo" class="form-select form-select-sm me-2" style="max-width:250px;">
+                <option value="Filtros" selected>Filtros</option>
+                <option value="Expectativa de Vida">Expectativa de Vida</option>
+                <option value="Tamanho de Grupo">Tamanho de Grupo</option>
+            </select>
+
+            <div id="filtro-dinamico" class="d-flex gap-2 align-items-center me-2">
+                <div class="d-none d-flex align-items-center gap-2" id="expectativa">
+                    <label for="filtro-vida-maior-que">Expectativa de Vida:</label>
+                    <input type="number" id="filtro-vida-maior-que" placeholder="Maior que:" class="form-control form-control-sm" style="width:120px;">
+                    <input type="number" id="filtro-vida-menor-que" placeholder="Menor que:" class="form-control form-control-sm" style="width:120px;">
+                </div>
+
+                <div class="d-none d-flex align-items-center gap-2" id="grupo">
+                    <label for="filtro-grupo-min">Tamanho do Grupo:</label>
+                    <input type="number" id="filtro-grupo-min" placeholder="Mínimo:" class="form-control form-control-sm" style="width:120px;">
+                    <input type="number" id="filtro-grupo-max" placeholder="Máximo:" class="form-control form-control-sm" style="width:120px;">
+                </div>
+            </div>
+
+
+            <div class="btn-group">
+                <button id="btn-aplicar-filtro" class="btn btn-primary btn-sm">Filtrar</button>
+                <button id="btn-limpar-filtro" class="btn btn-outline-secondary btn-sm">Limpar</button>
+            </div>
+        </div>
+
+        <div>
+            <a th:href="@{/especies/novo}"
+                 class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow add-especie-btn"
+                 title="Adicionar espécie">
+                <span><i class="fa-solid fa-plus fa-xs"></i></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Expectativa de Vida</th>
+                    <th scope="col">Área Adequada</th>
+                    <th scope="col">Tamanho Mínimo</th>
+                    <th scope="col">Tamanho Máximo</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-especies">
+                <tr th:each="especie : ${especies.content}">
+                    <td th:text="${especie.id}"></td>
+                    <td th:text="${especie.nome}"></td>
+                    <td th:text="${especie.expectativaVida}"></td>
+                    <td th:text="${especie.areaAdequada}"></td>
+                    <td th:text="${especie.tamanhoMinimoGrupo}"></td>
+                    <td th:text="${especie.tamanhoMaximoGrupo}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/especiesPages/home.js}"></script>
+</body>
+</html>

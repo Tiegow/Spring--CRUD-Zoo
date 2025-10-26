@@ -48,7 +48,7 @@ public class EspecieService {
     }
 
     @Transactional
-    public void atualizar(Integer id, EspecieDTO dto){
+    public EspecieDTO atualizar(Integer id, EspecieDTO dto){
         Especie especieExistente = especieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Espécie não encotrada."));
     
         especieExistente.setNome(dto.getNome());
@@ -58,7 +58,7 @@ public class EspecieService {
         especieExistente.setTamanhoMaximoGrupo(dto.getTamanhoMaximoGrupo());
 
         especieRepository.save(especieExistente);
-    
+        return toDTO(especieExistente);
     }
 
 
