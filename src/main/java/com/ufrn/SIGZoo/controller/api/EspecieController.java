@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufrn.SIGZoo.model.dto.EspecieDTO;
 import com.ufrn.SIGZoo.service.EspecieService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +42,7 @@ public class EspecieController {
         return ResponseEntity.noContent().build();
     }
     
-    @PutMapping("/atualar/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<EspecieDTO> atualizar(@RequestBody EspecieDTO dto, @PathVariable Integer id) {
         EspecieDTO especieAtualizada = especieService.atualizar(id, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(especieAtualizada);

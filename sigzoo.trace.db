@@ -1,0 +1,3 @@
+2025-10-27 23:29:38.407531-03:00 jdbc[17]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]EXPECTATIVA_VIDA"; expected "EXPLAIN, EXECUTE"; SQL statement:
+EXPECTATIVA_VIDA [42001-232]
