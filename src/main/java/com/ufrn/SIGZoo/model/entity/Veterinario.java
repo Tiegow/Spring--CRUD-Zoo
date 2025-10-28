@@ -21,19 +21,11 @@ public class Veterinario extends Funcionario {
     @OneToMany(mappedBy = "veterinario") // Relacionamento bidirecional
     private List<Animal> pacientes;
 
-    private int qtdPacientes = 0;
-
     public String getCrmv() {
         return crmv;
     }
     public void setCrmv(String crmv) {
         this.crmv = crmv;
-    }
-    public int getQtdPacientes() {
-        return qtdPacientes;
-    }
-    public void setQtdPacientes(int qtdPacientes) {
-        this.qtdPacientes = qtdPacientes;
     }
     public List<Animal> getPacientes() {
         return pacientes;
@@ -41,14 +33,9 @@ public class Veterinario extends Funcionario {
     public void setPacientes(List<Animal> pacientes) {
         this.pacientes = pacientes;
     }
-    
-    public void incrementarPacientes() {
-        this.qtdPacientes++;
-    }
-    public void decrementarPacientes() {
-        if (this.qtdPacientes > 0) {
-            this.qtdPacientes--;
-        }
+
+    public int getQtdPacientes() {
+        return this.pacientes.size();
     }
 
     @Override

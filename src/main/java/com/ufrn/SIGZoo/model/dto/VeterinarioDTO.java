@@ -85,7 +85,6 @@ public class VeterinarioDTO {
         vet.setNascimento(nascimento);
         vet.setRemuneracao(remuneracao);
         vet.setDataIngresso(dataIngresso);
-        vet.setQtdPacientes(qtdPacientes);
 
         return vet;
     }

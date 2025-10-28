@@ -39,7 +39,6 @@ public class AnimalService {
             Veterinario vet = veterinarioRepository.findById(dto.getVeterinarioId())
                 .orElseThrow(() -> new RuntimeException("Veterinário com ID " + dto.getVeterinarioId() + " não encontrado!"));
             animal.setVeterinario(vet);
-            vet.incrementarPacientes();
 
             veterinarioRepository.save(vet);
         }   
@@ -57,7 +56,6 @@ public class AnimalService {
         Veterinario vetAtual = animal.getVeterinario();
 
         if (vetAtual != null) {
-            vetAtual.decrementarPacientes();
             veterinarioRepository.save(vetAtual);
         }
 
@@ -135,11 +133,9 @@ public class AnimalService {
 
         // Animal já tinha um veterinário
         if (vetAtual != null) {
-            vetAtual.decrementarPacientes();
             veterinarioRepository.save(vetAtual);
         }
 
-        vetNovo.incrementarPacientes();
         veterinarioRepository.save(vetNovo);
 
         animal.setVeterinario(vetNovo);
@@ -152,7 +148,6 @@ public class AnimalService {
         Veterinario vetAtual = animal.getVeterinario();
 
         if (vetAtual != null) {
-            vetAtual.decrementarPacientes();
             veterinarioRepository.save(vetAtual);
         }
         
