@@ -1,17 +1,17 @@
-package com.ufrn.SIGZoo.model.entity;
+package com.ufrn.SIGZoo.model.dto;
 
 import java.sql.Date;
 
+import com.ufrn.SIGZoo.model.entity.Evento;
+
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
-public class Eventos {
+public class EventoDTO {
     
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -27,7 +27,7 @@ public class Eventos {
     @Column
     private String tipo;
 
-    public Eventos() {}
+    public EventoDTO() {}
 
     public Integer getId() {
         return id;
@@ -69,4 +69,15 @@ public class Eventos {
         this.tipo = tipo;
     }
 
+    public Evento toEntity(){
+        Evento evento = new Evento();
+
+        evento.setCapacidade(this.getCapacidade());
+        evento.setData(this.getData());
+        evento.setId(this.getId());
+        evento.setNome(this.getNome());
+        evento.setTipo(this.getTipo());
+
+        return evento;
+    }
 }

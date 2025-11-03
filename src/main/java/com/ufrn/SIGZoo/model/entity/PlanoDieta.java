@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class PlanoDietaRecinto {
+public class PlanoDieta {
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class PlanoDietaRecinto {
     @Column
     private Integer quantidadeVegetais;
 
-    public PlanoDietaRecinto() {}
+    public PlanoDieta() {}
 
     public Integer getId() {
         return id;
