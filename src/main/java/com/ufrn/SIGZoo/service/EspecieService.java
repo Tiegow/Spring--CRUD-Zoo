@@ -108,6 +108,7 @@ public class EspecieService {
 
         EspecieDTO dto = new EspecieDTO();
 
+        dto.setId(especie.getId());
         dto.setNome(especie.getNome());
         dto.setExpectativaVida(especie.getExpectativaVida());
         dto.setAreaAdequada(especie.getAreaAdequada());
