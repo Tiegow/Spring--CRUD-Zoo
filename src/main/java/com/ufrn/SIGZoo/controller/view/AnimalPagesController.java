@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ufrn.SIGZoo.model.dto.AnimalDTO;
 import com.ufrn.SIGZoo.service.AnimalService;
+import com.ufrn.SIGZoo.service.EspecieService;
+import com.ufrn.SIGZoo.service.RecintoService;
 import com.ufrn.SIGZoo.service.VeterinarioService;
 
 @Controller
@@ -23,6 +25,12 @@ public class AnimalPagesController {
     @Autowired
     private VeterinarioService veterinarioService;
 
+    @Autowired
+    private EspecieService especieService;
+
+    @Autowired
+    private RecintoService recintoService;
+
     @GetMapping("")
     public String animaisHome(Model model, @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
         model.addAttribute("animalPage", animalService.listarTodos(pageable));
@@ -32,6 +40,8 @@ public class AnimalPagesController {
     @GetMapping("/novo")
     public String novoAnimal(Model model) {
         model.addAttribute("veterinarios", veterinarioService.listarTodos());
+        model.addAttribute("especies", especieService.listarTodos());
+        model.addAttribute("recintos", recintoService.listarTodos());
 
         return "animais/novo";
     }
@@ -51,6 +61,8 @@ public class AnimalPagesController {
 
         model.addAttribute("animal", animal);
         model.addAttribute("veterinarios", veterinarioService.listarTodos());
+        model.addAttribute("especies", especieService.listarTodos());
+        model.addAttribute("recintos", recintoService.listarTodos());
         
         return "animais/editar";
     }

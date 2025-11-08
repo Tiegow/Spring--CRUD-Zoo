@@ -1,5 +1,6 @@
 package com.ufrn.SIGZoo.config;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +48,15 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }    
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String message = ex.getMessage();
+
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), "Conflito de Dados", message);
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
 
     public static class ErrorResponse {
         private int status;

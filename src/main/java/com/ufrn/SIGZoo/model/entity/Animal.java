@@ -2,6 +2,7 @@ package com.ufrn.SIGZoo.model.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -26,8 +27,14 @@ public class Animal {
     @Column(nullable = false)
     private String sexo;
 
-    //TODO: Especie especie;
-    //TODO: Recinto recinto;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "especie_id")
+    private Especie especie;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recinto_id")
+    @JsonBackReference 
+    private Recinto recinto;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY) // Carrega o veterinario apenas quando for acessado
@@ -73,5 +80,16 @@ public class Animal {
     public void setVeterinario(Veterinario veterinario) {
         this.veterinario = veterinario;
     }
-    
+    public Especie getEspecie() {
+        return especie;
+    }
+    public void setEspecie(Especie especie) {
+        this.especie = especie;
+    }
+    public Recinto getRecinto() {
+        return recinto;
+    }
+    public void setRecinto(Recinto recinto) {
+        this.recinto = recinto;
+    }
 }

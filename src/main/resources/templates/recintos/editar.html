@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recintos - Editar</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">
+            Editar Recinto
+        </h1>
+        <p class="lead" th:text="${recinto.nome}">Nome do Recinto</p>
+    </div>
+
+    <div class="container edit-form">
+        <form id="edit-form" th:attr="data-id=${recinto.id}">
+            
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input required type="text" class="form-control" id="nome" name="nome" 
+                       placeholder="Ex: Recinto das Aves de Rapina" th:value="${recinto.nome}">
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="areaHabitavel" class="form-label">Área Habitável (m²):</label>
+                    <input required type="number" step="0.1" class="form-control" id="areaHabitavel" name="areaHabitavel" 
+                           placeholder="Ex: 150.5" th:value="${recinto.areaHabitavel}">
+                </div>
+                <div class="col-md-6">
+                    <label for="status" class="form-label">Status:</label>
+                    <select required class="form-select" id="status" name="status">
+                        <option value="ABERTO" th:selected="${recinto.status == 'ABERTO'}">Aberto</option>
+                        <option value="FECHADO" th:selected="${recinto.status == 'FECHADO'}">Fechado</option>
+                        <option value="MANUTENCAO" th:selected="${recinto.status == 'MANUTENCAO'}">Em Manutenção</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="planoDietaId" class="form-label">Plano de Dieta:</label>
+                <select class="form-select" id="planoDietaId" name="planoDietaId">
+                    <option value="" disabled>Selecione um plano</option>
+                    <option th:each="plano : ${planosDieta}" 
+                            th:value="${plano.id}" 
+                            th:text="|ID ${plano.id}: C=${plano.quantidadeCarne}g, V=${plano.quantidadeVegetais}g|"
+                            th:selected="${plano.id == recinto.planoDietaId}"> 
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="tratadorIds" class="form-label">Tratadores Responsáveis:</label>
+                <select multiple class="form-select" id="tratadorIds" name="tratadorIds" size="5">
+                    <option th:each="tratador : ${tratadores}" 
+                            th:value="${tratador.id}" 
+                            th:text="${tratador.nome}"
+                            th:selected="${recinto.tratadorIds.contains(tratador.id)}"> 
+                    </option>
+                </select>
+                <small class="form-text text-muted">Segure Ctrl para selecionar múltiplos tratadores.</small>
+            </div>
+
+            <button id="edit-submit" type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <a th:href="@{/recintos}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/recintosPages/editar.js}"></script>
+</body>
+</html>

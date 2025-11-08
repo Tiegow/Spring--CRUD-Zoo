@@ -20,7 +20,7 @@
                 <label for="select-especie" class="form-label">Espécie:</label>
                 <select  id="select-especie" name="especieId" class="form-select form-select-sm" style="max-width:220px;">
                     <option value="" selected>Selecione a Espécie</option>
-                    <!-- TODO: MOSTRAR ESPÉCIES AQUI -->
+                    <option th:each="esp : ${especies}" th:value="${esp.id}" th:text="${esp.nome}"></option>
                 </select>
             </div>
 
@@ -28,7 +28,7 @@
                 <label for="select-recinto" class="form-label">Recinto:</label>
                 <select  id="select-recinto" name="recintoId" class="form-select form-select-sm" style="max-width:220px;">
                     <option value="" selected>Selecione o Recinto</option>
-                    <!-- TODO: MOSTRAR RECINTOS AQUI -->
+                    <option th:each="rec : ${recintos}" th:value="${rec.id}" th:text="${rec.nome}"></option>
                 </select>
             </div>
             

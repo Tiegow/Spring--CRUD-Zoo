@@ -12,11 +12,15 @@ public class AnimalDTO {
     private String sexo;
     private LocalDate nascimento;
     private String origem;
-    
-    private String veterinarioNome;
+
+    private Integer especieId;
+    private String especieNome;
+
+    private Integer recintoId;
+    private String recintoNome;
+
     private Integer veterinarioId;
-    // private Integer especieId; 
-    // private Integer recintoId;
+    private String veterinarioNome;
 
     public Integer getId() {
         return id;
@@ -24,7 +28,7 @@ public class AnimalDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }    
+    }
 
     public String getNome() {
         return nome;
@@ -58,12 +62,36 @@ public class AnimalDTO {
         this.origem = origem;
     }
 
-    public String getVeterinarioNome() {
-        return veterinarioNome;
+    public Integer getEspecieId() {
+        return especieId;
     }
 
-    public void setVeterinarioNome(String veterinarioNome) {
-        this.veterinarioNome = veterinarioNome;
+    public void setEspecieId(Integer especieId) {
+        this.especieId = especieId;
+    }
+
+    public String getEspecieNome() {
+        return especieNome;
+    }
+
+    public void setEspecieNome(String especieNome) {
+        this.especieNome = especieNome;
+    }
+
+    public Integer getRecintoId() {
+        return recintoId;
+    }
+
+    public void setRecintoId(Integer recintoId) {
+        this.recintoId = recintoId;
+    }
+
+    public String getRecintoNome() {
+        return recintoNome;
+    }
+
+    public void setRecintoNome(String recintoNome) {
+        this.recintoNome = recintoNome;
     }
 
     public Integer getVeterinarioId() {
@@ -74,14 +102,50 @@ public class AnimalDTO {
         this.veterinarioId = veterinarioId;
     }
 
+    public String getVeterinarioNome() {
+        return veterinarioNome;
+    }
+
+    public void setVeterinarioNome(String veterinarioNome) {
+        this.veterinarioNome = veterinarioNome;
+    }
+
     public Animal toEntity() {
         Animal animal = new Animal();
-        
-        animal.setNome(this.getNome());
-        animal.setSexo(this.getSexo());
-        animal.setNascimento(this.getNascimento());
-        animal.setOrigem(this.getOrigem());
-
+        animal.setId(this.id);
+        animal.setNome(this.nome);
+        animal.setSexo(this.sexo);
+        animal.setNascimento(this.nascimento);
+        animal.setOrigem(this.origem);
         return animal;
+    }
+
+    public static AnimalDTO fromEntity(Animal animal) {
+        if (animal == null) {
+            return null;
+        }
+        AnimalDTO dto = new AnimalDTO();
+        dto.setId(animal.getId());
+        dto.setNome(animal.getNome());
+        dto.setSexo(animal.getSexo());
+        dto.setNascimento(animal.getNascimento());
+        dto.setOrigem(animal.getOrigem());
+
+        if (animal.getEspecie() != null) {
+            dto.setEspecieId(animal.getEspecie().getId());
+            dto.setEspecieNome(animal.getEspecie().getNome());
+        }
+
+        if (animal.getRecinto() != null) {
+            dto.setRecintoId(animal.getRecinto().getId());
+            dto.setRecintoNome(animal.getRecinto().getNome());
+        }
+
+        if (animal.getVeterinario() != null) {
+            dto.setVeterinarioId(animal.getVeterinario().getId());
+            dto.setVeterinarioNome(animal.getVeterinario().getNome());
+        }
+
+        return dto;
     }
 }

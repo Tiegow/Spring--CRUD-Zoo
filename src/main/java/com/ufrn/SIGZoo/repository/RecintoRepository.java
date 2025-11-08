@@ -7,5 +7,6 @@ import com.ufrn.SIGZoo.model.entity.Recinto;
 
 @Repository
 public interface RecintoRepository extends JpaRepository<Recinto, Integer> {
-
+    
+    boolean existsByPlanoDietaId(Integer planoDietaId);
 }

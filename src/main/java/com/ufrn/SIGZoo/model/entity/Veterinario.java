@@ -1,5 +1,6 @@
 package com.ufrn.SIGZoo.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -19,7 +20,7 @@ public class Veterinario extends Funcionario {
 
     @JsonBackReference
     @OneToMany(mappedBy = "veterinario") // Relacionamento bidirecional
-    private List<Animal> pacientes;
+    private List<Animal> pacientes = new ArrayList<>();
 
     public String getCrmv() {
         return crmv;

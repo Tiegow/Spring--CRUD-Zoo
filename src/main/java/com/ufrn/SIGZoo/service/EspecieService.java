@@ -70,6 +70,12 @@ public class EspecieService {
     }
 
     @Transactional(readOnly = true)
+    public List<EspecieDTO> listarTodos(){
+        List<Especie> especies = especieRepository.findAll();
+        return listDTO(especies);
+    }
+
+    @Transactional(readOnly = true)
     public EspecieDTO buscarPorId(Integer id){
         Especie especie = especieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));;
         return toDTO(especie);
@@ -113,6 +119,10 @@ public class EspecieService {
 
     private List<EspecieDTO> listDTO(List<Especie> especies) {
         return especies.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    public long obterQtdEspecies() {
+        return especieRepository.count();
     }
 
 }

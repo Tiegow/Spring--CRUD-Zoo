@@ -3,6 +3,8 @@ package com.ufrn.SIGZoo.model.entity;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Recinto {
 
@@ -14,7 +16,7 @@ public class Recinto {
     private String nome;
 
     @Column
-    private String areaHabitavel;
+    private float areaHabitavel;
 
     @Column
     private String status;
@@ -26,6 +28,7 @@ public class Recinto {
 
     // Um recinto pode ter vários animais
     @OneToMany(mappedBy = "recinto")
+    @JsonManagedReference
     private List<Animal> animais;
 
     // Um recinto pode ter vários tratadores, e um tratador pode cuidar de vários recintos
@@ -48,11 +51,11 @@ public class Recinto {
         this.id = id;
     }
 
-    public String getAreaHabitavel() {
+    public float getAreaHabitavel() {
         return areaHabitavel;
     }
 
-    public void setAreaHabitavel(String areaHabitavel) {
+    public void setAreaHabitavel(float areaHabitavel) {
         this.areaHabitavel = areaHabitavel;
     }
 
@@ -86,5 +89,13 @@ public class Recinto {
 
     public void setTratadores(List<Tratador> tratadores) {
         this.tratadores = tratadores;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

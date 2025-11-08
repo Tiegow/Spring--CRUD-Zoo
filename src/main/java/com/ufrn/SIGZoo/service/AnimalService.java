@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ufrn.SIGZoo.model.dto.AnimalDTO;
 import com.ufrn.SIGZoo.model.entity.Animal;
+import com.ufrn.SIGZoo.model.entity.Especie;
+import com.ufrn.SIGZoo.model.entity.Recinto;
 import com.ufrn.SIGZoo.model.entity.Veterinario;
 import com.ufrn.SIGZoo.repository.AnimalRepository;
+import com.ufrn.SIGZoo.repository.EspecieRepository;
+import com.ufrn.SIGZoo.repository.RecintoRepository;
 import com.ufrn.SIGZoo.repository.VeterinarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -26,74 +30,50 @@ public class AnimalService {
     @Autowired
     private VeterinarioRepository veterinarioRepository;
 
+    @Autowired
+    private EspecieRepository especieRepository;
+
+    @Autowired
+    private RecintoRepository recintoRepository;
+
     @Transactional
     public AnimalDTO criar(AnimalDTO dto) {
-        Animal animal = new Animal();
+        Animal animal = dto.toEntity(); 
 
-        animal.setNome(dto.getNome());
-        animal.setSexo(dto.getSexo());
-        animal.setNascimento(dto.getNascimento());
-        animal.setOrigem(dto.getOrigem());
+        setRelationshipsFromDto(animal, dto);
         
-        if (dto.getVeterinarioId() != null) {
-            Veterinario vet = veterinarioRepository.findById(dto.getVeterinarioId())
-                .orElseThrow(() -> new RuntimeException("Veterinário com ID " + dto.getVeterinarioId() + " não encontrado!"));
-            animal.setVeterinario(vet);
-
-            veterinarioRepository.save(vet);
-        }   
-
-        animalRepository.save(animal);
-
-        return toDTO(animal);
+        Animal animalSalvo = animalRepository.save(animal);
+        return AnimalDTO.fromEntity(animalSalvo);
     }
 
     @Transactional
     public void deletar(Integer id) {
         Animal animal = animalRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
-
-        Veterinario vetAtual = animal.getVeterinario();
-
-        if (vetAtual != null) {
-            veterinarioRepository.save(vetAtual);
-        }
-
+                .orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
+        
         animalRepository.delete(animal);
     }
 
     @Transactional
     public AnimalDTO atualizar(Integer id, AnimalDTO dto) {
         Animal animalExistente = animalRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
 
         animalExistente.setNome(dto.getNome());
         animalExistente.setSexo(dto.getSexo());
         animalExistente.setNascimento(dto.getNascimento());
         animalExistente.setOrigem(dto.getOrigem());
+
+        setRelationshipsFromDto(animalExistente, dto);
         
-        Integer vetAtualId = (animalExistente.getVeterinario() != null) ? animalExistente.getVeterinario().getId() : null;
-        
-        Integer vetNovoId = dto.getVeterinarioId();
-
-        if (vetNovoId != null) {
-            if (!vetNovoId.equals(vetAtualId)) {
-                return toDTO(atribuirVeterinario(id, vetNovoId));
-            }
-        } 
-        else if (vetAtualId != null) {
-            return toDTO(desatribuirVeterinario(id));
-        }
-
-        animalRepository.save(animalExistente);
-
-        return toDTO(animalExistente);
+        Animal animalAtualizado = animalRepository.save(animalExistente);
+        return AnimalDTO.fromEntity(animalAtualizado);
     }
 
     @Transactional(readOnly = true)
     public Page<AnimalDTO> listarTodos(Pageable pageable) {
         Page<Animal> animalPage = animalRepository.findAll(pageable);
-        return animalPage.map(this::toDTO);
+        return animalPage.map(AnimalDTO::fromEntity);
     }
 
     @Transactional(readOnly = true)
@@ -104,77 +84,44 @@ public class AnimalService {
     @Transactional(readOnly = true)
     public List<AnimalDTO> listarPorSexo(String sexo) {
         List<Animal> animais = animalRepository.findAllBySexo(sexo);
-        return listDTO(animais);
+        return animais.stream().map(AnimalDTO::fromEntity).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public AnimalDTO buscarPorId(Integer id) {
         Animal animal = animalRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
-        return toDTO(animal);
+                .orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
+        return AnimalDTO.fromEntity(animal);
     }
 
     @Transactional(readOnly = true)
     public long obterQtdAnimais() {
         return animalRepository.count();
-    }    
+    } 
 
-    @Transactional
-    public Animal atribuirVeterinario(Integer animalId, Integer veterinarioId) {
-        Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
-        Veterinario vetNovo = veterinarioRepository.findById(veterinarioId).orElseThrow(() -> new EntityNotFoundException("Veterinário não encontrado."));
-        
-        Veterinario vetAtual = animal.getVeterinario();
-
-        // Mesmo veterinário
-        if (vetNovo.equals(vetAtual)) {
-            return animal;
+    private void setRelationshipsFromDto(Animal animal, AnimalDTO dto) {
+        if (dto.getEspecieId() != null) {
+            Especie especie = especieRepository.findById(dto.getEspecieId())
+                .orElseThrow(() -> new EntityNotFoundException("Espécie com ID " + dto.getEspecieId() + " não encontrada."));
+            animal.setEspecie(especie);
+        } else {
+            animal.setEspecie(null);
         }
 
-        // Animal já tinha um veterinário
-        if (vetAtual != null) {
-            veterinarioRepository.save(vetAtual);
+        if (dto.getRecintoId() != null) {
+            Recinto recinto = recintoRepository.findById(dto.getRecintoId())
+                .orElseThrow(() -> new EntityNotFoundException("Recinto com ID " + dto.getRecintoId() + " não encontrado."));
+            animal.setRecinto(recinto);
+        } else {
+            animal.setRecinto(null);
         }
 
-        veterinarioRepository.save(vetNovo);
-
-        animal.setVeterinario(vetNovo);
-        return animalRepository.save(animal);
-    }
-
-    @Transactional
-    public Animal desatribuirVeterinario(Integer animalId) {
-        Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));
-        Veterinario vetAtual = animal.getVeterinario();
-
-        if (vetAtual != null) {
-            veterinarioRepository.save(vetAtual);
+        if (dto.getVeterinarioId() != null) {
+            Veterinario vet = veterinarioRepository.findById(dto.getVeterinarioId())
+                .orElseThrow(() -> new EntityNotFoundException("Veterinário com ID " + dto.getVeterinarioId() + " não encontrado!"));
+            animal.setVeterinario(vet);
+        } else {
+            animal.setVeterinario(null);
         }
-        
-        animal.setVeterinario(null);
-
-        return animalRepository.save(animal);
-    }
-
-    private AnimalDTO toDTO(Animal animal) {
-        if (animal == null) {
-            return null;
-        }
-        AnimalDTO dto = new AnimalDTO();
-        
-        dto.setId(animal.getId());
-        dto.setNome(animal.getNome());
-        dto.setSexo(animal.getSexo());
-        dto.setNascimento(animal.getNascimento());
-        dto.setOrigem(animal.getOrigem());
-        if (animal.getVeterinario() != null) {
-            dto.setVeterinarioId(animal.getVeterinario().getId());
-            dto.setVeterinarioNome(animal.getVeterinario().getNome());
-        }
-        return dto;
-    }
-
-    private List<AnimalDTO> listDTO(List<Animal> animais) {
-        return animais.stream().map(this::toDTO).collect(Collectors.toList());
     }
 }
