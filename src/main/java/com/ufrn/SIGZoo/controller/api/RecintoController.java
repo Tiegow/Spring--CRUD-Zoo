@@ -1,6 +1,5 @@
 package com.ufrn.SIGZoo.controller.api;
 
-<<<<<<< Updated upstream
 import com.ufrn.SIGZoo.model.dto.RecintoDTO;
 import com.ufrn.SIGZoo.service.RecintoService;
 
@@ -10,8 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-=======
->>>>>>> Stashed changes
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,23 +19,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< Updated upstream
-@RestController
-@RequestMapping("/api/recintos")
-@Tag(name = "Recintos", description = "Endpoints para gerenciamento de recintos")
-=======
 import com.ufrn.SIGZoo.model.dto.RecintoDTO;
 import com.ufrn.SIGZoo.service.RecintoService;
 
 @RestController
 @RequestMapping("/api/recintos")
->>>>>>> Stashed changes
+@Tag(name = "Recintos", description = "Endpoints para gerenciamento de recintos")
 public class RecintoController {
 
     @Autowired
     private RecintoService recintoService;
 
-<<<<<<< Updated upstream
     @Operation(summary = "Cria um novo recinto")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Recinto criado com sucesso"),
@@ -91,38 +84,23 @@ public class RecintoController {
         recintoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
-}
-=======
-    @PostMapping("/criar")
-    public ResponseEntity<RecintoDTO> criar(@RequestBody RecintoDTO dto) {
-        RecintoDTO recintoNovo = recintoService.criar(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(recintoNovo);
-    }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
-        recintoService.deletar(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<RecintoDTO> atualizar(@RequestBody RecintoDTO dto, @PathVariable Integer id) {
-        RecintoDTO recintoAtualizado = recintoService.atualizar(id, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(recintoAtualizado);
-    }
-
-    @GetMapping("")
-    public ResponseEntity<Page<RecintoDTO>> listarTodos(
-        @PageableDefault(size = 10, sort = "nome") Pageable pageable
+    @GetMapping("/area")
+    public ResponseEntity<List<RecintoDTO>> filtroArea(
+            @RequestParam Float minimo,
+            @RequestParam Float maximo
     ) {
-        Page<RecintoDTO> recintos = recintoService.listarTodos(pageable);
-        return ResponseEntity.ok(recintos);
+        List<RecintoDTO> lista = recintoService.buscarPorArea(minimo, maximo);
+        return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<RecintoDTO> buscarPorId(@PathVariable Integer id) {
-        RecintoDTO dto = recintoService.buscarPorId(id);
-        return ResponseEntity.ok(dto);
+    @GetMapping("/populacao")
+    public ResponseEntity<List<RecintoDTO>> filtroPopulacao(
+            @RequestParam Integer minimo,
+            @RequestParam Integer maximo
+    ) {
+        List<RecintoDTO> lista = recintoService.buscarPorPopulacao(minimo, maximo);
+        return ResponseEntity.ok(lista);
     }
+
 }
->>>>>>> Stashed changes

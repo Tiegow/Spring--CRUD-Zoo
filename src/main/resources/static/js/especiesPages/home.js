@@ -6,6 +6,9 @@ const filtroExpectativa = document.getElementById('expectativa');
 const filtroGrupo = document.getElementById('grupo');
 
 
+const btnLimpar = document.getElementById("btn-limpar-filtro");
+
+
 // Alternar filtros visuais
 filtroTipo.addEventListener('change', function () {
 
@@ -47,12 +50,9 @@ document.getElementById('btn-aplicar-filtro').addEventListener('click', function
 });
 
 
-// Limpar filtros
-document.getElementById('btn-limpar-filtro').addEventListener('click', function () {
-
-    fetch('/api/especies')
-        .then(r => r.json())
-        .then(d => criarTabela(d, tabela));
+// BOTÃO LIMPAR
+btnLimpar.addEventListener("click", () => {
+    window.location.href = "/especies";
 });
 
 

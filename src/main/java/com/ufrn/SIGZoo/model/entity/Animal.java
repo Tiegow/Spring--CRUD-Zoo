@@ -27,7 +27,6 @@ public class Animal {
     @Column(nullable = false)
     private String sexo;
 
-<<<<<<< Updated upstream
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "especie_id")
     private Especie especie;
@@ -35,14 +34,6 @@ public class Animal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recinto_id")
     @JsonBackReference 
-=======
-    @ManyToOne
-    @JoinColumn(name = "especie_id")
-    private Especie especie;
-    
-    @ManyToOne
-    @JoinColumn(name = "recinto_id")
->>>>>>> Stashed changes
     private Recinto recinto;
 
     @JsonManagedReference
@@ -102,16 +93,5 @@ public class Animal {
     public void setVeterinario(Veterinario veterinario) {
         this.veterinario = veterinario;
     }
-    public Especie getEspecie() {
-        return especie;
-    }
-    public void setEspecie(Especie especie) {
-        this.especie = especie;
-    }
-    public Recinto getRecinto() {
-        return recinto;
-    }
-    public void setRecinto(Recinto recinto) {
-        this.recinto = recinto;
-    }
+    
 }

@@ -20,12 +20,7 @@ public class AnimalDTO {
     private String recintoNome;
 
     private Integer veterinarioId;
-<<<<<<< Updated upstream
     private String veterinarioNome;
-=======
-    private Integer especieId; 
-    private Integer recintoId;
->>>>>>> Stashed changes
 
     public Integer getId() {
         return id;
@@ -107,26 +102,12 @@ public class AnimalDTO {
         this.veterinarioId = veterinarioId;
     }
 
-<<<<<<< Updated upstream
     public String getVeterinarioNome() {
         return veterinarioNome;
     }
 
     public void setVeterinarioNome(String veterinarioNome) {
         this.veterinarioNome = veterinarioNome;
-=======
-    public Integer getEspecieId() {
-        return especieId;
-    }
-    public void setEspecieId(Integer especieId) {
-        this.especieId = especieId;
-    }
-    public Integer getRecintoId() {
-        return recintoId;
-    }
-    public void setRecintoId(Integer recintoId) {
-        this.recintoId = recintoId;
->>>>>>> Stashed changes
     }
 
     public Animal toEntity() {

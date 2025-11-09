@@ -12,10 +12,8 @@ import com.ufrn.SIGZoo.model.entity.Recinto;
 
 @Repository
 public interface RecintoRepository extends JpaRepository<Recinto, Integer> {
-<<<<<<< Updated upstream
-    
+
     boolean existsByPlanoDietaId(Integer planoDietaId);
-=======
 
     Optional<Recinto> findById(Integer id);
     Optional<Recinto> findByNome(String nome);
@@ -24,5 +22,20 @@ public interface RecintoRepository extends JpaRepository<Recinto, Integer> {
     List<Recinto> findByTipo(String tipo);
 
     Page<Recinto> findAllByOrderByNome(Pageable pageable);
->>>>>>> Stashed changes
+
+
+    List<Recinto> findByPopulacao(Integer populacao);
+
+    List<Recinto> findByPopulacaoGreaterThanEqual(Integer minimo);
+    List<Recinto> findByPopulacaoLessThanEqual(Integer maximo);
+
+    List<Recinto> findByPopulacaoBetween(Integer minimo, Integer maximo);
+
+    
+    List<Recinto> findByAreaHabitavel(Float area);
+
+    List<Recinto> findByAreaHabitavelGreaterThanEqual(Float minimo);
+    List<Recinto> findByAreaHabitavelLessThanEqual(Float maximo);
+
+    List<Recinto> findByAreaHabitavelBetween(Float minimo, Float maximo);
 }

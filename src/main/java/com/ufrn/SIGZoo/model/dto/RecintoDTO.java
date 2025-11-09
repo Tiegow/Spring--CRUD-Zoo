@@ -3,35 +3,22 @@ package com.ufrn.SIGZoo.model.dto;
 import java.util.List;
 
 import com.ufrn.SIGZoo.model.entity.Recinto;
-<<<<<<< Updated upstream
 import com.ufrn.SIGZoo.model.entity.Tratador;
 import java.util.stream.Collectors;
-=======
->>>>>>> Stashed changes
 
 public class RecintoDTO {
 
     private Integer id;
-<<<<<<< Updated upstream
+
     private String nome;
     private float areaHabitavel;
-=======
-
-    private String nome;
-    private String areaHabitavel;
+    private Integer populacao;
     private String tipo;
->>>>>>> Stashed changes
     private String status;
-    
-    private int populacao;
-    
-    private Integer planoDietaId;
+        
     private List<Integer> tratadorIds; 
-
-    // Em vez das entidades completas, retornamos apenas IDs ou DTOs leves
     private Integer planoDietaId;
     private List<Integer> animaisIds;
-    private List<Integer> tratadoresIds;
 
     public Integer getId() {
         return id;
@@ -45,23 +32,29 @@ public class RecintoDTO {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getAreaHabitavel() {
+    public Float getAreaHabitavel() {
         return areaHabitavel;
     }
-    public void setAreaHabitavel(String areaHabitavel) {
+    public void setAreaHabitavel(Float areaHabitavel) {
         this.areaHabitavel = areaHabitavel;
+    }
+    public Integer getPopulacao() {
+        return populacao;
+    }
+    public void setPopulacao(Integer populacao) {
+        this.populacao = populacao;
+    }
+    public String getTipo() {
+        return tipo;
+    }
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     public String getStatus() {
         return status;
     }
     public void setStatus(String status) {
         this.status = status;
-    }
-    public int getPopulacao() {
-        return populacao;
-    }
-    public void setPopulacao(int populacao) {
-        this.populacao = populacao;
     }
     public Integer getPlanoDietaId() {
         return planoDietaId;
@@ -75,8 +68,13 @@ public class RecintoDTO {
     public void setTratadorIds(List<Integer> tratadorIds) {
         this.tratadorIds = tratadorIds;
     }
+    public List<Integer> getAnimaisIds() {
+        return animaisIds;
+    }
+    public void setAnimaisIds(List<Integer> animaisIds) {
+        this.animaisIds = animaisIds;
+    }
 
-<<<<<<< Updated upstream
     public Recinto toEntity() {
         Recinto recinto = new Recinto();
         recinto.setId(this.getId()); 
@@ -112,38 +110,6 @@ public class RecintoDTO {
         }
 
         return dto;
-=======
-    public Integer getPlanoDietaId() {
-        return planoDietaId;
-    }
-    public void setPlanoDietaId(Integer planoDietaId) {
-        this.planoDietaId = planoDietaId;
-    }
-
-    public List<Integer> getAnimaisIds() {
-        return animaisIds;
-    }
-    public void setAnimaisIds(List<Integer> animaisIds) {
-        this.animaisIds = animaisIds;
-    }
-
-    public List<Integer> getTratadoresIds() {
-        return tratadoresIds;
-    }
-    public void setTratadoresIds(List<Integer> tratadoresIds) {
-        this.tratadoresIds = tratadoresIds;
-    }
-
-    public Recinto toEntity(){
-        Recinto recinto = new Recinto();
-
-        recinto.setId(this.getId());
-        recinto.setNome(this.getNome());
-        recinto.setAreaHabitavel(this.getAreaHabitavel());
-        recinto.setTipo(this.getTipo());
-        
-        return recinto;
->>>>>>> Stashed changes
     }
 
 }

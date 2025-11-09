@@ -19,6 +19,9 @@ public class Recinto {
     private float areaHabitavel;
 
     @Column
+    private Integer populacao;
+
+    @Column
     private String tipo;
 
     @Column
@@ -51,9 +54,6 @@ public class Recinto {
         this.id = id;
     }
 
-<<<<<<< Updated upstream
-    public float getAreaHabitavel() {
-=======
     public String getNome() {
         return nome;
     }
@@ -70,14 +70,22 @@ public class Recinto {
         this.nome = nome;
     }
 
-    public String getAreaHabitavel() {
->>>>>>> Stashed changes
+    public Float getAreaHabitavel() {
         return areaHabitavel;
     }
 
-    public void setAreaHabitavel(float areaHabitavel) {
+    public void setAreaHabitavel(Float areaHabitavel) {
         this.areaHabitavel = areaHabitavel;
     }
+
+    public Integer getPopulacao() {
+        return populacao;
+    }
+
+    public void setPopulacao(Integer populacao) {
+        this.populacao = populacao;
+    }
+
 
     public String getStatus() {
         return status;
@@ -109,13 +117,5 @@ public class Recinto {
 
     public void setTratadores(List<Tratador> tratadores) {
         this.tratadores = tratadores;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 }

@@ -2,77 +2,10 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-<<<<<<< Updated upstream
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recintos - Novo</title>
-
-    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-4">
-        <h1 class="mb-4">
-            Novo Recinto
-        </h1>
-    </div>
-
-    <div class="container add-form">
-        <form id="add-form">
-            
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome:</label>
-                <input required type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Recinto das Aves de Rapina">
-            </div>
-
-            <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                    <label for="areaHabitavel" class="form-label">Área Habitável (m²):</label>
-                    <input required type="number" step="0.1" class="form-control" id="areaHabitavel" name="areaHabitavel" placeholder="Ex: 150.5">
-                </div>
-                <div class="col-md-6">
-                    <label for="status" class="form-label">Status:</label>
-                    <select required class="form-select" id="status" name="status">
-                        <option value="" selected disabled>Selecione um status</option>
-                        <option value="ABERTO">Aberto</option>
-                        <option value="FECHADO">Fechado</option>
-                        <option value="MANUTENCAO">Em Manutenção</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="planoDietaId" class="form-label">Plano de Dieta:</label>
-                <select  class="form-select" id="planoDietaId" name="planoDietaId">
-                    <option value="" selected disabled>Selecione um plano</option>
-
-                    <option th:each="plano : ${planosDieta}" 
-                            th:value="${plano.id}" 
-                            th:text="|ID ${plano.id}: C=${plano.quantidadeCarne}g, V=${plano.quantidadeVegetais}g|">
-                    </option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="tratadorIds" class="form-label">Tratadores Responsáveis:</label>
-                <select multiple class="form-select" id="tratadorIds" name="tratadorIds" size="5">
-                    <option th:each="tratador : ${tratadores}" 
-                            th:value="${tratador.id}" 
-                            th:text="${tratador.nome}">
-                    </option>
-                </select>
-                <small class="form-text text-muted">Segure Ctrl para selecionar múltiplos tratadores.</small>
-            </div>
-
-            <button id="add-submit" type="submit" class="btn btn-primary">Salvar</button>
-            <a th:href="@{/recintos}" class="btn btn-secondary">Cancelar</a>
-        </form>
-    </div>
-
-    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
-=======
     <title>Novo Recinto</title>
 
     <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -83,32 +16,51 @@
     <div class="container mt-3">
         <form id="novo-recinto-form">
 
+            <!-- Nome -->
             <div class="mb-3">
                 <label class="form-label">Nome:</label>
                 <input name="nome" type="text" class="form-control" required>
             </div>
 
+            <!-- Área Habitável (float) -->
             <div class="mb-3">
-                <label class="form-label">Área Habitável:</label>
-                <input name="areaHabitavel" type="text" class="form-control">
+                <label class="form-label">Área Habitável (m²):</label>
+                <input name="areaHabitavel" type="number" step="0.01" class="form-control">
             </div>
 
+            <!-- População -->
+            <div class="mb-3">
+                <label class="form-label">População:</label>
+                <input name="populacao" type="number" min="0" class="form-control">
+            </div>
+
+            <!-- Tipo -->
             <div class="mb-3">
                 <label class="form-label">Tipo:</label>
                 <input name="tipo" type="text" class="form-control">
             </div>
 
+            <!-- Status -->
             <div class="mb-3">
                 <label class="form-label">Status:</label>
                 <input name="status" type="text" class="form-control">
             </div>
 
+            <!-- Plano de dieta -->
+            <div class="mb-3">
+                <label class="form-label">Plano de Dieta:</label>
+                <select name="planoDietaId" class="form-select">
+                    <option value="">Nenhum</option>
+                    <option th:each="p : ${planosDieta}" th:value="${p.id}" th:text="${p.nome}"></option>
+                </select>
+            </div>
+
+            <!-- Tratadores -->
             <div class="mb-3">
                 <label class="form-label">Tratadores:</label>
-                <select multiple name="tratadoresIds" class="form-select">
+                <select multiple name="tratadorIds" class="form-select">
                     <option th:each="t : ${tratadores}" th:value="${t.id}" th:text="${t.nome}"></option>
                 </select>
-                <small>Use CTRL para selecionar múltiplos.</small>
             </div>
 
             <button class="btn btn-primary" type="submit">Criar</button>
@@ -117,7 +69,6 @@
         </form>
     </div>
 
->>>>>>> Stashed changes
     <script th:src="@{/js/recintosPages/novo.js}"></script>
 </body>
 </html>
