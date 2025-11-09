@@ -36,7 +36,10 @@
                     <dt class="col-sm-3">Recintos:</dt>
                     <dd class="col-sm-9">
                         <ul>
-                            <li th:each="r : ${evento.recintosIds}" th:text="${r.nome}"></li>
+                            <li th:each="r : ${recintos}"
+                                th:if="${evento.recintosIds.contains(r.id)}"
+                                th:text="${r.nome}">
+                            </li>
                         </ul>
                     </dd>
 

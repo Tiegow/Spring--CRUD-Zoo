@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ufrn.SIGZoo.model.dto.RecintoDTO;
+import com.ufrn.SIGZoo.service.AnimalService;
 import com.ufrn.SIGZoo.service.PlanoDietaService;
 import com.ufrn.SIGZoo.service.RecintoService;
 import com.ufrn.SIGZoo.service.TratadorService;
@@ -20,12 +21,13 @@ public class RecintoPagesController {
 
     @Autowired
     private RecintoService recintoService;
-
+    @Autowired
+    private AnimalService animalService; 
     @Autowired
     private PlanoDietaService planoDietaService; 
-
     @Autowired
     private TratadorService tratadorService;     
+
 
     @GetMapping("")
     public String recintosHome(Model model, @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
@@ -33,12 +35,11 @@ public class RecintoPagesController {
         return "recintos/home";
     }
 
-
-
     @GetMapping("/novo")
     public String novoRecinto(Model model) {
         model.addAttribute("planosDieta", planoDietaService.listarTodos());
         model.addAttribute("tratadores", tratadorService.listarTodos());
+        model.addAttribute("animais", animalService.listarTodosList());
         
         return "recintos/novo";
     }
@@ -47,6 +48,9 @@ public class RecintoPagesController {
     public String detalhesRecinto(@PathVariable Integer id, Model model) {
         RecintoDTO recinto = recintoService.buscarPorId(id);
         model.addAttribute("recinto", recinto);
+        model.addAttribute("planosDieta", planoDietaService.listarTodos());
+        model.addAttribute("tratadores", tratadorService.listarTodos());
+        model.addAttribute("animais", animalService.listarTodosList());
         
         return "recintos/detalhes";
     }
@@ -55,9 +59,9 @@ public class RecintoPagesController {
     public String editarRecinto(@PathVariable Integer id, Model model) {
         RecintoDTO recinto = recintoService.buscarPorId(id);
         model.addAttribute("recinto", recinto);
-
         model.addAttribute("planosDieta", planoDietaService.listarTodos());
         model.addAttribute("tratadores", tratadorService.listarTodos());
+        model.addAttribute("animais", animalService.listarTodosList());
 
         return "recintos/editar";
     }

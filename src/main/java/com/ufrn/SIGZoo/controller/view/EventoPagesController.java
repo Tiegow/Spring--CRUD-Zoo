@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ufrn.SIGZoo.model.dto.EventoDTO;
 import com.ufrn.SIGZoo.service.EventoService;
+import com.ufrn.SIGZoo.service.RecintoService;
 
 @Controller
 @RequestMapping("/eventos")
@@ -19,6 +20,9 @@ public class EventoPagesController {
     
     @Autowired
     private EventoService eventoService;
+
+    @Autowired
+    private RecintoService recintoService;
 
     @GetMapping("")
     public String eventosHome(
@@ -35,7 +39,9 @@ public class EventoPagesController {
 
 
     @GetMapping("/novo")
-    public String novoEvento() {
+    public String novoEvento(Model model) {
+        model.addAttribute("recintos", recintoService.listarTodos());
+        
         return "eventos/novo";
     }
 
@@ -43,14 +49,15 @@ public class EventoPagesController {
     public String detalhesEvento(@PathVariable Integer id, Model model) {
         EventoDTO evento = eventoService.buscarPorId(id);
         model.addAttribute("evento", evento);
+        model.addAttribute("recintos", recintoService.listarTodos());
         return "eventos/detalhes";
     }
 
     @GetMapping("/editar/{id}")
     public String editarEvento(@PathVariable Integer id, Model model) {
         EventoDTO evento = eventoService.buscarPorId(id);
-        model.addAttribute("evento", evento);
-        
+        model.addAttribute("evento", evento);   
+        model.addAttribute("recintos", recintoService.listarTodos());
         return "eventos/editar";
     }
 }

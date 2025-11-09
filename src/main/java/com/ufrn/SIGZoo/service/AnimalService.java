@@ -76,6 +76,12 @@ public class AnimalService {
         return animalPage.map(AnimalDTO::fromEntity);
     }
 
+    public List<AnimalDTO> listarTodosList() {
+        List<Animal> animalList = animalRepository.findAll();
+        return animalList.stream().map(AnimalDTO::fromEntity).collect(Collectors.toList());
+    }
+
+
     @Transactional(readOnly = true)
     public List<Animal> listarPorVeterinario(Integer idVet) {
         return animalRepository.findAllByVeterinarioId(idVet);

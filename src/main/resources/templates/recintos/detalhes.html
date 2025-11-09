@@ -64,9 +64,9 @@
                     <dt class="col-sm-4">Tratadores (IDs):</dt>
                     <dd class="col-sm-8">
                         <ul class="list-group">
-                            <li class="list-group-item"
-                                th:each="id : ${recinto.tratadorIds}"
-                                th:text="'Tratador ID: ' + ${id}">
+                            <li th:each="t : ${tratadores}"
+                                th:if="${recinto.tratadorIds.contains(t.id)}"
+                                th:text="${t.nome}">
                             </li>
 
                             <li class="list-group-item text-muted"

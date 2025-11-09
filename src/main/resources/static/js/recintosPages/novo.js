@@ -6,14 +6,14 @@ form.addEventListener("submit", (e) => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    // Corrigir lista de tratadores
-    data.tratadorIds = formData.getAll("tratadorIds");
+    // Listas múltiplas
+    data.tratadorIds = formData.getAll("tratadorIds").map(id => parseInt(id));
+    data.animaisIds = formData.getAll("animaisIds").map(id => parseInt(id));
 
-    // Converter campos numéricos
+    // Conversões
     if (data.areaHabitavel) data.areaHabitavel = parseFloat(data.areaHabitavel);
     if (data.populacao) data.populacao = parseInt(data.populacao);
 
-    // Converter plano de dieta vazio para null
     if (data.planoDietaId === "") data.planoDietaId = null;
 
     fetch("/api/recintos", {

@@ -10,9 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ufrn.SIGZoo.model.dto.RecintoDTO;
+import com.ufrn.SIGZoo.model.entity.Animal;
 import com.ufrn.SIGZoo.model.entity.PlanoDieta;
 import com.ufrn.SIGZoo.model.entity.Recinto;
 import com.ufrn.SIGZoo.model.entity.Tratador;
+import com.ufrn.SIGZoo.repository.AnimalRepository;
 import com.ufrn.SIGZoo.repository.PlanoDietaRepository;
 import com.ufrn.SIGZoo.repository.RecintoRepository;
 import com.ufrn.SIGZoo.repository.TratadorRepository;
@@ -32,6 +34,9 @@ public class RecintoService {
 
     @Autowired
     private TratadorRepository tratadorRepository;
+
+    @Autowired
+    private AnimalRepository animalRepository;
 
 
     // DELETAR    
@@ -57,7 +62,21 @@ public class RecintoService {
     @Transactional
     public RecintoDTO criar(RecintoDTO dto) {
         Recinto recinto = toEntity(dto);
-        recintoRepository.save(recinto);
+
+        // primeiro salva o recinto sozinho
+        recinto = recintoRepository.save(recinto);
+
+        // só depois liga os animais
+        if (dto.getAnimaisIds() != null && !dto.getAnimaisIds().isEmpty()) {
+            List<Animal> animais = animalRepository.findAllById(dto.getAnimaisIds());
+
+            for (Animal a : animais) {
+                a.setRecinto(recinto);
+            }
+
+            recinto.setAnimais(animais);
+        }
+
         return toDTO(recinto);
     }
 
@@ -83,6 +102,26 @@ public class RecintoService {
             existente.setPlanoDieta(null);
         }
 
+        if (dto.getAnimaisIds() != null) {
+            List<Animal> novosAnimais = animalRepository.findAllById(dto.getAnimaisIds());
+
+            // limpar recinto dos animais antigos que não foram selecionados
+            if (existente.getAnimais() != null) {
+                for (Animal a : existente.getAnimais()) {
+                    if (!dto.getAnimaisIds().contains(a.getId())) {
+                        a.setRecinto(null); // remove do recinto
+                    }
+                }
+            }
+
+            // adicionar o recinto para os novos animais selecionados
+            for (Animal a : novosAnimais) {
+                a.setRecinto(existente);
+            }
+
+            existente.setAnimais(novosAnimais);
+        }
+
         // Tratadores
         if (dto.getTratadorIds() != null) {
             List<Tratador> tratadores = tratadorRepository.findAllById(dto.getTratadorIds());
@@ -94,6 +133,7 @@ public class RecintoService {
         recintoRepository.save(existente);
         return toDTO(existente);
     }
+
 
     
     // READ    
@@ -148,6 +188,15 @@ public class RecintoService {
 
         if (recinto.getPlanoDieta() != null) {
             dto.setPlanoDietaId(recinto.getPlanoDieta().getId());
+        }
+
+        if (recinto.getAnimais() != null) {
+            dto.setAnimaisIds(
+                recinto.getAnimais()
+                    .stream()
+                    .map(Animal::getId)
+                    .collect(Collectors.toList())
+            );
         }
 
         if (recinto.getTratadores() != null) {

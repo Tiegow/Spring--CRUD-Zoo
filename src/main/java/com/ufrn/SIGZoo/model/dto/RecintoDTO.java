@@ -103,6 +103,15 @@ public class RecintoDTO {
             dto.setPlanoDietaId(recinto.getPlanoDieta().getId());
         }
 
+        if (recinto.getAnimais() != null) {
+            dto.setAnimaisIds(
+                recinto.getAnimais()
+                    .stream()
+                    .map(a -> a.getId())
+                    .collect(Collectors.toList())
+            );
+        }
+
         if (recinto.getTratadores() != null) {
             dto.setTratadorIds(recinto.getTratadores().stream()
                     .map(Tratador::getId) 

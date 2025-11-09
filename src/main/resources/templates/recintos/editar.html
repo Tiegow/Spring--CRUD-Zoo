@@ -48,6 +48,18 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label">Animais:</label>
+                <select name="animaisIds" multiple class="form-select form-select-sm" style="max-width: 300px;">
+                    <option
+                        th:each="a : ${animais}"
+                        th:value="${a.id}"
+                        th:text="${a.nome}"
+                        th:selected="${recinto.animaisIds.contains(a.id)}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label">Tratadores:</label>
                 <select name="tratadorIds" multiple class="form-select">
                     <option th:each="t : ${tratadores}"

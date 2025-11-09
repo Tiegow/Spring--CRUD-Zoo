@@ -55,10 +55,18 @@
                 </select>
             </div>
 
+            <!-- Animais -->
+            <div class="mb-3">
+                <label class="form-label">Animais:</label>
+                <select name="animaisIds" id="animaisIds" multiple class="form-select form-select-sm" style="max-width: 300px;">
+                    <option th:each="a : ${animais}" th:value="${a.id}" th:text="${a.nome}"></option>
+                </select>
+            </div>
+
             <!-- Tratadores -->
             <div class="mb-3">
                 <label class="form-label">Tratadores:</label>
-                <select multiple name="tratadorIds" class="form-select">
+                <select name="tratadorIds" id="tratadorIds" multiple class="form-select form-select-sm" style="max-width: 300px;">
                     <option th:each="t : ${tratadores}" th:value="${t.id}" th:text="${t.nome}"></option>
                 </select>
             </div>

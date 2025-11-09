@@ -8,12 +8,13 @@ form.addEventListener('submit', (event) => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    // Converte campos numéricos
+    // Conversões
     data.areaHabitavel = parseFloat(data.areaHabitavel);
     data.populacao = parseInt(data.populacao);
 
-    // Tratadores múltiplos
+    // Múltiplos
     data.tratadorIds = formData.getAll('tratadorIds').map(id => parseInt(id));
+    data.animaisIds = formData.getAll('animaisIds').map(id => parseInt(id));
 
     fetch(`/api/recintos/${recintoId}`, {
         method: 'PUT',
@@ -23,7 +24,6 @@ form.addEventListener('submit', (event) => {
     .then(response => {
         if (response.ok) {
             window.location.href = '/recintos';
-            console.log('Recinto atualizado com sucesso.');
             return;
         }
         
