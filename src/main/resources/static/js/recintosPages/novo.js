@@ -1,33 +1,39 @@
-const form = document.getElementById("novo-recinto-form");
+const form = document.getElementById('novo-recinto-form');
 
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
 
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
 
-    // Listas múltiplas
-    data.tratadorIds = formData.getAll("tratadorIds").map(id => parseInt(id));
-    data.animaisIds = formData.getAll("animaisIds").map(id => parseInt(id));
+    const data = {
+        nome: formData.get('nome'),
+        areaHabitavel: parseFloat(formData.get('areaHabitavel')) || 0,
+        status: formData.get('status'),
+        planoDieta: {
+            quantidadeCarne: parseInt(formData.get('quantidadeCarne')) || 0,
+            quantidadeVegetais: parseInt(formData.get('quantidadeVegetais')) || 0
+        },
+        animaisIds: formData.getAll('animaisIds').map(id => parseInt(id)),
+        tratadorIds: formData.getAll('tratadorIds').map(id => parseInt(id))
+    };
 
-    // Conversões
-    if (data.areaHabitavel) data.areaHabitavel = parseFloat(data.areaHabitavel);
-    if (data.populacao) data.populacao = parseInt(data.populacao);
-
-    if (data.planoDietaId === "") data.planoDietaId = null;
-
-    fetch("/api/recintos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+    fetch('/api/recintos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     })
-    .then(resp => {
-        if (resp.ok) {
-            alert("Recinto criado com sucesso!");
-            window.location.href = "/recintos";
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/recintos';
+            console.log('Recinto registrado com sucesso.');
             return;
         }
-        return resp.json().then(err => alert(err.message));
+        return response.json().then(errData => {
+            const msg = errData.message || "Erro desconhecido";
+            console.error('Erro ao adicionar recinto:', msg);
+        });
     })
-    .catch(err => alert("Erro de conexão com o servidor."));
+    .catch(error => {
+        console.error('Erro na requisição:', error);
+    });
 });

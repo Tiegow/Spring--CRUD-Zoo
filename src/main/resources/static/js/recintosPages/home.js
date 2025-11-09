@@ -53,7 +53,6 @@ function criarTabela(data, tabelaCorpo) {
             <td>${recinto.id}</td>
             <td>${recinto.nome}</td>
             <td>${recinto.status}</td>
-            <td>${recinto.tipo}</td>
             <td>${recinto.areaHabitavel}</td>
             <td>${recinto.populacao}</td>
         `;

@@ -13,12 +13,12 @@ public class RecintoDTO {
     private String nome;
     private float areaHabitavel;
     private Integer populacao;
-    private String tipo;
     private String status;
         
     private List<Integer> tratadorIds; 
-    private Integer planoDietaId;
     private List<Integer> animaisIds;
+
+    private PlanoDietaDTO planoDieta;
 
     public Integer getId() {
         return id;
@@ -44,23 +44,11 @@ public class RecintoDTO {
     public void setPopulacao(Integer populacao) {
         this.populacao = populacao;
     }
-    public String getTipo() {
-        return tipo;
-    }
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
     public String getStatus() {
         return status;
     }
     public void setStatus(String status) {
         this.status = status;
-    }
-    public Integer getPlanoDietaId() {
-        return planoDietaId;
-    }
-    public void setPlanoDietaId(Integer planoDietaId) {
-        this.planoDietaId = planoDietaId;
     }
     public List<Integer> getTratadorIds() {
         return tratadorIds;
@@ -74,6 +62,12 @@ public class RecintoDTO {
     public void setAnimaisIds(List<Integer> animaisIds) {
         this.animaisIds = animaisIds;
     }
+    public PlanoDietaDTO getPlanoDieta() {
+        return planoDieta;
+    }
+    public void setPlanoDieta(PlanoDietaDTO planoDieta) {
+        this.planoDieta = planoDieta;
+    }    
 
     public Recinto toEntity() {
         Recinto recinto = new Recinto();
@@ -100,7 +94,7 @@ public class RecintoDTO {
         }
 
         if (recinto.getPlanoDieta() != null) {
-            dto.setPlanoDietaId(recinto.getPlanoDieta().getId());
+            dto.setPlanoDieta(PlanoDietaDTO.fromEntity(recinto.getPlanoDieta()));
         }
 
         if (recinto.getAnimais() != null) {

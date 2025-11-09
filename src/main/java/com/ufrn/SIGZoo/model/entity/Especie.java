@@ -20,7 +20,7 @@ public class Especie {
     private float expectativaVida;
 
     @Column
-    private String areaAdequada;
+    private float areaAdequada;
 
     @Column
     private Integer tamanhoMinimoGrupo;
@@ -54,11 +54,11 @@ public class Especie {
         this.expectativaVida = expectativaVida;
     }
 
-    public String getAreaAdequada() {
+    public Float getAreaAdequada() {
         return areaAdequada;
     }
 
-    public void setAreaAdequada(String areaAdequada) {
+    public void setAreaAdequada(Float areaAdequada) {
         this.areaAdequada = areaAdequada;
     }
 

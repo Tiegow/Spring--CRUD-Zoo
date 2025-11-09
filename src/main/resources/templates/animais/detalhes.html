@@ -10,7 +10,12 @@
 </head>
 <body>
     <div class="container mt-4">
-        <h1 class="mb-4"><i class="fa-solid fa-paw me-2"></i><span th:text="${animal.nome}"></span> - <span th:text="${animal.especieNome}"></span></h1>
+        <h1 class="mb-4"><i class="fa-solid fa-paw me-2"></i><span th:text="${animal.nome} + ' - ' + ${animal.especieNome}"></span></h1>
+
+        <div th:if="${animal.recintoInadequado}" class="alert alert-warning" role="alert">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+            <strong>Atenção:</strong> Este animal está em um recinto cuja área habitável é menor que a área adequada recomendada para sua espécie.
+        </div>
     </div>
 
     <div class="container">
@@ -25,10 +30,10 @@
                             <dd class="col-sm-8" th:text="${animal.nome}"></dd>
 
                             <dt class="col-sm-4">Espécie:</dt>
-                            <dd class="col-sm-8" th:text="${animal.especieNome}"></dd>
+                            <dd class="col-sm-8"><a th:text="${animal.especieNome}" th:href="@{/especies/{id}(id=${animal.especieId})}"></a></dd>
 
                             <dt class="col-sm-4">Recinto:</dt>
-                            <dd class="col-sm-8" th:text="${animal.recintoNome}"></dd>
+                            <dd class="col-sm-8"><a th:text="${animal.recintoNome}" th:href="@{/recintos/{id}(id=${animal.recintoId})}"></a></dd>
 
                             <dt class="col-sm-4">Origem:</dt>
                             <dd class="col-sm-8" th:text="${animal.origem}"></dd>                            

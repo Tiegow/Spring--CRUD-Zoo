@@ -22,6 +22,8 @@ public class AnimalDTO {
     private Integer veterinarioId;
     private String veterinarioNome;
 
+    private boolean recintoInadequado;
+
     public Integer getId() {
         return id;
     }
@@ -110,6 +112,14 @@ public class AnimalDTO {
         this.veterinarioNome = veterinarioNome;
     }
 
+    public boolean isRecintoInadequado() {
+        return recintoInadequado;
+    }
+
+    public void setRecintoInadequado(boolean recintoInadequado) {
+        this.recintoInadequado = recintoInadequado;
+    }
+
     public Animal toEntity() {
         Animal animal = new Animal();
         animal.setId(this.id);
@@ -131,10 +141,21 @@ public class AnimalDTO {
         dto.setNascimento(animal.getNascimento());
         dto.setOrigem(animal.getOrigem());
 
+        boolean inadequado = false;
         if (animal.getEspecie() != null) {
             dto.setEspecieId(animal.getEspecie().getId());
             dto.setEspecieNome(animal.getEspecie().getNome());
+
+            Float areaAdequada = animal.getEspecie().getAreaAdequada();
+            if (animal.getRecinto() != null && areaAdequada != null) {
+                Float areaHabitavel = animal.getRecinto().getAreaHabitavel();
+                if (areaHabitavel != null && areaHabitavel < areaAdequada) {
+                    inadequado = true;
+                }
+            }
         }
+
+        dto.setRecintoInadequado(inadequado);
 
         if (animal.getRecinto() != null) {
             dto.setRecintoId(animal.getRecinto().getId());

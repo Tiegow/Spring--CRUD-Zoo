@@ -12,7 +12,7 @@
 <body>
     <div class="container mt-4">
         <h1 class="mb-4">
-            <i class="fa-solid fa-house-circle-check me-2"></i>
+            <i class="fa-solid fa-house-circle-check me-2"></i> 
             <span th:text="${recinto.nome}"></span>
         </h1>
     </div>
@@ -31,27 +31,40 @@
                     <dt class="col-sm-4">Nome:</dt>
                     <dd class="col-sm-8" th:text="${recinto.nome}"></dd>
 
-                    <dt class="col-sm-4">Tipo:</dt>
-                    <dd class="col-sm-8" th:text="${recinto.tipo}"></dd>
-
                     <dt class="col-sm-4">Status:</dt>
                     <dd class="col-sm-8" th:text="${recinto.status}"></dd>
 
                     <dt class="col-sm-4">Área Habitável:</dt>
-                    <dd class="col-sm-8" th:text="${recinto.areaHabitavel}"></dd>
+                    <dd class="col-sm-8" th:text="${recinto.areaHabitavel + ' m²'}"></dd>
 
                     <dt class="col-sm-4">População:</dt>
-                    <dd class="col-sm-8" th:text="${recinto.populacao}"></dd>
+                    <dd class="col-sm-8" th:text="${recinto.populacao + ' animais'}"></dd>
 
-                    <dt class="col-sm-4">Plano de Dieta:</dt>
-                    <dd class="col-sm-8" th:text="${recinto.planoDietaId != null ? recinto.planoDietaId : 'Nenhum'}"></dd>
+                    <th:block th:if="${recinto.planoDieta != null}">
+                        <div class="my-5">
+                            <dt class="col-sm-4">Plano de Dieta (ID):</dt>
+                            <dd class="col-sm-8" th:text="${recinto.planoDieta.id}"></dd>
+                            
+                            <dt class="col-sm-4">Qtd. Carne:</dt>
+                            <dd class="col-sm-8" th:text="${recinto.planoDieta.quantidadeCarne + 'g'}"></dd>
+                            
+                            <dt class="col-sm-4">Qtd. Vegetais:</dt>
+                            <dd class="col-sm-8" th:text="${recinto.planoDieta.quantidadeVegetais + 'g'}"></dd>
+                        </div>
+                    </th:block>
+                    
+                    <th:block th:if="${recinto.planoDieta == null}">
+                        <dt class="col-sm-4">Plano de Dieta:</dt>
+                        <dd class="col-sm-8 text-muted">Nenhum plano associado.</dd>
+                    </th:block>
 
-                    <dt class="col-sm-4">Animais (IDs):</dt>
+                    <dt class="col-sm-4">Animais:</dt>
                     <dd class="col-sm-8">
                         <ul class="list-group">
                             <li class="list-group-item"
-                                th:each="id : ${recinto.animaisIds}"
-                                th:text="'Animal ID: ' + ${id}">
+                                th:each="a : ${animais}"
+                                th:if="${recinto.animaisIds.contains(a.id)}"
+                                > <a th:text="${a.nome} + ' - ' + ${a.especieNome}" th:href="@{/animais/{id}(id=${a.id})}"></a>
                             </li>
 
                             <li class="list-group-item text-muted"
@@ -61,12 +74,13 @@
                         </ul>
                     </dd>
 
-                    <dt class="col-sm-4">Tratadores (IDs):</dt>
+                    <dt class="col-sm-4">Tratadores:</dt>
                     <dd class="col-sm-8">
                         <ul class="list-group">
-                            <li th:each="t : ${tratadores}"
+                            <li class="list-group-item"
+                                th:each="t : ${tratadores}"
                                 th:if="${recinto.tratadorIds.contains(t.id)}"
-                                th:text="${t.nome}">
+                                > <a th:text="${t.nome}" th:href="@{/funcionarios/tratador/{id}(id=${t.id})}"></a>
                             </li>
 
                             <li class="list-group-item text-muted"
@@ -88,7 +102,7 @@
                     </a>
 
                     <button type="button" class="btn btn-danger" id="delete-btn"
-                        th:attr="data-id=${recinto.id}">
+                            th:attr="data-id=${recinto.id}">
                         <i class="fa-solid fa-trash me-1"></i>Deletar
                     </button>
                 </div>

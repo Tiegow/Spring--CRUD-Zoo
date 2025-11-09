@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.ufrn.SIGZoo.model.dto.PlanoDietaDTO;
 import com.ufrn.SIGZoo.model.dto.RecintoDTO;
 import com.ufrn.SIGZoo.model.entity.Animal;
 import com.ufrn.SIGZoo.model.entity.PlanoDieta;
@@ -38,8 +39,6 @@ public class RecintoService {
     @Autowired
     private AnimalRepository animalRepository;
 
-
-    // DELETAR    
     @Transactional
     public void deletar(Integer id) {
         Recinto recinto = recintoRepository.findById(id)
@@ -48,81 +47,87 @@ public class RecintoService {
         if (recinto.getAnimais() != null && !recinto.getAnimais().isEmpty()) {
             throw new DataIntegrityViolationException("Não é possível deletar um recinto que contém animais.");
         }
+        
+        PlanoDieta plano = recinto.getPlanoDieta();
+        if (plano != null) {
+            recinto.setPlanoDieta(null);
+            planoDietaRepository.delete(plano);
+        }
 
         recintoRepository.delete(recinto);
     }
-
 
     public long obterQtdRecintos() {
         return recintoRepository.count();
     }
 
-    
-    // CREATE    
     @Transactional
     public RecintoDTO criar(RecintoDTO dto) {
-        Recinto recinto = toEntity(dto);
+        Recinto recinto = toEntity(dto); 
 
-        // primeiro salva o recinto sozinho
+        if (dto.getPlanoDieta() != null) {
+            PlanoDieta novoPlano = dto.getPlanoDieta().toEntity();
+            PlanoDieta planoSalvo = planoDietaRepository.save(novoPlano);
+            recinto.setPlanoDieta(planoSalvo);
+        }
+        
         recinto = recintoRepository.save(recinto);
 
-        // só depois liga os animais
         if (dto.getAnimaisIds() != null && !dto.getAnimaisIds().isEmpty()) {
             List<Animal> animais = animalRepository.findAllById(dto.getAnimaisIds());
-
             for (Animal a : animais) {
                 a.setRecinto(recinto);
             }
-
             recinto.setAnimais(animais);
         }
+        
+        recinto = recintoRepository.save(recinto);
 
         return toDTO(recinto);
     }
 
-    
-    // UPDATE    
     @Transactional
     public RecintoDTO atualizar(Integer id, RecintoDTO dto) {
         Recinto existente = recintoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Recinto não encontrado."));
 
         existente.setNome(dto.getNome());
-        existente.setTipo(dto.getTipo());
         existente.setStatus(dto.getStatus());
         existente.setAreaHabitavel(dto.getAreaHabitavel());
-        existente.setPopulacao(dto.getPopulacao());
 
-        // Plano de dieta
-        if (dto.getPlanoDietaId() != null) {
-            PlanoDieta plano = planoDietaRepository.findById(dto.getPlanoDietaId())
-                    .orElseThrow(() -> new EntityNotFoundException("Plano de dieta não encontrado."));
-            existente.setPlanoDieta(plano);
+        if (dto.getPlanoDieta() != null) {
+            PlanoDieta planoParaAtualizar;
+            if (existente.getPlanoDieta() != null) {
+                planoParaAtualizar = existente.getPlanoDieta();
+            } else {
+                planoParaAtualizar = new PlanoDieta();
+            }
+            
+            planoParaAtualizar.setQuantidadeCarne(dto.getPlanoDieta().getQuantidadeCarne());
+            planoParaAtualizar.setQuantidadeVegetais(dto.getPlanoDieta().getQuantidadeVegetais());
+            
+            PlanoDieta planoSalvo = planoDietaRepository.save(planoParaAtualizar);
+            existente.setPlanoDieta(planoSalvo);
         } else {
             existente.setPlanoDieta(null);
         }
 
         if (dto.getAnimaisIds() != null) {
             List<Animal> novosAnimais = animalRepository.findAllById(dto.getAnimaisIds());
-
-            // limpar recinto dos animais antigos que não foram selecionados
+            
             if (existente.getAnimais() != null) {
                 for (Animal a : existente.getAnimais()) {
                     if (!dto.getAnimaisIds().contains(a.getId())) {
-                        a.setRecinto(null); // remove do recinto
+                        a.setRecinto(null);
                     }
                 }
             }
-
-            // adicionar o recinto para os novos animais selecionados
             for (Animal a : novosAnimais) {
                 a.setRecinto(existente);
             }
-
             existente.setAnimais(novosAnimais);
         }
 
-        // Tratadores
         if (dto.getTratadorIds() != null) {
             List<Tratador> tratadores = tratadorRepository.findAllById(dto.getTratadorIds());
             existente.setTratadores(tratadores);
@@ -134,14 +139,11 @@ public class RecintoService {
         return toDTO(existente);
     }
 
-
-    
-    // READ    
     @Transactional(readOnly = true)
     public List<RecintoDTO> listarTodos() {
         return recintoRepository.findAll()
                 .stream()
-                .map(RecintoDTO::fromEntity)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -160,42 +162,61 @@ public class RecintoService {
 
     @Transactional(readOnly = true)
     public List<RecintoDTO> buscarPorArea(Float minimo, Float maximo) {
-        return recintoRepository.findByAreaHabitavelBetween(minimo, maximo)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        List<Recinto> recintos;
+
+        if (minimo != null && maximo != null) {
+            recintos = recintoRepository.findByAreaHabitavelBetween(minimo, maximo);
+        } else if (minimo != null) {
+            recintos = recintoRepository.findByAreaHabitavelGreaterThanEqual(minimo);
+        } else if (maximo != null) {
+            recintos = recintoRepository.findByAreaHabitavelLessThanEqual(maximo);
+        } else {
+            recintos = new ArrayList<>();
+        }
+
+        return recintos.stream()
+            .map(this::toDTO)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<RecintoDTO> buscarPorPopulacao(Integer minimo, Integer maximo) {
-        return recintoRepository.findByPopulacaoBetween(minimo, maximo)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        List<Recinto> recintos;
+
+        if (minimo != null && maximo != null) {
+        recintos = recintoRepository.findByPopulacaoBetween(minimo, maximo);
+        } else if (minimo != null) {
+        recintos = recintoRepository.findByPopulacaoGreaterThanEqual(minimo);
+        } else if (maximo != null) {
+        recintos = recintoRepository.findByPopulacaoLessThanEqual(maximo);
+        } else {
+        recintos = new ArrayList<>();
+        }
+
+        return recintos.stream()
+            .map(this::toDTO) 
+            .collect(Collectors.toList());
     }
 
-    
-    // MAPPER: ENTITY → DTO    
     private RecintoDTO toDTO(Recinto recinto) {
         RecintoDTO dto = new RecintoDTO();
 
         dto.setId(recinto.getId());
         dto.setNome(recinto.getNome());
         dto.setStatus(recinto.getStatus());
-        dto.setTipo(recinto.getTipo());
         dto.setAreaHabitavel(recinto.getAreaHabitavel());
-        dto.setPopulacao(recinto.getPopulacao());
+        dto.setPopulacao(recinto.getAnimais() != null ? recinto.getAnimais().size() : 0);
 
         if (recinto.getPlanoDieta() != null) {
-            dto.setPlanoDietaId(recinto.getPlanoDieta().getId());
+            dto.setPlanoDieta(PlanoDietaDTO.fromEntity(recinto.getPlanoDieta()));
         }
 
         if (recinto.getAnimais() != null) {
             dto.setAnimaisIds(
                 recinto.getAnimais()
-                    .stream()
-                    .map(Animal::getId)
-                    .collect(Collectors.toList())
+                        .stream()
+                        .map(Animal::getId)
+                        .collect(Collectors.toList())
             );
         }
 
@@ -210,24 +231,14 @@ public class RecintoService {
         return dto;
     }
 
-
-    // MAPPER: DTO → ENTITY    
     private Recinto toEntity(RecintoDTO dto) {
         Recinto recinto = new Recinto();
 
         recinto.setId(dto.getId());
         recinto.setNome(dto.getNome());
-        recinto.setTipo(dto.getTipo());
         recinto.setStatus(dto.getStatus());
-        recinto.setAreaHabitavel(dto.getAreaHabitavel());
-        recinto.setPopulacao(dto.getPopulacao());
-
-        if (dto.getPlanoDietaId() != null) {
-            PlanoDieta plano = planoDietaRepository.findById(dto.getPlanoDietaId())
-                    .orElseThrow(() -> new EntityNotFoundException("Plano de dieta não encontrado."));
-            recinto.setPlanoDieta(plano);
-        }
-
+        recinto.setAreaHabitavel(dto.getAreaHabitavel()); 
+        
         if (dto.getTratadorIds() != null) {
             List<Tratador> tratadores = tratadorRepository.findAllById(dto.getTratadorIds());
             recinto.setTratadores(tratadores);
@@ -235,5 +246,4 @@ public class RecintoService {
 
         return recinto;
     }
-
 }

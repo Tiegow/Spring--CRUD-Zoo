@@ -6,24 +6,28 @@ form.addEventListener('submit', (event) => {
     const recintoId = form.dataset.id;
 
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    
+    const data = {
+        nome: formData.get('nome'),
+        areaHabitavel: parseFloat(formData.get('areaHabitavel')) || 0,
+        status: formData.get('status'),
+        
+        planoDieta: {
+            quantidadeCarne: parseInt(formData.get('quantidadeCarne')) || 0,
+            quantidadeVegetais: parseInt(formData.get('quantidadeVegetais')) || 0
+        },
 
-    // Conversões
-    data.areaHabitavel = parseFloat(data.areaHabitavel);
-    data.populacao = parseInt(data.populacao);
-
-    // Múltiplos
-    data.tratadorIds = formData.getAll('tratadorIds').map(id => parseInt(id));
-    data.animaisIds = formData.getAll('animaisIds').map(id => parseInt(id));
-
+        tratadorIds: formData.getAll('tratadorIds').map(id => parseInt(id))
+    };
     fetch(`/api/recintos/${recintoId}`, {
-        method: 'PUT',
+        method: 'PUT', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     })
     .then(response => {
         if (response.ok) {
             window.location.href = '/recintos';
+            console.log('Recinto atualizado com sucesso.');
             return;
         }
         

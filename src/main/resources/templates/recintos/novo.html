@@ -28,39 +28,31 @@
                 <input name="areaHabitavel" type="number" step="0.01" class="form-control">
             </div>
 
-            <!-- População -->
-            <div class="mb-3">
-                <label class="form-label">População:</label>
-                <input name="populacao" type="number" min="0" class="form-control">
-            </div>
-
-            <!-- Tipo -->
-            <div class="mb-3">
-                <label class="form-label">Tipo:</label>
-                <input name="tipo" type="text" class="form-control">
-            </div>
-
             <!-- Status -->
             <div class="mb-3">
-                <label class="form-label">Status:</label>
-                <input name="status" type="text" class="form-control">
+                <label for="status" class="form-label">Status:</label>
+                <select name="status" id="status" class="form-select" required>
+                    <option value="" selected disabled>Selecione o status</option>
+                    <option value="ABERTO">Aberto</option>
+                    <option value="FECHADO">Fechado</option>
+                    <option value="MANUTENCAO">Em Manutenção</option>
+                </select>
             </div>
 
             <!-- Plano de dieta -->
-            <div class="mb-3">
-                <label class="form-label">Plano de Dieta:</label>
-                <select name="planoDietaId" class="form-select">
-                    <option value="">Nenhum</option>
-                    <option th:each="p : ${planosDieta}" th:value="${p.id}" th:text="${p.nome}"></option>
-                </select>
-            </div>
-
-            <!-- Animais -->
-            <div class="mb-3">
-                <label class="form-label">Animais:</label>
-                <select name="animaisIds" id="animaisIds" multiple class="form-select form-select-sm" style="max-width: 300px;">
-                    <option th:each="a : ${animais}" th:value="${a.id}" th:text="${a.nome}"></option>
-                </select>
+            <div class="mb-3 p-3 border rounded bg-light">
+                <h5 class="form-label">Novo Plano de Dieta</h5>
+                <p class="form-text text-muted">Crie o plano de dieta que será associado a este recinto.</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="planoCarne" class="form-label">Quantidade de Carne (g):</label>
+                        <input id="planoCarne" name="quantidadeCarne" type="number" class="form-control" value="0" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="planoVegetais" class="form-label">Quantidade de Vegetais (g):</label>
+                        <input id="planoVegetais" name="quantidadeVegetais" type="number" class="form-control" value="0" required>
+                    </div>
+                </div>
             </div>
 
             <!-- Tratadores -->

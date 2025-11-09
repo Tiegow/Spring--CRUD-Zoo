@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,9 +19,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.ufrn.SIGZoo.model.dto.RecintoDTO;
-import com.ufrn.SIGZoo.service.RecintoService;
 
 @RestController
 @RequestMapping("/api/recintos")
@@ -87,19 +85,19 @@ public class RecintoController {
 
     @GetMapping("/area")
     public ResponseEntity<List<RecintoDTO>> filtroArea(
-            @RequestParam Float minimo,
-            @RequestParam Float maximo
+            @RequestParam Optional<Float> minimo,
+            @RequestParam Optional<Float> maximo
     ) {
-        List<RecintoDTO> lista = recintoService.buscarPorArea(minimo, maximo);
+        List<RecintoDTO> lista = recintoService.buscarPorArea(minimo.orElse(null), maximo.orElse(null));
         return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/populacao")
     public ResponseEntity<List<RecintoDTO>> filtroPopulacao(
-            @RequestParam Integer minimo,
-            @RequestParam Integer maximo
+            @RequestParam Optional<Integer> minimo,
+            @RequestParam Optional<Integer> maximo
     ) {
-        List<RecintoDTO> lista = recintoService.buscarPorPopulacao(minimo, maximo);
+        List<RecintoDTO> lista = recintoService.buscarPorPopulacao(minimo.orElse(null), maximo.orElse(null));
         return ResponseEntity.ok(lista);
     }
 

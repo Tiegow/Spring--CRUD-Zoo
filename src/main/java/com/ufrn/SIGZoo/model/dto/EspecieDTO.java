@@ -10,7 +10,7 @@ public class EspecieDTO {
 
     private float expectativaVida;
 
-    private String areaAdequada;
+    private float areaAdequada;
     
     private Integer tamanhoMinimoGrupo;
     
@@ -41,11 +41,11 @@ public class EspecieDTO {
         this.expectativaVida = expectativaVida;
     }
 
-    public String getAreaAdequada() {
+    public float getAreaAdequada() {
         return areaAdequada;
     }
 
-    public void setAreaAdequada(String areaAdequada) {
+    public void setAreaAdequada(float areaAdequada) {
         this.areaAdequada = areaAdequada;
     }
 

@@ -19,12 +19,6 @@ public class Recinto {
     private float areaHabitavel;
 
     @Column
-    private Integer populacao;
-
-    @Column
-    private String tipo;
-
-    @Column
     private String status;
 
     @ManyToOne
@@ -58,14 +52,6 @@ public class Recinto {
         return nome;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -77,15 +63,6 @@ public class Recinto {
     public void setAreaHabitavel(Float areaHabitavel) {
         this.areaHabitavel = areaHabitavel;
     }
-
-    public Integer getPopulacao() {
-        return populacao;
-    }
-
-    public void setPopulacao(Integer populacao) {
-        this.populacao = populacao;
-    }
-
 
     public String getStatus() {
         return status;
