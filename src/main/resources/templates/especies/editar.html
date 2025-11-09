@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espécies - Editar</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h1 class="mb-1"><i class="fa-solid fa-otter me-2"></i>Editar Registro - Espécie</h1>
+        <p class="mb-4">
+            <span th:text="${especie.nome}"></span>
+        </p>
+    </div>
+
+    <div class="container edit-form">
+        <form id="edit-especie-form" th:attr="data-id=${especie.id}">
+            
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input required type="text" id="nome" name="nome" class="form-control"
+                       th:value="${especie.nome}">
+            </div>
+
+            <div class="mb-3">
+                <label for="expectativaVida" class="form-label">Expectativa de Vida:</label>
+                <input required type="number" step="0.1" id="expectativaVida" name="expectativaVida" class="form-control"
+                       th:value="${especie.expectativaVida}">
+            </div>
+
+            <div class="mb-3">
+                <label for="areaAdequada" class="form-label">Área Adequada:</label>
+                <input required type="text" id="areaAdequada" name="areaAdequada" class="form-control"
+                       th:value="${especie.areaAdequada}">
+            </div>
+
+            <div class="mb-3">
+                <label for="tamanhoMinimoGrupo" class="form-label">Tamanho Mínimo do Grupo:</label>
+                <input required type="number" id="tamanhoMinimoGrupo" name="tamanhoMinimoGrupo" class="form-control"
+                       th:value="${especie.tamanhoMinimoGrupo}">
+            </div>
+
+            <div class="mb-3">
+                <label for="tamanhoMaximoGrupo" class="form-label">Tamanho Máximo do Grupo:</label>
+                <input required type="number" id="tamanhoMaximoGrupo" name="tamanhoMaximoGrupo" class="form-control"
+                       th:value="${especie.tamanhoMaximoGrupo}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/especies}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/especiesPages/editar.js}"></script>
+</body>
+</html>

@@ -19,19 +19,19 @@ public class Recinto {
     private float areaHabitavel;
 
     @Column
+    private String tipo;
+
+    @Column
     private String status;
 
-    // Um plano de dieta pode estar em vários recintos
     @ManyToOne
     @JoinColumn(name = "plano_dieta_id")
     private PlanoDieta planoDieta;
 
-    // Um recinto pode ter vários animais
     @OneToMany(mappedBy = "recinto")
     @JsonManagedReference
     private List<Animal> animais;
 
-    // Um recinto pode ter vários tratadores, e um tratador pode cuidar de vários recintos
     @ManyToMany
     @JoinTable(
         name = "recinto_tratador",
@@ -51,7 +51,27 @@ public class Recinto {
         this.id = id;
     }
 
+<<<<<<< Updated upstream
     public float getAreaHabitavel() {
+=======
+    public String getNome() {
+        return nome;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getAreaHabitavel() {
+>>>>>>> Stashed changes
         return areaHabitavel;
     }
 

@@ -1,11 +1,23 @@
 package com.ufrn.SIGZoo.service;
 
+<<<<<<< Updated upstream
+=======
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+>>>>>>> Stashed changes
 import com.ufrn.SIGZoo.model.dto.RecintoDTO;
 import com.ufrn.SIGZoo.model.entity.PlanoDieta;
 import com.ufrn.SIGZoo.model.entity.Recinto;
 import com.ufrn.SIGZoo.model.entity.Tratador;
 import com.ufrn.SIGZoo.repository.PlanoDietaRepository;
 import com.ufrn.SIGZoo.repository.RecintoRepository;
+<<<<<<< Updated upstream
 import com.ufrn.SIGZoo.repository.TratadorRepository; 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList; 
+=======
+import com.ufrn.SIGZoo.repository.TratadorRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+>>>>>>> Stashed changes
 @Service
 public class RecintoService {
 
@@ -28,6 +47,7 @@ public class RecintoService {
     private PlanoDietaRepository planoDietaRepository;
 
     @Autowired
+<<<<<<< Updated upstream
     private TratadorRepository tratadorRepository; 
 
     @Transactional(readOnly = true)
@@ -113,3 +133,114 @@ public class RecintoService {
         return recintoRepository.count();
     }
 }
+=======
+    private TratadorRepository tratadorRepository;
+
+    
+    // CREATE    
+    @Transactional
+    public RecintoDTO criar(RecintoDTO dto) {
+        Recinto recinto = toEntity(dto);
+
+        recintoRepository.save(recinto);
+        return toDTO(recinto);
+    }
+
+    
+    // DELETE
+    @Transactional
+    public void deletar(Integer id) {
+        Recinto recinto = recintoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Recinto não encontrado."));
+        recintoRepository.delete(recinto);
+    }
+
+    
+    // UPDATE
+    @Transactional
+    public RecintoDTO atualizar(Integer id, RecintoDTO dto) {
+        Recinto existente = recintoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Recinto não encontrado."));
+
+        existente.setNome(dto.getNome());
+        existente.setTipo(dto.getTipo());
+        existente.setStatus(dto.getStatus());
+        existente.setAreaHabitavel(dto.getAreaHabitavel());
+
+        if (dto.getPlanoDietaId() != null) {
+            PlanoDieta plano = planoDietaRepository.findById(dto.getPlanoDietaId())
+                .orElseThrow(() -> new EntityNotFoundException("Plano de dieta não encontrado."));
+            existente.setPlanoDieta(plano);
+        }
+
+        if (dto.getTratadoresIds() != null) {
+            List<Tratador> tratadores = tratadorRepository.findAllById(dto.getTratadoresIds());
+            existente.setTratadores(tratadores);
+        }
+
+        recintoRepository.save(existente);
+        return toDTO(existente);
+    }
+
+    
+    // READ
+    @Transactional(readOnly = true)
+    public Page<RecintoDTO> listarTodos(Pageable pageable) {
+        Page<Recinto> page = recintoRepository.findAll(pageable);
+        return page.map(this::toDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public RecintoDTO buscarPorId(Integer id) {
+        Recinto recinto = recintoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Recinto não encontrado."));
+        return toDTO(recinto);
+    }
+
+    // MAPPER: ENTITY → DTO
+    private RecintoDTO toDTO(Recinto recinto) {
+        RecintoDTO dto = new RecintoDTO();
+
+        dto.setId(recinto.getId());
+        dto.setNome(recinto.getNome());
+        dto.setStatus(recinto.getStatus());
+        dto.setTipo(recinto.getTipo());
+        dto.setAreaHabitavel(recinto.getAreaHabitavel());
+
+        if (recinto.getPlanoDieta() != null)
+            dto.setPlanoDietaId(recinto.getPlanoDieta().getId());
+
+        if (recinto.getTratadores() != null)
+            dto.setTratadoresIds(recinto.getTratadores().stream()
+                .map(t -> t.getId())
+                .collect(Collectors.toList()));
+
+        return dto;
+    }
+
+    
+    // MAPPER: DTO → ENTITY
+    private Recinto toEntity(RecintoDTO dto) {
+        Recinto recinto = new Recinto();
+
+        recinto.setId(dto.getId());
+        recinto.setNome(dto.getNome());
+        recinto.setTipo(dto.getTipo());
+        recinto.setStatus(dto.getStatus());
+        recinto.setAreaHabitavel(dto.getAreaHabitavel());
+
+        if (dto.getPlanoDietaId() != null) {
+            PlanoDieta plano = planoDietaRepository.findById(dto.getPlanoDietaId())
+                .orElseThrow(() -> new EntityNotFoundException("Plano de dieta não encontrado."));
+            recinto.setPlanoDieta(plano);
+        }
+
+        if (dto.getTratadoresIds() != null) {
+            List<Tratador> tratadores = tratadorRepository.findAllById(dto.getTratadoresIds());
+            recinto.setTratadores(tratadores);
+        }
+
+        return recinto;
+    }
+}
+>>>>>>> Stashed changes

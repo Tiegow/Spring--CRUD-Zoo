@@ -1,31 +1,20 @@
 package com.ufrn.SIGZoo.model.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.ufrn.SIGZoo.model.entity.Evento;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 public class EventoDTO {
-    
-     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
-
-    @Column
     private String nome;
-
-    @Column
     private Date data;
-
-    @Column
     private Integer capacidade;
-
-    @Column
     private String tipo;
+
+    // IDs dos recintos associados ao evento
+    private List<Integer> recintosIds;
 
     public EventoDTO() {}
 
@@ -69,15 +58,23 @@ public class EventoDTO {
         this.tipo = tipo;
     }
 
+    public List<Integer> getRecintosIds() {
+        return recintosIds;
+    }
+
+    public void setRecintosIds(List<Integer> recintosIds) {
+        this.recintosIds = recintosIds;
+    }
+
     public Evento toEntity(){
         Evento evento = new Evento();
 
-        evento.setCapacidade(this.getCapacidade());
-        evento.setData(this.getData());
         evento.setId(this.getId());
         evento.setNome(this.getNome());
+        evento.setData(this.getData());
+        evento.setCapacidade(this.getCapacidade());
         evento.setTipo(this.getTipo());
-
+        
         return evento;
     }
 }

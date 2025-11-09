@@ -77,28 +77,32 @@ public class EspecieService {
 
     @Transactional(readOnly = true)
     public EspecieDTO buscarPorId(Integer id){
-        Especie especie = especieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));;
+        Especie especie = especieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Espécie não encontrada."));;
         return toDTO(especie);
     }
 
     @Transactional(readOnly = true)
     public EspecieDTO buscarPorNome(String nome){
-        Especie especie = especieRepository.findByNome(nome).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado."));;
+        Especie especie = especieRepository.findByNome(nome).orElseThrow(() -> new EntityNotFoundException("Espécie não encontrada."));;
         return toDTO(especie);
     }
 
     @Transactional(readOnly = true)
-    public List<EspecieDTO> buscarPorExpectativaVidaMenorQue(Integer idade) {
-        List<Especie> especies = especieRepository.findByExpectativaVidaLessThan(idade);
+    public List<EspecieDTO> buscarPorExpectativaVida(Integer min, Integer max) {
+        List<Especie> especies = especieRepository.findByExpectativaVidaBetween(
+            min.floatValue(), max.floatValue()
+        );
         return listDTO(especies);
     }
 
     @Transactional(readOnly = true)
-    public List<EspecieDTO> buscarPorExpectativaVidaMaiorQue(Integer idade) {
-        List<Especie> especies = especieRepository.findByExpectativaVidaGreaterThan(idade);
+    public List<EspecieDTO> buscarPorTamanhoGrupo(Integer min, Integer max) {
+        List<Especie> especies =
+            especieRepository
+                .findByTamanhoMinimoGrupoGreaterThanEqualAndTamanhoMaximoGrupoLessThanEqual(min, max);
+
         return listDTO(especies);
     }
-
 
     private EspecieDTO toDTO(Especie especie){
 

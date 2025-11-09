@@ -1,12 +1,16 @@
 package com.ufrn.SIGZoo.model.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Evento {
@@ -26,6 +30,15 @@ public class Evento {
 
     @Column
     private String tipo;
+
+    @ManyToMany
+    @JoinTable(
+        name = "evento_recinto",
+        joinColumns = @JoinColumn(name = "evento_id"),
+        inverseJoinColumns = @JoinColumn(name = "recinto_id")
+    )
+    private List<Recinto> recintos;
+
 
     public Evento() {}
 
@@ -67,6 +80,13 @@ public class Evento {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public List<Recinto> getRecintos() { 
+        return recintos; 
+    }
+    public void setRecintos(List<Recinto> recintos) { 
+        this.recintos = recintos; 
     }
 
 }

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 const form = document.getElementById('add-form');
 
 form.addEventListener('submit', (event) => {
@@ -32,4 +33,29 @@ form.addEventListener('submit', (event) => {
     .catch(error => {
         console.error('Erro na requisição:', error);
     });
+=======
+const form = document.getElementById("novo-recinto-form");
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    data.tratadoresIds = formData.getAll("tratadoresIds");
+
+    fetch("/api/recintos/criar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(resp => {
+        if (resp.ok) {
+            alert("Recinto criado com sucesso!");
+            window.location.href = "/recintos";
+            return;
+        }
+        return resp.json().then(err => alert(err.message));
+    })
+    .catch(err => alert("Erro de conexão."));
+>>>>>>> Stashed changes
 });

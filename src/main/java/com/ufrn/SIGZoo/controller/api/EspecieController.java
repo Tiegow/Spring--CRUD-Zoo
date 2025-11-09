@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.SIGZoo.model.dto.EspecieDTO;
@@ -55,15 +56,19 @@ public class EspecieController {
         return ResponseEntity.ok(especies);
     }
 
-    @GetMapping("/expectativa_vida_maior_que/{idade}")
-    public ResponseEntity<List<EspecieDTO>> listarPorExpectativaVidaMaiorQue(@PathVariable Integer idade) {
-        List<EspecieDTO> listaEspecies = especieService.buscarPorExpectativaVidaMaiorQue(idade);
-        return ResponseEntity.ok(listaEspecies);
+    @GetMapping("/expectativa")
+    public List<EspecieDTO> filtroExpectativa(
+        @RequestParam Float maiorQue,
+        @RequestParam Float menorQue
+    ) {
+        return especieService.buscarPorExpectativaVida(maiorQue.intValue(), menorQue.intValue());
     }
 
-    @GetMapping("/expectativa_vida_menor_que/{idade}")
-    public ResponseEntity<List<EspecieDTO>> listarPorExpectativaVidaMenorQue(@PathVariable Integer idade) {
-        List<EspecieDTO> listaEspecies = especieService.buscarPorExpectativaVidaMenorQue(idade);
-        return ResponseEntity.ok(listaEspecies);
+    @GetMapping("/grupo")
+    public List<EspecieDTO> filtroGrupo(
+        @RequestParam Integer minimo,
+        @RequestParam Integer maximo
+    ) {
+        return especieService.buscarPorTamanhoGrupo(minimo, maximo);
     }
 }

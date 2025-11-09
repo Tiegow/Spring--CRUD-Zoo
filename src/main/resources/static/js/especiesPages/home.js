@@ -1,60 +1,68 @@
 const tabela = document.getElementById('tabela-especies');
+const filtroTipo = document.getElementById('filtro-tipo');
 
-document.getElementById('filtro-tipo').addEventListener('change', function () {
-    const tipo = this.value;
+// Containers dos filtros
+const filtroExpectativa = document.getElementById('expectativa');
+const filtroGrupo = document.getElementById('grupo');
 
-    const filtroExpectativa = document.getElementById('expectativa');
-    const filtroGrupo = document.getElementById('grupo');
+
+// Alternar filtros visuais
+filtroTipo.addEventListener('change', function () {
 
     filtroExpectativa.classList.add('d-none');
     filtroGrupo.classList.add('d-none');
 
-    switch (tipo) {
-        case 'Expectativa de Vida':
-            filtroExpectativa.classList.remove('d-none');
-            break;
+    if (this.value === 'Expectativa de Vida') {
+        filtroExpectativa.classList.remove('d-none');
+    }
 
-        case 'Tamanho de Grupo':
-            filtroGrupo.classList.remove('d-none');
-            break;
+    if (this.value === 'Tamanho de Grupo') {
+        filtroGrupo.classList.remove('d-none');
     }
 });
 
+
+// Aplicar filtro
 document.getElementById('btn-aplicar-filtro').addEventListener('click', function () {
-    const tipo = document.getElementById('filtro-tipo').value;
+    const tipo = filtroTipo.value;
 
     if (tipo === 'Expectativa de Vida') {
-        const maiorQue = document.getElementById('filtro-expectativa-maior-que').value;
-        const menorQue = document.getElementById('filtro-expectativa-menor-que').value;
-        fetch(`/api/especies/expectativa?maiorQue=${maiorQue}&menorQue=${menorQue}`)
-            .then(response => response.json())
-            .then(data => {
-                criarTabela(data, tabela);
-            });
+
+        const min = document.getElementById('filtro-expectativa-maior-que').value || 0;
+        const max = document.getElementById('filtro-expectativa-menor-que').value || 9999;
+
+        fetch(`/api/especies/expectativa?maiorQue=${min}&menorQue=${max}`)
+            .then(r => r.json())
+            .then(d => criarTabela(d, tabela));
 
     } else if (tipo === 'Tamanho de Grupo') {
-        const minimo = document.getElementById('filtro-grupo-minimo').value;
-        const maximo = document.getElementById('filtro-grupo-maximo').value;
-        fetch(`/api/especies/grupo?minimo=${minimo}&maximo=${maximo}`)
-            .then(response => response.json())
-            .then(data => {
-                criarTabela(data, tabela);
-            });
+
+        const min = document.getElementById('filtro-grupo-min').value || 0;
+        const max = document.getElementById('filtro-grupo-max').value || 9999;
+
+        fetch(`/api/especies/grupo?minimo=${min}&maximo=${max}`)
+            .then(r => r.json())
+            .then(d => criarTabela(d, tabela));
     }
 });
 
+
+// Limpar filtros
 document.getElementById('btn-limpar-filtro').addEventListener('click', function () {
+
     fetch('/api/especies')
-        .then(response => response.json())
-        .then(data => {
-            criarTabela(data, tabela);
-        });
+        .then(r => r.json())
+        .then(d => criarTabela(d, tabela));
 });
 
+
+// Atualizar tabela
 function criarTabela(data, tabela) {
     tabela.innerHTML = '';
+
     data.forEach(especie => {
         const linha = document.createElement('tr');
+
         linha.innerHTML = `
             <td>${especie.id}</td>
             <td>${especie.nome}</td>
@@ -62,19 +70,12 @@ function criarTabela(data, tabela) {
             <td>${especie.areaAdequada}</td>
             <td>${especie.tamanhoMinimoGrupo}</td>
             <td>${especie.tamanhoMaximoGrupo}</td>
+            <td>
+                <a href="/especies/${especie.id}">
+                    <i class="fa-solid fa-circle-info fa-lg"></i>
+                </a>
+            </td>
         `;
-
-        const infoTd = document.createElement('td');
-        const a = document.createElement('a');
-        a.href = `/especies/${especie.id}`;
-        a.title = "Ver detalhes";
-
-        const icon = document.createElement('i');
-        icon.className = 'fa-solid fa-circle-info fa-lg';
-
-        a.appendChild(icon);
-        infoTd.appendChild(a);
-        linha.appendChild(infoTd);
 
         tabela.appendChild(linha);
     });

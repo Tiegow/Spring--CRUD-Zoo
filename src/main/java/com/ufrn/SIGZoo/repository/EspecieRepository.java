@@ -13,15 +13,18 @@ import com.ufrn.SIGZoo.model.entity.Especie;
 
 @Repository
 public interface EspecieRepository extends JpaRepository<Especie, Integer>{
+
     Optional<Especie> findById(Integer id);
     Optional<Especie> findByNome(String nome);
 
-    List<Especie> findByExpectativaVidaLessThan(float expectativaVida);
-    List<Especie> findByExpectativaVidaGreaterThan(float expectativaVida);
-
     Page<Especie> findAllByOrderByNome(Pageable pageable);
 
-    List<Especie> findByTamanhoMaximoGrupoLessThan(Integer tamanhoMaximoGrupo);
-    List<Especie> findByTamanhoMinimoGrupoGreaterThan(Integer tamanhoMaximoGrupo);
+    // Filtro por expectativa de vida (range)
+    List<Especie> findByExpectativaVidaBetween(Float min, Float max);
 
+    // Filtro por tamanho de grupo (range)
+    List<Especie> findByTamanhoMinimoGrupoGreaterThanEqualAndTamanhoMaximoGrupoLessThanEqual(
+        Integer min, Integer max
+    );
 }
+

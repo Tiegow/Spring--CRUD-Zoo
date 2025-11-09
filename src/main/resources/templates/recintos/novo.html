@@ -2,6 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+<<<<<<< Updated upstream
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recintos - Novo</title>
 
@@ -68,6 +69,55 @@
     </div>
 
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+=======
+    <title>Novo Recinto</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1><a th:href="@{/recintos}"><i class="fa-solid fa-angle-left"></i></a> Novo Recinto</h1>
+    </div>
+
+    <div class="container mt-3">
+        <form id="novo-recinto-form">
+
+            <div class="mb-3">
+                <label class="form-label">Nome:</label>
+                <input name="nome" type="text" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Área Habitável:</label>
+                <input name="areaHabitavel" type="text" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tipo:</label>
+                <input name="tipo" type="text" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status:</label>
+                <input name="status" type="text" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tratadores:</label>
+                <select multiple name="tratadoresIds" class="form-select">
+                    <option th:each="t : ${tratadores}" th:value="${t.id}" th:text="${t.nome}"></option>
+                </select>
+                <small>Use CTRL para selecionar múltiplos.</small>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Criar</button>
+            <a th:href="@{/recintos}" class="btn btn-secondary">Cancelar</a>
+
+        </form>
+    </div>
+
+>>>>>>> Stashed changes
     <script th:src="@{/js/recintosPages/novo.js}"></script>
 </body>
 </html>

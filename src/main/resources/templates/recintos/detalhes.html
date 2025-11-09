@@ -8,14 +8,25 @@
     <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
 </head>
+<<<<<<< Updated upstream
 <body>
     <div class="container mt-4">
         <h1 class="mb-4"><i class="fa-solid fa-house-chimney me-2"></i><span th:text="${recinto.nome}"></span></h1>
+=======
+
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">
+            <i class="fa-solid fa-house-circle-check me-2"></i>
+            <span th:text="${recinto.nome}"></span>
+        </h1>
+>>>>>>> Stashed changes
     </div>
 
     <div class="container">
         <div class="card">
             <div class="card-body">
+<<<<<<< Updated upstream
                 <h5 class="card-title mb-4">Detalhes do Recinto</h5>
 
                 <div class="row">
@@ -52,6 +63,62 @@
                         </dl>
                     </div>
                 </div>
+=======
+
+                <h5 class="card-title mb-4">Detalhes do Recinto</h5>
+
+                <dl class="row">
+
+                    <dt class="col-sm-4">ID:</dt>
+                    <dd class="col-sm-8" th:text="${recinto.id}"></dd>
+
+                    <dt class="col-sm-4">Nome:</dt>
+                    <dd class="col-sm-8" th:text="${recinto.nome}"></dd>
+
+                    <dt class="col-sm-4">Tipo:</dt>
+                    <dd class="col-sm-8" th:text="${recinto.tipo}"></dd>
+
+                    <dt class="col-sm-4">Status:</dt>
+                    <dd class="col-sm-8" th:text="${recinto.status}"></dd>
+
+                    <dt class="col-sm-4">Área Habitável:</dt>
+                    <dd class="col-sm-8" th:text="${recinto.areaHabitavel}"></dd>
+
+                    <dt class="col-sm-4">Plano de Dieta:</dt>
+                    <dd class="col-sm-8" th:text="${recinto.planoDietaId != null ? recinto.planoDietaId : 'Nenhum'}"></dd>
+
+                    <dt class="col-sm-4">Animais (IDs):</dt>
+                    <dd class="col-sm-8">
+                        <ul class="list-group">
+                            <li class="list-group-item"
+                                th:each="id : ${recinto.animaisIds}"
+                                th:text="'Animal ID: ' + ${id}">
+                            </li>
+
+                            <li class="list-group-item text-muted"
+                                th:if="${recinto.animaisIds == null or recinto.animaisIds.isEmpty()}">
+                                Nenhum animal associado.
+                            </li>
+                        </ul>
+                    </dd>
+
+                    <dt class="col-sm-4">Tratadores (IDs):</dt>
+                    <dd class="col-sm-8">
+                        <ul class="list-group">
+                            <li class="list-group-item"
+                                th:each="id : ${recinto.tratadoresIds}"
+                                th:text="'Tratador ID: ' + ${id}">
+                            </li>
+
+                            <li class="list-group-item text-muted"
+                                th:if="${recinto.tratadoresIds == null or recinto.tratadoresIds.isEmpty()}">
+                                Nenhum tratador associado.
+                            </li>
+                        </ul>
+                    </dd>
+
+                </dl>
+>>>>>>> Stashed changes
 
                 <div class="mt-3">
                     <a th:href="@{/recintos}" class="btn btn-secondary me-2">
@@ -62,15 +129,30 @@
                         <i class="fa-solid fa-pen-to-square me-1"></i>Editar
                     </a>
 
+<<<<<<< Updated upstream
                     <button type="button" class="btn btn-danger me-2" id="delete-btn" th:attr="data-id=${recinto.id}">
                         <i class="fa-solid fa-trash me-1"></i>Deletar
                     </button>
                 </div>
+=======
+                    <button type="button" class="btn btn-danger" id="delete-btn"
+                        th:attr="data-id=${recinto.id}">
+                        <i class="fa-solid fa-trash me-1"></i>Deletar
+                    </button>
+                </div>
+
+>>>>>>> Stashed changes
             </div>
         </div>
     </div>
 
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/recintosPages/detalhes.js}"></script>
+<<<<<<< Updated upstream
 </body>
 </html>
+=======
+
+</body>
+</html>
+>>>>>>> Stashed changes

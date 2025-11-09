@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 const tabela = document.getElementById('tabela-recintos');
 
 document.getElementById('filtro-tipo').addEventListener('change', function () {
@@ -85,3 +86,7 @@ function criarTabela(data, tabela) {
         tabela.appendChild(linha);
     });
 }
+=======
+// No momento, a home de recintos não possui filtros.
+console.log("Recintos - Home carregada.");
+>>>>>>> Stashed changes

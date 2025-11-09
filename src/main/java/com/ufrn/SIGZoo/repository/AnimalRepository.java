@@ -18,6 +18,11 @@ public interface AnimalRepository extends JpaRepository<Animal, Integer> {
 
     List<Animal> findAllByVeterinarioId(Integer veterinarioId);
 
+    List<Animal> findAllByEspecieId(Integer especieId);
+    
+    List<Animal> findAllByRecintoId(Integer recintoId);
+
+
     @Query("SELECT a FROM Animal a WHERE UPPER(TRIM(a.sexo)) = UPPER(TRIM(:sexo))")
     List<Animal> findAllBySexo(@Param("sexo") String sexo);
 }

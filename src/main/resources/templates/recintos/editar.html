@@ -2,6 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+<<<<<<< Updated upstream
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recintos - Editar</title>
 
@@ -49,10 +50,59 @@
                             th:value="${plano.id}" 
                             th:text="|ID ${plano.id}: C=${plano.quantidadeCarne}g, V=${plano.quantidadeVegetais}g|"
                             th:selected="${plano.id == recinto.planoDietaId}"> 
+=======
+    <title>Editar Recinto</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1>
+            <a th:href="@{/recintos}">
+                <i class="fa-solid fa-angle-left"></i>
+            </a>
+            Editar Recinto
+        </h1>
+        <p class="text-muted" th:text="${recinto.nome}"></p>
+    </div>
+
+    <div class="container mt-3">
+        <form id="editar-recinto-form" th:attr="data-id=${recinto.id}">
+
+            <div class="mb-3">
+                <label class="form-label">Nome:</label>
+                <input name="nome" type="text" class="form-control" th:value="${recinto.nome}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Área Habitável:</label>
+                <input name="areaHabitavel" type="text" class="form-control" th:value="${recinto.areaHabitavel}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tipo:</label>
+                <input name="tipo" type="text" class="form-control" th:value="${recinto.tipo}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status:</label>
+                <input name="status" class="form-control" th:value="${recinto.status}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tratadores:</label>
+                <select name="tratadoresIds" multiple class="form-select">
+                    <option th:each="t : ${tratadores}"
+                            th:value="${t.id}"
+                            th:text="${t.nome}"
+                            th:selected="${recinto.tratadoresIds.contains(t.id)}">
+>>>>>>> Stashed changes
                     </option>
                 </select>
             </div>
 
+<<<<<<< Updated upstream
             <div class="mb-3">
                 <label for="tratadorIds" class="form-label">Tratadores Responsáveis:</label>
                 <select multiple class="form-select" id="tratadorIds" name="tratadorIds" size="5">
@@ -74,3 +124,14 @@
     <script th:src="@{/js/recintosPages/editar.js}"></script>
 </body>
 </html>
+=======
+            <button class="btn btn-primary" type="submit">Salvar</button>
+            <a th:href="@{/recintos}" class="btn btn-secondary">Cancelar</a>
+
+        </form>
+    </div>
+
+    <script th:src="@{/js/recintosPages/editar.js}"></script>
+</body>
+</html>
+>>>>>>> Stashed changes

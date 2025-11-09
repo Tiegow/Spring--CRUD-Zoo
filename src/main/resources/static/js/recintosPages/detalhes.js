@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 const deleteBtn = document.getElementById('delete-btn');
 
 deleteBtn.addEventListener('click', () => {
@@ -27,3 +28,23 @@ deleteBtn.addEventListener('click', () => {
         alert('Erro de conexão. Não foi possível deletar.');
     });
 });
+=======
+document.getElementById("delete-btn").addEventListener("click", () => {
+    if (!confirm("Tem certeza que deseja excluir este recinto?")) return;
+
+    const id = document.getElementById("delete-btn").dataset.id;
+
+    fetch("/api/recintos/deletar/" + id, {
+        method: "DELETE"
+    })
+    .then(resp => {
+        if (resp.ok) {
+            alert("Recinto deletado.");
+            window.location.href = "/recintos";
+        } else {
+            resp.json().then(err => alert(err.message));
+        }
+    })
+    .catch(() => alert("Erro de conexão."));
+});
+>>>>>>> Stashed changes

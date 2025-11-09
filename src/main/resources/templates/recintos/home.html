@@ -2,12 +2,16 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+<<<<<<< Updated upstream
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+=======
+>>>>>>> Stashed changes
     <title>Recintos</title>
 
     <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
 </head>
+<<<<<<< Updated upstream
 <body>
     <div class="container mt-4">
         <h1 class="mb-4"><a th:href="@{/}"><i class="fa-solid fa-angle-left"></i></a>Recintos</h1>
@@ -50,12 +54,28 @@
                 <span><i class="fa-solid fa-plus fa-xs"></i></span>
             </a>
         </div>
+=======
+
+<body>
+    <div class="container mt-4">
+        <h1><a th:href="@{/}"><i class="fa-solid fa-angle-left"></i></a> Recintos</h1>
+    </div>
+
+    <div class="container mt-3 mb-2 d-flex justify-content-between">
+        <div></div>
+        <a th:href="@{/recintos/novo}"
+           class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow"
+           title="Adicionar recinto">
+            <span><i class="fa-solid fa-plus fa-xs"></i></span>
+        </a>
+>>>>>>> Stashed changes
     </div>
 
     <div class="container">
         <table class="table table-striped">
             <thead>
                 <tr>
+<<<<<<< Updated upstream
                     <th scope="col">ID</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Área Habitável</th>
@@ -73,6 +93,26 @@
                     <td>
                         <a th:href="@{/recintos/{id}(id=${recinto.id})}"
                         title="Ver detalhes">
+=======
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Status</th>
+                    <th>Tipo</th>
+                    <th>Área Habitável</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="r : ${recintos.content}">
+                    <td th:text="${r.id}"></td>
+                    <td th:text="${r.nome}"></td>
+                    <td th:text="${r.status}"></td>
+                    <td th:text="${r.tipo}"></td>
+                    <td th:text="${r.areaHabitavel}"></td>
+                    <td>
+                        <a th:href="@{/recintos/{id}(id=${r.id})}">
+>>>>>>> Stashed changes
                             <i class="fa-solid fa-circle-info fa-lg"></i>
                         </a>
                     </td>
@@ -81,7 +121,10 @@
         </table>
     </div>
 
+<<<<<<< Updated upstream
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+=======
+>>>>>>> Stashed changes
     <script th:src="@{/js/recintosPages/home.js}"></script>
 </body>
 </html>

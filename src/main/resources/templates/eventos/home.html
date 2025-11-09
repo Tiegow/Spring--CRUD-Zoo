@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- TÍTULO -->
+    <div class="container mt-4">
+        <h1 class="mb-4"><a th:href="@{/}"><i class="fa-solid fa-angle-left"></i></a>Eventos</h1>
+    </div>
+
+    <!-- FILTROS + BOTÃO -->
+    <div class="container d-flex justify-content-between mb-3">
+
+        <!-- FILTROS -->
+        <div class="d-flex align-items-center gap-3">
+
+            <!-- SELECT DO FILTRO -->
+            <select id="filtro-select" class="form-select form-select-sm" style="width: 160px;">
+                <option value="none" selected>Filtros</option>
+                <option value="capacidade">Capacidade</option>
+            </select>
+
+            <!-- CAMPOS DINÂMICOS -->
+            <div id="filtro-capacidade-container" class="d-none d-flex gap-2 align-items-center">
+
+                <label class="form-label mt-1">Capacidade:</label>
+
+                <input id="cap-min" type="number" class="form-control form-control-sm"
+                       style="width:120px;" placeholder="Mín">
+
+                <span class="mt-1">até</span>
+
+                <input id="cap-max" type="number" class="form-control form-control-sm"
+                       style="width:120px;" placeholder="Máx">
+            </div>
+
+            <button id="btn-filtrar" class="btn btn-primary btn-sm">Filtrar</button>
+            <button id="btn-limpar" class="btn btn-outline-secondary btn-sm">Limpar</button>
+        </div>
+
+        <!-- BOTÃO ADICIONAR -->
+        <a th:href="@{/eventos/novo}"
+           class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow"
+           title="Adicionar evento">
+            <i class="fa-solid fa-plus fa-xs"></i>
+        </a>
+    </div>
+
+    <!-- TABELA -->
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Data</th>
+                    <th>Capacidade</th>
+                    <th>Tipo</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="evento : ${eventos.content}">
+                    <td th:text="${evento.id}"></td>
+                    <td th:text="${evento.nome}"></td>
+                    <td th:text="${#dates.format(evento.data, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${evento.capacidade}"></td>
+                    <td th:text="${evento.tipo}"></td>
+
+                    <td>
+                        <a th:href="@{/eventos/{id}(id=${evento.id})}">
+                            <i class="fa-solid fa-circle-info fa-lg"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- PAGINAÇÃO -->
+        <nav aria-label="Navegação" th:if="${eventos.totalPages > 1}">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item" th:classappend="${eventos.first} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/eventos(page=${eventos.number - 1}, size=${eventos.size})}">
+                        Anterior
+                    </a>
+                </li>
+
+                <li class="page-item disabled">
+                    <span class="page-link"
+                          th:text="|Página ${eventos.number + 1} de ${eventos.totalPages}|"></span>
+                </li>
+
+                <li class="page-item" th:classappend="${eventos.last} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/eventos(page=${eventos.number + 1}, size=${eventos.size})}">
+                        Próximo
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+    <script th:src="@{/js/eventosPages/home.js}"></script>
+
+</body>
+</html>
