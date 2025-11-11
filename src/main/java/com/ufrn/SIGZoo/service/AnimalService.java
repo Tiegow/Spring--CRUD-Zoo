@@ -117,6 +117,9 @@ public class AnimalService {
         if (dto.getRecintoId() != null) {
             Recinto recinto = recintoRepository.findById(dto.getRecintoId())
                 .orElseThrow(() -> new EntityNotFoundException("Recinto com ID " + dto.getRecintoId() + " não encontrado."));
+            if (recinto.getStatus().equals("FECHADO")) {
+                throw new IllegalStateException("Não é possível atribuir um animal a um recinto fechado.");
+            }
             animal.setRecinto(recinto);
         } else {
             animal.setRecinto(null);

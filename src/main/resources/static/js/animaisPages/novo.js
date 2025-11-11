@@ -1,6 +1,7 @@
 const selectEspecie = document.getElementById('select-especie');
 const selectRecinto = document.getElementById('select-recinto');
 const avisoArea = document.getElementById('recinto-aviso-area');
+const errorMessageContainer = document.getElementById('form-error-message');
 
 function verificarAreas() {
     const especieOption = selectEspecie.options[selectEspecie.selectedIndex];
@@ -29,6 +30,11 @@ const form = document.getElementById('add-form');
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
+    if (errorMessageContainer) {
+        errorMessageContainer.classList.add('d-none');
+        errorMessageContainer.textContent = ''; 
+    }
+
     const formData = new FormData(form);
 
     const data = {
@@ -40,11 +46,6 @@ form.addEventListener('submit', (event) => {
         recintoId: parseInt(formData.get('recintoId')) || null,
         veterinarioId: parseInt(formData.get('veterinarioId')) || null
     };
-
-    if (data.especieId === null) {
-        console.error('Erro: Por favor, selecione uma espécie.');
-        return;
-    }
 
     fetch('/api/animais/criar', {
         method: 'POST',
@@ -59,9 +60,20 @@ form.addEventListener('submit', (event) => {
             window.location.href = '/animais';
         } else {
             response.json().then(errData => {
-                console.error('Erro ao salvar o animal: ' + (errData.message || 'Verifique os dados.'));
+                const mensagemDeErro = errData.message || 'Verifique os dados informados.';
+                
+                console.error('Erro ao salvar o animal: ' + mensagemDeErro);
+
+                if (errorMessageContainer) {
+                    errorMessageContainer.textContent = mensagemDeErro;
+                    errorMessageContainer.classList.remove('d-none'); 
+                }
             }).catch(() => {
                 console.error('Erro ao salvar o animal. Verifique os dados.');
+                if (errorMessageContainer) {
+                    errorMessageContainer.textContent = 'Erro no servidor. Tente novamente mais tarde.';
+                    errorMessageContainer.classList.remove('d-none');
+                }
             });
         }
     })

@@ -21,8 +21,8 @@ public class Recinto {
     @Column
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "plano_dieta_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "plano_dieta_id", unique = true)
     private PlanoDieta planoDieta;
 
     @OneToMany(mappedBy = "recinto")

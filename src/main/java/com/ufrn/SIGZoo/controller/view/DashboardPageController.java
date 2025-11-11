@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ufrn.SIGZoo.service.AnimalService;
 import com.ufrn.SIGZoo.service.EspecieService;
+import com.ufrn.SIGZoo.service.EventoService;
 import com.ufrn.SIGZoo.service.FuncionarioService;
 import com.ufrn.SIGZoo.service.RecintoService;
 
@@ -27,12 +28,16 @@ public class DashboardPageController {
     @Autowired
     private EspecieService especieService;
 
+    @Autowired
+    private EventoService eventoService;
+
     @GetMapping("")
     public String dashboardPage(Model model) {
         model.addAttribute("qtdAnimais", animalService.obterQtdAnimais());
         model.addAttribute("qtdFuncionarios", funcionarioService.obterQtdFuncionarios());
         model.addAttribute("qtdRecintos", recintoService.obterQtdRecintos());
         model.addAttribute("qtdEspecies", especieService.obterQtdEspecies());
+        model.addAttribute("qtdEventos", eventoService.obterQtdEventos());
         
         return "home";
     }

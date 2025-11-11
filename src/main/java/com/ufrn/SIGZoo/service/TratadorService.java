@@ -36,6 +36,14 @@ public class TratadorService {
             throw new RNException("CPF já cadastrado no sistema.");
         }
 
+        if (tratador.getNascimento() != null && tratador.getNascimento().isAfter(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
+        }
+
+        if (tratador.getRemuneracao() < 0) {
+            throw new IllegalArgumentException("A remuneração não pode ser negativa.");
+        }
+
         tratador.setDataIngresso(java.time.LocalDate.now());
 
         Tratador novoTrat = tratador.toEntity();
@@ -47,6 +55,14 @@ public class TratadorService {
 
     @Transactional
     public TratadorDTO atualizar(Integer id, TratadorDTO tratadorAtualizadoDto) {
+        if (tratadorAtualizadoDto.getNascimento() != null && tratadorAtualizadoDto.getNascimento().isAfter(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
+        }
+
+        if (tratadorAtualizadoDto.getRemuneracao() < 0) {
+            throw new IllegalArgumentException("A remuneração não pode ser negativa.");
+        }
+
         Tratador tratadorExistente = tratadorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Tratador não encontrado."));
 
         funcionarioRepository.findByCpf(tratadorAtualizadoDto.getCpf()).ifPresent(funcPresente -> {

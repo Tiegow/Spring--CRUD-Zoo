@@ -2,6 +2,7 @@ const filtro = document.getElementById('filtro-cargo');
 const camposDinamicos = document.getElementById('campos-dinamicos');
 const submitBtn = document.getElementById('add-submit');
 const form = document.getElementById('add-form');
+const errorMessageContainer = document.getElementById('form-error-message');
 
 if (submitBtn) submitBtn.disabled = true;
 
@@ -36,6 +37,11 @@ filtro.addEventListener('change', () => {
 form.addEventListener('submit', (event) => {
     event.preventDefault(); 
 
+    if (errorMessageContainer) {
+        errorMessageContainer.classList.add('d-none');
+        errorMessageContainer.textContent = ''; 
+    }
+
     const cargo = filtro.value;
     let endpointUrl = '';
 
@@ -58,6 +64,24 @@ form.addEventListener('submit', (event) => {
             window.location.href = '/funcionarios';
             alert('Funcionário registrado com sucesso.');
             return;
+        } else {
+            response.json().then(errData => {
+                const mensagemDeErro = errData.message || 'Verifique os dados informados.';
+                
+                console.error('Erro ao salvar o funcionário: ' + mensagemDeErro);
+
+                if (errorMessageContainer) {
+                    errorMessageContainer.textContent = mensagemDeErro;
+                    errorMessageContainer.classList.remove('d-none'); 
+                }
+                
+            }).catch(() => {
+                console.error('Erro ao salvar o funcionário. Verifique os dados.');
+                if (errorMessageContainer) {
+                    errorMessageContainer.textContent = 'Erro no servidor. Tente novamente mais tarde.';
+                    errorMessageContainer.classList.remove('d-none');
+                }
+            });
         }
         return response.json()
             .then(errData => {
@@ -67,6 +91,9 @@ form.addEventListener('submit', (event) => {
     })
     .catch(error => {
         console.error('Erro na requisição:', error);
-        alert('Ocorreu um erro de conexão.');
+        if (errorMessageContainer) {
+            errorMessageContainer.textContent = 'Não foi possível conectar ao servidor. Verifique sua rede.';
+            errorMessageContainer.classList.remove('d-none');
+        }
     });
 });

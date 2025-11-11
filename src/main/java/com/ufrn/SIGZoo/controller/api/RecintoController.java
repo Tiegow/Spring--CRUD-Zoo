@@ -4,8 +4,6 @@ import com.ufrn.SIGZoo.model.dto.RecintoDTO;
 import com.ufrn.SIGZoo.service.RecintoService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -29,10 +27,6 @@ public class RecintoController {
     private RecintoService recintoService;
 
     @Operation(summary = "Cria um novo recinto")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Recinto criado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos")
-    })
     @PostMapping
     public ResponseEntity<RecintoDTO> criarRecinto(@Valid @RequestBody RecintoDTO recintoDTO) {
         RecintoDTO novoRecinto = recintoService.criar(recintoDTO);
@@ -40,7 +34,6 @@ public class RecintoController {
     }
 
     @Operation(summary = "Lista todos os recintos de forma paginada")
-    @ApiResponse(responseCode = "200", description = "Lista de recintos retornada")
     @GetMapping
     public ResponseEntity<Page<RecintoDTO>> listarRecintos(
             @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
@@ -49,10 +42,6 @@ public class RecintoController {
     }
 
     @Operation(summary = "Busca um recinto pelo ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Recinto encontrado"),
-        @ApiResponse(responseCode = "404", description = "Recinto não encontrado")
-    })
     @GetMapping("/{id}")
     public ResponseEntity<RecintoDTO> buscarRecintoPorId(@PathVariable Integer id) {
         RecintoDTO recinto = recintoService.buscarPorId(id);
@@ -60,11 +49,6 @@ public class RecintoController {
     }
 
     @Operation(summary = "Atualiza um recinto existente")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Recinto atualizado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Recinto não encontrado"),
-        @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos")
-    })
     @PutMapping("/{id}")
     public ResponseEntity<RecintoDTO> atualizarRecinto(@PathVariable Integer id, @Valid @RequestBody RecintoDTO recintoDTO) {
         RecintoDTO recintoAtualizado = recintoService.atualizar(id, recintoDTO);
@@ -72,17 +56,13 @@ public class RecintoController {
     }
 
     @Operation(summary = "Deleta um recinto")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Recinto deletado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Recinto não encontrado"),
-        @ApiResponse(responseCode = "409", description = "Conflito (ex: recinto não está vazio)")
-    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarRecinto(@PathVariable Integer id) {
         recintoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Filtra recintos por área")
     @GetMapping("/area")
     public ResponseEntity<List<RecintoDTO>> filtroArea(
             @RequestParam Optional<Float> minimo,
@@ -92,6 +72,7 @@ public class RecintoController {
         return ResponseEntity.ok(lista);
     }
 
+    @Operation(summary = "Filtra recintos por população")
     @GetMapping("/populacao")
     public ResponseEntity<List<RecintoDTO>> filtroPopulacao(
             @RequestParam Optional<Integer> minimo,

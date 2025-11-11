@@ -51,7 +51,6 @@ public class FuncionarioService {
         return funcionarioRepository.count();
     }
 
-    // Método "despachante" para deletar um funcionário
     @Transactional
     public void deletarFuncionario(Integer id) {
         Funcionario funcionario = funcionarioRepository.findById(id)

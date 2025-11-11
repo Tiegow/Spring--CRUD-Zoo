@@ -16,7 +16,6 @@ import com.ufrn.SIGZoo.model.entity.PlanoDieta;
 import com.ufrn.SIGZoo.model.entity.Recinto;
 import com.ufrn.SIGZoo.model.entity.Tratador;
 import com.ufrn.SIGZoo.repository.AnimalRepository;
-import com.ufrn.SIGZoo.repository.PlanoDietaRepository;
 import com.ufrn.SIGZoo.repository.RecintoRepository;
 import com.ufrn.SIGZoo.repository.TratadorRepository;
 
@@ -29,9 +28,6 @@ public class RecintoService {
 
     @Autowired
     private RecintoRepository recintoRepository;
-
-    @Autowired
-    private PlanoDietaRepository planoDietaRepository;
 
     @Autowired
     private TratadorRepository tratadorRepository;
@@ -47,12 +43,6 @@ public class RecintoService {
         if (recinto.getAnimais() != null && !recinto.getAnimais().isEmpty()) {
             throw new DataIntegrityViolationException("Não é possível deletar um recinto que contém animais.");
         }
-        
-        PlanoDieta plano = recinto.getPlanoDieta();
-        if (plano != null) {
-            recinto.setPlanoDieta(null);
-            planoDietaRepository.delete(plano);
-        }
 
         recintoRepository.delete(recinto);
     }
@@ -67,8 +57,7 @@ public class RecintoService {
 
         if (dto.getPlanoDieta() != null) {
             PlanoDieta novoPlano = dto.getPlanoDieta().toEntity();
-            PlanoDieta planoSalvo = planoDietaRepository.save(novoPlano);
-            recinto.setPlanoDieta(planoSalvo);
+            recinto.setPlanoDieta(novoPlano);
         }
         
         recinto = recintoRepository.save(recinto);
@@ -101,13 +90,11 @@ public class RecintoService {
                 planoParaAtualizar = existente.getPlanoDieta();
             } else {
                 planoParaAtualizar = new PlanoDieta();
+                existente.setPlanoDieta(planoParaAtualizar);
             }
             
             planoParaAtualizar.setQuantidadeCarne(dto.getPlanoDieta().getQuantidadeCarne());
             planoParaAtualizar.setQuantidadeVegetais(dto.getPlanoDieta().getQuantidadeVegetais());
-            
-            PlanoDieta planoSalvo = planoDietaRepository.save(planoParaAtualizar);
-            existente.setPlanoDieta(planoSalvo);
         } else {
             existente.setPlanoDieta(null);
         }

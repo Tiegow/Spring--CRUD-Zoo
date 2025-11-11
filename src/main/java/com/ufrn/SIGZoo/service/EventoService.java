@@ -140,4 +140,9 @@ public class EventoService {
 
         return evento;
     }
+
+    @Transactional(readOnly = true)
+    public Long obterQtdEventos() {
+        return eventoRepository.count();
+    }
 }

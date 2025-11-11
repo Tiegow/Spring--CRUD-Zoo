@@ -51,6 +51,9 @@
                 <input required type="text" class="form-control" id="crmv" name="crmv" placeholder="Ex: CRMV-SP 12345" th:value="${veterinario.crmv}">
             </div>
 
+            <div id="form-error-message" class="alert alert-danger d-none" role="alert">
+            </div>
+
             <button id="edit-submit" type="submit" class="btn btn-primary">Salvar</button>
             <a th:href="@{/funcionarios}" class="btn btn-secondary">Cancelar</a>
         </form>

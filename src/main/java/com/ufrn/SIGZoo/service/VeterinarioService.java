@@ -35,6 +35,14 @@ public class VeterinarioService {
             throw new RNException("CRMV já cadastrado no sistema.");
         }
 
+        if (veterinario.getNascimento() != null && veterinario.getNascimento().isAfter(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
+        }
+
+        if (veterinario.getRemuneracao() < 0) {
+            throw new IllegalArgumentException("A remuneração não pode ser negativa.");
+        }
+
         Veterinario novoVet = veterinario.toEntity();
 
         novoVet.setDataIngresso(java.time.LocalDate.now());
@@ -60,6 +68,14 @@ public class VeterinarioService {
                 throw new RNException("CRMV já cadastrado para outro veterinário.");
             }
         });   
+
+        if (vetAtualizadoDto.getNascimento() != null && vetAtualizadoDto.getNascimento().isAfter(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
+        }
+
+        if (vetAtualizadoDto.getRemuneracao() < 0) {
+            throw new IllegalArgumentException("A remuneração não pode ser negativa.");
+        }
 
         vetExistente.setNome(vetAtualizadoDto.getNome());
         vetExistente.setCpf(vetAtualizadoDto.getCpf()); 
