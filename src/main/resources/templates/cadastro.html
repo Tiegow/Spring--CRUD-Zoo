@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGZOO - Cadastro</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container pt-5">
+        <div class="card card-login shadow-sm bg-light rounded mt-5 mx-auto" style="width: 20rem;">
+        <div class="card-body bg-light">
+            <h3 class="text-center mb-4">Novo Usuário</h3>
+
+            <div th:if="${mensagemErro}" class="alert alert-danger" th:text="${mensagemErro}"></div>
+
+            <form th:action="@{/cadastro}" th:object="${usuario}" method="post">
+                
+                <div class="mb-3">
+                    <label class="form-label">E-mail</label>
+                    <input type="email" class="form-control" th:field="*{email}" required placeholder="seu@email.com">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-control" th:field="*{senha}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Perfil</label>
+                    <select class="form-select" th:field="*{perfil}">
+                        <option value="ADMIN">Administrador</option>
+                        <option value="CURADOR">Curador</option>
+                        <option value="GERENTE_OPERACOES">Gerente de Operações</option>
+                    </select>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <a th:href="@{/login}" class="btn btn-outline-secondary">Voltar para Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

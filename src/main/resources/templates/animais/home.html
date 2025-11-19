@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div>
+        <div sec:authorize="hasAnyRole('ADMIN', 'CURADOR')">
             <a th:href="@{/animais/novo}"
                  class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow add-animal-btn"
                  title="Adicionar animal">

@@ -87,11 +87,11 @@
                         <i class="fa-solid fa-arrow-left me-1"></i>Voltar
                     </a>
 
-                    <a th:href="@{/funcionarios/veterinario/editar/{id}(id=${veterinario.id})}" class="btn btn-primary me-2">
+                    <a sec:authorize="hasAnyRole('ADMIN')" th:href="@{/funcionarios/veterinario/editar/{id}(id=${veterinario.id})}" class="btn btn-primary me-2">
                         <i class="fa-solid fa-pen-to-square me-1"></i>Editar
                     </a>
 
-                    <button type="button" class="btn btn-danger me-2" id="delete-btn" th:attr="data-id=${veterinario.id}">
+                    <button sec:authorize="hasAnyRole('ADMIN')" type="button" class="btn btn-danger me-2" id="delete-btn" th:attr="data-id=${veterinario.id}">
                         <i class="fa-solid fa-trash me-1"></i>Deletar
                     </button>                
                 </div>

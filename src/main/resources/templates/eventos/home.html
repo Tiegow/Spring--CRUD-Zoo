@@ -47,7 +47,7 @@
         </div>
 
         <!-- BOTÃO ADICIONAR -->
-        <a th:href="@{/eventos/novo}"
+        <a sec:authorize="hasAnyRole('ADMIN', 'GERENTE_OPERACOES')" th:href="@{/eventos/novo}"
            class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow"
            title="Adicionar evento">
             <i class="fa-solid fa-plus fa-xs"></i>

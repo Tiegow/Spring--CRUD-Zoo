@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div>
+        <div sec:authorize="hasAnyRole('ADMIN', 'CURADOR')">
             <a th:href="@{/especies/novo}"
                  class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow add-especie-btn"
                  title="Adicionar espécie">

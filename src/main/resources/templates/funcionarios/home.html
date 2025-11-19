@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div>
+        <div sec:authorize="hasAnyRole('ADMIN')">
             <a th:href="@{/funcionarios/novo}"
                  class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow add-funcionario-btn"
                  title="Adicionar funcionário">
