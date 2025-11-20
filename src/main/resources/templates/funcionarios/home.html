@@ -88,6 +88,20 @@
                 </tr>
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation" th:if="${recintos.totalPages > 1}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${recintos.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{/recintos(page=${recintos.number - 1}, size=${recintos.size}, sort=${param.sort})}">Anterior</a>
+                </li>
+
+                <li class="page-item disabled"><span class="page-link" th:text="|Página ${recintos.number + 1} de ${recintos.totalPages}|"></span></li>
+
+                <li class="page-item" th:classappend="${recintos.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{/recintos(page=${recintos.number + 1}, size=${recintos.size}, sort=${param.sort})}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>

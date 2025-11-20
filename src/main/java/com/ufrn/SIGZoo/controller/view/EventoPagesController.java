@@ -2,13 +2,12 @@ package com.ufrn.SIGZoo.controller.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ufrn.SIGZoo.model.dto.EventoDTO;
 import com.ufrn.SIGZoo.service.EventoService;
@@ -25,15 +24,8 @@ public class EventoPagesController {
     private RecintoService recintoService;
 
     @GetMapping("")
-    public String eventosHome(
-        @RequestParam(required = false) Integer minCap,
-        @RequestParam(required = false) Integer maxCap,
-        Model model,
-        Pageable pageable
-    ){
-        Page<EventoDTO> eventos = eventoService.listarPorCapacidade(pageable, minCap, maxCap);
-        model.addAttribute("eventos", eventos);
-
+    public String eventosHome(Model model, @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+        model.addAttribute("eventos", eventoService.listarTodos(pageable));
         return "eventos/home";
     }
 

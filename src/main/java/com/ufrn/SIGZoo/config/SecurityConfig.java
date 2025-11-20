@@ -17,11 +17,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/api/**") 
+                .ignoringRequestMatchers("/api/**", "/h2-console/**") 
+            )
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.disable())
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/webjars/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/cadastro").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
                 
                 // Áreas restritas por perfil
                 .requestMatchers("/admin/**").hasRole("ADMIN")

@@ -82,6 +82,20 @@
                 </tr>
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation" th:if="${especies.totalPages > 1}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${especies.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{/especies(page=${especies.number - 1}, size=${especies.size}, sort=${param.sort})}">Anterior</a>
+                </li>
+
+                <li class="page-item disabled"><span class="page-link" th:text="|Página ${especies.number + 1} de ${especies.totalPages}|"></span></li>
+
+                <li class="page-item" th:classappend="${especies.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{/especies(page=${especies.number + 1}, size=${especies.size}, sort=${param.sort})}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>

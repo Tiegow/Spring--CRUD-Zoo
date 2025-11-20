@@ -86,28 +86,17 @@
         </table>
 
         <!-- PAGINAÇÃO -->
-        <nav aria-label="Navegação" th:if="${eventos.totalPages > 1}">
+        <nav aria-label="Page navigation" th:if="${eventos.totalPages > 1}">
             <ul class="pagination justify-content-center">
-
                 <li class="page-item" th:classappend="${eventos.first} ? 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/eventos(page=${eventos.number - 1}, size=${eventos.size})}">
-                        Anterior
-                    </a>
+                    <a class="page-link" th:href="@{/eventos(page=${eventos.number - 1}, size=${eventos.size}, sort=${param.sort})}">Anterior</a>
                 </li>
 
-                <li class="page-item disabled">
-                    <span class="page-link"
-                          th:text="|Página ${eventos.number + 1} de ${eventos.totalPages}|"></span>
-                </li>
+                <li class="page-item disabled"><span class="page-link" th:text="|Página ${eventos.number + 1} de ${eventos.totalPages}|"></span></li>
 
                 <li class="page-item" th:classappend="${eventos.last} ? 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/eventos(page=${eventos.number + 1}, size=${eventos.size})}">
-                        Próximo
-                    </a>
+                    <a class="page-link" th:href="@{/eventos(page=${eventos.number + 1}, size=${eventos.size}, sort=${param.sort})}">Próximo</a>
                 </li>
-
             </ul>
         </nav>
     </div>
