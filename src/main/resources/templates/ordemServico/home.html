@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordens de Serviço</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- TÍTULO -->
+    <div class="container mt-4">
+        <h1 class="mb-4">
+            <h1 class="mb-4"><a th:href="@{/}"><i class="fa-solid fa-angle-left"></i></a>Ordens de Serviço</h1>
+        </h1>
+    </div>
+
+    <!-- FILTROS + BOTÃO -->
+    <div class="container d-flex justify-content-between mb-3">
+
+        <!-- FILTROS -->
+        <div class="d-flex align-items-center gap-3">
+
+            <!-- SELECT DO FILTRO -->
+            <select id="filtro-select" class="form-select form-select-sm" style="width: 200px;">
+                <option value="none" selected>Filtros</option>
+                <option value="status">Status</option>
+                <option value="data">Intervalo de Datas</option>
+            </select>
+
+            <!-- FILTRO STATUS -->
+            <div id="filtro-status-container" class="d-none">
+                <select id="status-select" class="form-select form-select-sm" style="width: 160px;">
+                    <option value="">Selecione</option>
+                    <option value="ABERTA">Aberta</option>
+                    <option value="EM_ANDAMENTO">Em andamento</option>
+                    <option value="CONCLUIDA">Concluída</option>
+                </select>
+            </div>
+
+            <!-- FILTRO DATA -->
+            <div id="filtro-data-container" class="d-none d-flex gap-2 align-items-center">
+                <label class="form-label mt-1">Início:</label>
+                <input id="data-inicio" type="date" class="form-control form-control-sm" style="width:150px;">
+
+                <label class="form-label mt-1">Fim:</label>
+                <input id="data-fim" type="date" class="form-control form-control-sm" style="width:150px;">
+            </div>
+
+            <button id="btn-filtrar" class="btn btn-primary btn-sm">Filtrar</button>
+            <button id="btn-limpar" class="btn btn-outline-secondary btn-sm">Limpar</button>
+        </div>
+
+        <!-- BOTÃO ADICIONAR -->
+        <a th:href="@{/ordens/novo}"
+           class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow"
+           title="Criar ordem de serviço">
+            <i class="fa-solid fa-plus fa-xs"></i>
+        </a>
+    </div>
+
+    <!-- TABELA -->
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Status</th>
+                <th>Início</th>
+                <th>Conclusão</th>
+                <th>Local</th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="os : ${ordens.content}">
+                <td th:text="${os.id}"></td>
+                <td th:text="${os.descricao}"></td>
+                <td th:text="${os.status}"></td>
+                <td th:text="${#dates.format(os.dataInicio, 'dd/MM/yyyy')}"></td>
+                <td th:text="${#dates.format(os.dataConclusao, 'dd/MM/yyyy')}"></td>
+                <td th:text="${os.local}"></td>
+
+                <td>
+                    <a th:href="@{/ordens/{id}(id=${os.id})}">
+                        <i class="fa-solid fa-circle-info fa-lg"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- PAGINAÇÃO -->
+        <nav aria-label="Page navigation" th:if="${ordens.totalPages > 1}">
+            <ul class="pagination justify-content-center">
+
+                <!-- anterior -->
+                <li class="page-item" th:classappend="${ordens.first} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/ordens(page=${ordens.number - 1}, size=${ordens.size}, sort=${param.sort})}">
+                        Anterior
+                    </a>
+                </li>
+
+                <li class="page-item disabled">
+                    <span class="page-link"
+                          th:text="|Página ${ordens.number + 1} de ${ordens.totalPages}|"></span>
+                </li>
+
+                <!-- próximo -->
+                <li class="page-item" th:classappend="${ordens.last} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/ordens(page=${ordens.number + 1}, size=${ordens.size}, sort=${param.sort})}">
+                        Próximo
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+    <script th:src="@{/js/ordemServicoPages/home.js}"></script>
+
+</body>
+</html>

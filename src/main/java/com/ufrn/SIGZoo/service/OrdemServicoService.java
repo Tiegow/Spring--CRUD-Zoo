@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ufrn.SIGZoo.model.dto.OrdemServicoDTO;
 import com.ufrn.SIGZoo.model.entity.Funcionario;
 import com.ufrn.SIGZoo.model.entity.OrdemServico;
-import com.ufrn.SIGZoo.model.entity.Tratador;
-import com.ufrn.SIGZoo.model.entity.Veterinario;
 import com.ufrn.SIGZoo.repository.FuncionarioRepository;
 import com.ufrn.SIGZoo.repository.OrdemServicoRepository;
 
@@ -32,10 +30,7 @@ public class OrdemServicoService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    // ============================================================
     // CRUD
-    // ============================================================
-
     @Transactional
     public OrdemServicoDTO criar(OrdemServicoDTO dto) {
         OrdemServico os = dto.toEntity();
