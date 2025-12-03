@@ -2,7 +2,6 @@ package com.ufrn.SIGZoo.service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,130 +29,106 @@ public class OrdemServicoService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    // CRUD
+    private OrdemServicoDTO toDTO(OrdemServico os) {
+        return OrdemServicoDTO.fromEntity(os);
+    }
+
+    // Criar
     @Transactional
     public OrdemServicoDTO criar(OrdemServicoDTO dto) {
-        OrdemServico os = dto.toEntity();
 
-        setFuncionariosFromDto(os, dto);
+        OrdemServico os = new OrdemServico();
+        os.setDescricao(dto.getDescricao());
+        os.setStatus(dto.getStatus());
+        os.setLocal(dto.getLocal());
+        os.setDataInicio(dto.getDataInicio());
+        os.setDataConclusao(dto.getDataConclusao());
 
-        OrdemServico salvo = ordemServicoRepository.save(os);
-        return OrdemServicoDTO.fromEntity(salvo);
+        List<Funcionario> funcionarios = dto.getFuncionariosIds()
+                .stream()
+                .map(id -> funcionarioRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Funcionário ID " + id + " não encontrado.")))
+                .collect(Collectors.toList());
+
+        os.setFuncionarios(funcionarios);
+
+        return toDTO(ordemServicoRepository.save(os));
     }
 
+    // Atualizar
     @Transactional
     public OrdemServicoDTO atualizar(Integer id, OrdemServicoDTO dto) {
-        OrdemServico existente = ordemServicoRepository.findById(id)
+
+        OrdemServico os = ordemServicoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ordem de Serviço não encontrada."));
 
-        existente.setDescricao(dto.getDescricao());
-        existente.setStatus(dto.getStatus());
-        existente.setDataInicio(dto.getDataInicio());
-        existente.setDataConclusao(dto.getDataConclusao());
-        existente.setLocal(dto.getLocal());
+        os.setDescricao(dto.getDescricao());
+        os.setStatus(dto.getStatus());
+        os.setDataInicio(dto.getDataInicio());
+        os.setDataConclusao(dto.getDataConclusao());
+        os.setLocal(dto.getLocal());
 
-        setFuncionariosFromDto(existente, dto);
+        if (dto.getFuncionariosIds() != null) {
+            List<Funcionario> funcionarios = dto.getFuncionariosIds()
+                    .stream()
+                    .map(fid -> funcionarioRepository.findById(fid)
+                            .orElseThrow(() -> new EntityNotFoundException("Funcionário ID " + fid + " não encontrado.")))
+                    .collect(Collectors.toList());
 
-        OrdemServico atualizado = ordemServicoRepository.save(existente);
-        return OrdemServicoDTO.fromEntity(atualizado);
+            os.setFuncionarios(funcionarios);
+        }
+
+        return toDTO(ordemServicoRepository.save(os));
     }
 
+    // Deletar
     @Transactional
     public void deletar(Integer id) {
         OrdemServico os = ordemServicoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ordem de Serviço não encontrada."));
-
         ordemServicoRepository.delete(os);
     }
 
+    // Buscar por ID
     @Transactional(readOnly = true)
     public OrdemServicoDTO buscarPorId(Integer id) {
         OrdemServico os = ordemServicoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ordem de Serviço não encontrada."));
-        return OrdemServicoDTO.fromEntity(os);
+        return toDTO(os);
     }
 
+    // Listar paginado
     @Transactional(readOnly = true)
     public Page<OrdemServicoDTO> listarTodos(Pageable pageable) {
-        Page<OrdemServico> page = ordemServicoRepository.findAll(pageable);
-        return page.map(OrdemServicoDTO::fromEntity);
+        return ordemServicoRepository.findAll(pageable)
+                .map(this::toDTO);
     }
 
-    @Transactional(readOnly = true)
-    public List<OrdemServicoDTO> listarTodosList() {
-        return ordemServicoRepository.findAll()
-                .stream()
-                .map(OrdemServicoDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
-    
-    @Transactional(readOnly = true)
-    public List<OrdemServicoDTO> buscarPorFuncionario(Integer funcionarioId) {
-        Funcionario func = funcionarioRepository.findById(funcionarioId)
-            .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
-
-        List<OrdemServico> ordens = ordemServicoRepository.findByFuncionariosContaining(func);
-
-        return ordens.stream()
-                .map(OrdemServicoDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-
-
-    // FILTROS ESPECIAIS
-    @Transactional(readOnly = true)
-    public List<OrdemServicoDTO> listarPorFuncionario(Integer funcionarioId) {
-        Funcionario func = funcionarioRepository.findById(funcionarioId)
-                .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
-
-        List<OrdemServico> ordens = ordemServicoRepository.findByFuncionariosContaining(func);
-
-        return ordens.stream()
-                .map(OrdemServicoDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
-
+    // Buscar por status - LIST
     @Transactional(readOnly = true)
     public List<OrdemServicoDTO> buscarPorStatus(String status) {
-        List<OrdemServico> ordens = ordemServicoRepository.findByStatus(status);
-        return ordens.stream().map(OrdemServicoDTO::fromEntity).collect(Collectors.toList());
+        return ordemServicoRepository.findByStatus(status)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
+    // Buscar por status - PAGINADO
+    @Transactional(readOnly = true)
+    public Page<OrdemServicoDTO> listarPorStatusPaginado(String status, Pageable pageable) {
+        return ordemServicoRepository.findByStatus(status, pageable)
+                .map(this::toDTO);
+    }
+
+    // FILTRO POR INTERVALO DE DATAS
+    public Page<OrdemServicoDTO> listarPorPeriodoPaginado(LocalDate inicio, LocalDate fim, Pageable pageable) {
+        return ordemServicoRepository
+                .findByDataInicioGreaterThanEqualAndDataConclusaoLessThanEqual(inicio, fim, pageable)
+                .map(this::toDTO);
+    }
 
     @Transactional(readOnly = true)
-    public List<OrdemServicoDTO> buscarPorIntervaloDeData(LocalDate dataInicio, LocalDate dataFim) {
-
-        Date inicioDate = Date.from(dataInicio.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date fimDate = Date.from(dataFim.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        List<OrdemServico> ordens = ordemServicoRepository
-            .findByDataInicioGreaterThanEqualAndDataConclusaoLessThanEqual(inicioDate, fimDate);
-
-        return ordens.stream().map(OrdemServicoDTO::fromEntity).collect(Collectors.toList());
-    }
-
-    private void setFuncionariosFromDto(OrdemServico os, OrdemServicoDTO dto) {
-        List<Funcionario> lista = new ArrayList<>();
-
-        // IDs de tratadores
-        if (dto.getTratadores() != null) {
-            dto.getTratadores().forEach(t -> {
-                Funcionario func = funcionarioRepository.findById(t.getId())
-                        .orElseThrow(() -> new EntityNotFoundException("Tratador ID " + t.getId() + " não encontrado."));
-                lista.add(func);
-            });
-        }
-
-        // IDs de veterinários
-        if (dto.getVeterinarios() != null) {
-            dto.getVeterinarios().forEach(v -> {
-                Funcionario func = funcionarioRepository.findById(v.getId())
-                        .orElseThrow(() -> new EntityNotFoundException("Veterinário ID " + v.getId() + " não encontrado."));
-                lista.add(func);
-            });
-        }
-
-        os.setFuncionarios(lista);
+    public Long obterQtdOrdensServico() {
+        return ordemServicoRepository.count();
     }
 }

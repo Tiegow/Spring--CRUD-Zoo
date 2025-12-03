@@ -1,7 +1,6 @@
 package com.ufrn.SIGZoo.controller.api;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,75 +15,58 @@ import com.ufrn.SIGZoo.model.dto.OrdemServicoDTO;
 import com.ufrn.SIGZoo.service.OrdemServicoService;
 
 @RestController
-@RequestMapping("/api/ordens-servico")
+@RequestMapping("/api/ordensServico")
 public class OrdemServicoController {
 
     @Autowired
     private OrdemServicoService ordemServicoService;
 
-    // Listar todas paginadas
-    @GetMapping("")
-    public ResponseEntity<Page<OrdemServicoDTO>> listarTodos(
-            @PageableDefault(size = 10, sort = "dataInicio") Pageable pageable) {
+    @GetMapping
+    public ResponseEntity<Page<OrdemServicoDTO>> filtrar(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) LocalDate inicio,
+            @RequestParam(required = false) LocalDate fim,
+            Pageable pageable
+    ) {
 
-        Page<OrdemServicoDTO> ordens = ordemServicoService.listarTodos(pageable);
-        return ResponseEntity.ok(ordens);
+        if (status != null) {
+            return ResponseEntity.ok(ordemServicoService.listarPorStatusPaginado(status, pageable));
+        }
+
+        if (inicio != null && fim != null) {
+            return ResponseEntity.ok(ordemServicoService.listarPorPeriodoPaginado(inicio, fim, pageable));
+        }
+
+        return ResponseEntity.ok(ordemServicoService.listarTodos(pageable));
     }
+
 
     // Buscar por ID
     @GetMapping("/{id}")
     public ResponseEntity<OrdemServicoDTO> buscarPorId(@PathVariable Integer id) {
-        OrdemServicoDTO dto = ordemServicoService.buscarPorId(id);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(ordemServicoService.buscarPorId(id));
     }
 
-    // Criar ordem de serviço
+    // Criar
     @PostMapping("/criar")
     public ResponseEntity<OrdemServicoDTO> criar(@RequestBody OrdemServicoDTO dto) {
         OrdemServicoDTO nova = ordemServicoService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(nova);
     }
 
-    // Atualizar ordem de serviço
+    // Atualizar
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<OrdemServicoDTO> atualizar(
             @PathVariable Integer id,
             @RequestBody OrdemServicoDTO dto) {
 
-        OrdemServicoDTO atualizada = ordemServicoService.atualizar(id, dto);
-        return ResponseEntity.ok(atualizada);
+        return ResponseEntity.ok(ordemServicoService.atualizar(id, dto));
     }
 
-    // Deletar ordem de serviço
+    // Deletar
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         ordemServicoService.deletar(id);
         return ResponseEntity.noContent().build();
-    }
-
-    // Buscar por funcionário
-    @GetMapping("/funcionario/{funcionarioId}")
-    public ResponseEntity<List<OrdemServicoDTO>> listarPorFuncionario(
-            @PathVariable Integer funcionarioId) {
-
-        List<OrdemServicoDTO> ordens = ordemServicoService.buscarPorFuncionario(funcionarioId);
-        return ResponseEntity.ok(ordens);
-    }
-
-    // Buscar por status
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<OrdemServicoDTO>> listarPorStatus(@PathVariable String status) {
-        List<OrdemServicoDTO> ordens = ordemServicoService.buscarPorStatus(status);
-        return ResponseEntity.ok(ordens);
-    }
-
-    // Buscar por intervalo de datas
-    @GetMapping("/periodo")
-    public ResponseEntity<List<OrdemServicoDTO>> listarPorPeriodo(
-            @RequestParam("inicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam("fim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
-
-        List<OrdemServicoDTO> ordens = ordemServicoService.buscarPorIntervaloDeData(inicio, fim);
-        return ResponseEntity.ok(ordens);
     }
 }

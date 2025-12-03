@@ -1,6 +1,7 @@
 package com.ufrn.SIGZoo.model.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Campos das subclasses em tabelas separadas
@@ -23,6 +25,9 @@ public abstract class Funcionario {
 
     @Column(nullable = false)
     private String nome;
+
+    @ManyToMany(mappedBy = "funcionarios")
+    private List<OrdemServico> ordensServico;
 
     private String especializacao;
     private float remuneracao;
@@ -46,6 +51,12 @@ public abstract class Funcionario {
     }
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+    public List<OrdemServico> getOrdensServico() {
+        return ordensServico;
+    }
+    public void setOrdensServico(List<OrdemServico> ordensServico) {
+        this.ordensServico = ordensServico;
     }
     public String getEspecializacao() {
         return especializacao;

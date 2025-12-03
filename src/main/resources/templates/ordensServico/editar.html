@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Ordem de Serviço</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container mt-4">
+    <h1>
+        <h1 class="mb-4"><a th:href="@{/ordensServico}"><i class="fa-solid fa-angle-left"></i></a>Editar Ordem de Serviço</h1>
+    </h1>
+
+    <p class="text-muted" th:text="${os.descricao}"></p>
+</div>
+
+<div class="container mt-3">
+    <form id="form-editar-os" th:attr="data-id=${os.id}">
+
+        <div class="mb-3">
+            <label class="form-label">Descrição:</label>
+            <input type="text" class="form-control" name="descricao" 
+                   th:value="${os.descricao}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Status:</label>
+            <select name="status" class="form-select" required>
+                <option value="PENDENTE">Pendente</option>
+                <option value="EM_ANDAMENTO">Em andamento</option>
+                <option value="CONCLUIDA">Concluída</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Data de Início:</label>
+            <input type="date" class="form-control" name="dataInicio" 
+                   th:value="${os.dataInicio}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Data de Conclusão:</label>
+            <input type="date" class="form-control" name="dataConclusao"
+                   th:value="${os.dataConclusao}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Local:</label>
+            <input type="text" class="form-control" name="local" 
+                   th:value="${os.local}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Funcionários:</label>
+            <select class="form-select" name="funcionariosIds" multiple>
+
+                <option th:each="f : ${funcionarios}"
+                        th:value="${f.id}"
+                        th:text="${f.nome}"
+                        th:selected="${os.funcionariosIds.contains(f.id)}">
+                </option>
+
+            </select>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Salvar</button>
+        <a th:href="@{/ordensServico}" class="btn btn-secondary">Cancelar</a>
+
+    </form>
+</div>
+
+<script th:src="@{/js/ordensServicoPages/editar.js}"></script>
+
+</body>
+</html>

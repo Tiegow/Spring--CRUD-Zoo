@@ -35,7 +35,7 @@
             <div id="filtro-status-container" class="d-none">
                 <select id="status-select" class="form-select form-select-sm" style="width: 160px;">
                     <option value="">Selecione</option>
-                    <option value="ABERTA">Aberta</option>
+                    <option value="PENDENTE">Pendente</option>
                     <option value="EM_ANDAMENTO">Em andamento</option>
                     <option value="CONCLUIDA">Concluída</option>
                 </select>
@@ -55,7 +55,7 @@
         </div>
 
         <!-- BOTÃO ADICIONAR -->
-        <a th:href="@{/ordens/novo}"
+        <a th:href="@{/ordensServico/nova}"
            class="btn btn-primary btn-lg rounded-circle d-flex align-items-center justify-content-center shadow"
            title="Criar ordem de serviço">
             <i class="fa-solid fa-plus fa-xs"></i>
@@ -82,12 +82,12 @@
                 <td th:text="${os.id}"></td>
                 <td th:text="${os.descricao}"></td>
                 <td th:text="${os.status}"></td>
-                <td th:text="${#dates.format(os.dataInicio, 'dd/MM/yyyy')}"></td>
-                <td th:text="${#dates.format(os.dataConclusao, 'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(os.dataInicio, 'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(os.dataConclusao, 'dd/MM/yyyy')}"></td>
                 <td th:text="${os.local}"></td>
 
                 <td>
-                    <a th:href="@{/ordens/{id}(id=${os.id})}">
+                    <a th:href="@{/ordensServico/{id}(id=${os.id})}">
                         <i class="fa-solid fa-circle-info fa-lg"></i>
                     </a>
                 </td>
@@ -102,7 +102,7 @@
                 <!-- anterior -->
                 <li class="page-item" th:classappend="${ordens.first} ? 'disabled'">
                     <a class="page-link"
-                       th:href="@{/ordens(page=${ordens.number - 1}, size=${ordens.size}, sort=${param.sort})}">
+                       th:href="@{/ordensServico(page=${ordens.number - 1}, size=${ordens.size}, sort=${param.sort})}">
                         Anterior
                     </a>
                 </li>
@@ -115,7 +115,7 @@
                 <!-- próximo -->
                 <li class="page-item" th:classappend="${ordens.last} ? 'disabled'">
                     <a class="page-link"
-                       th:href="@{/ordens(page=${ordens.number + 1}, size=${ordens.size}, sort=${param.sort})}">
+                       th:href="@{/ordensServico(page=${ordens.number + 1}, size=${ordens.size}, sort=${param.sort})}">
                         Próximo
                     </a>
                 </li>
@@ -124,7 +124,7 @@
         </nav>
     </div>
 
-    <script th:src="@{/js/ordemServicoPages/home.js}"></script>
+    <script th:src="@{/js/ordensServicoPages/home.js}"></script>
 
 </body>
 </html>

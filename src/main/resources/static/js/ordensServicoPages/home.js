@@ -1,53 +1,47 @@
-// ELEMENTOS
-const filtroSelect = document.getElementById("filtro-select");
+document.addEventListener("DOMContentLoaded", () => {
 
-const filtroStatusContainer = document.getElementById("filtro-status-container");
-const filtroDataContainer = document.getElementById("filtro-data-container");
+    const filtroSelect = document.getElementById("filtro-select");
+    const statusContainer = document.getElementById("filtro-status-container");
+    const dataContainer = document.getElementById("filtro-data-container");
 
-const btnFiltrar = document.getElementById("btn-filtrar");
-const btnLimpar = document.getElementById("btn-limpar");
+    // MOSTRAR/ESCONDER FILTROS
+    filtroSelect.addEventListener("change", () => {
+        statusContainer.classList.add("d-none");
+        dataContainer.classList.add("d-none");
 
+        if (filtroSelect.value === "status") {
+            statusContainer.classList.remove("d-none");
+        } 
+        else if (filtroSelect.value === "data") {
+            dataContainer.classList.remove("d-none");
+        }
+    });
 
-// ALTERAR CAMPOS VISÍVEIS
-filtroSelect.addEventListener("change", () => {
+    // BOTÃO FILTRAR
+    document.getElementById("btn-filtrar").addEventListener("click", () => {
+        let url = "/ordensServico?";
 
-    filtroStatusContainer.classList.add("d-none");
-    filtroDataContainer.classList.add("d-none");
+        if (filtroSelect.value === "status") {
+            const status = document.getElementById("status-select").value;
+            if (!status) return alert("Selecione um status!");
 
-    if (filtroSelect.value === "status") {
-        filtroStatusContainer.classList.remove("d-none");
-    }
+            url += `status=${status}`;
+        }
 
-    if (filtroSelect.value === "data") {
-        filtroDataContainer.classList.remove("d-none");
-    }
-});
+        else if (filtroSelect.value === "data") {
+            const inicio = document.getElementById("data-inicio").value;
+            const fim = document.getElementById("data-fim").value;
 
+            if (!inicio || !fim) return alert("Informe as duas datas!");
 
-// BOTÃO FILTRAR
-btnFiltrar.addEventListener("click", () => {
+            url += `inicio=${inicio}&fim=${fim}`;
+        }
 
-    let url = "/ordens?";
+        window.location.href = url;
+    });
 
-    if (filtroSelect.value === "status") {
-        const status = document.getElementById("status-select").value;
-        if (status) url += `status=${status}&`;
-    }
-
-    if (filtroSelect.value === "data") {
-
-        const inicio = document.getElementById("data-inicio").value;
-        const fim = document.getElementById("data-fim").value;
-
-        if (inicio) url += `dataInicio=${inicio}&`;
-        if (fim) url += `dataFim=${fim}&`;
-    }
-
-    window.location.href = url;
-});
-
-
-// BOTÃO LIMPAR
-btnLimpar.addEventListener("click", () => {
-    window.location.href = "/ordens";
+    // BOTÃO LIMPAR
+    document.getElementById("btn-limpar").addEventListener("click", () => {
+        window.location.href = "/ordensServico";
+    });
 });

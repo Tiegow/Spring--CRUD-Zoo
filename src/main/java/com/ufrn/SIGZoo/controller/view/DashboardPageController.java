@@ -10,6 +10,7 @@ import com.ufrn.SIGZoo.service.AnimalService;
 import com.ufrn.SIGZoo.service.EspecieService;
 import com.ufrn.SIGZoo.service.EventoService;
 import com.ufrn.SIGZoo.service.FuncionarioService;
+import com.ufrn.SIGZoo.service.OrdemServicoService;
 import com.ufrn.SIGZoo.service.RecintoService;
 
 @Controller
@@ -31,6 +32,8 @@ public class DashboardPageController {
     @Autowired
     private EventoService eventoService;
 
+    @Autowired OrdemServicoService ordemServicoService;
+
     @GetMapping("")
     public String dashboardPage(Model model) {
         model.addAttribute("qtdAnimais", animalService.obterQtdAnimais());
@@ -38,6 +41,7 @@ public class DashboardPageController {
         model.addAttribute("qtdRecintos", recintoService.obterQtdRecintos());
         model.addAttribute("qtdEspecies", especieService.obterQtdEspecies());
         model.addAttribute("qtdEventos", eventoService.obterQtdEventos());
+        model.addAttribute("qtdOrdensServico", ordemServicoService.obterQtdOrdensServico());
         
         return "home";
     }
