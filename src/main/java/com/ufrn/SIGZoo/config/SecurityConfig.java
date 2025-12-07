@@ -26,6 +26,8 @@ public class SecurityConfig {
                 .requestMatchers("/webjars/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/cadastro").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
+
+                .requestMatchers("/ingressos/**").permitAll()
                 
                 // Áreas restritas por perfil
                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -34,8 +36,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/ingressos/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-                
+
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

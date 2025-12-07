@@ -21,7 +21,6 @@ public class IngressoPagesController {
     @Autowired
     private IngressoService ingressoService;
 
-    // LISTAGEM + FILTROS
     @GetMapping("")
     public String ingressosHome(
             Model model,
@@ -63,22 +62,19 @@ public class IngressoPagesController {
         return "ingressos/home";
     }
 
-    // NOVO INGRESSO
     @GetMapping("/novo")
     public String novoIngresso(Model model) {
-        model.addAttribute("ingresso", new IngressoDTO()); // OBJETO VAZIO
+        model.addAttribute("ingresso", new IngressoDTO()); 
         return "ingressos/novo";
     }
 
-    // DETALHES
-    @GetMapping("/{id}")
-    public String detalhes(@PathVariable Integer id, Model model) {
-        IngressoDTO dto = ingressoService.buscarPorId(id);
-        model.addAttribute("ingresso", dto);
-        return "ingressos/detalhes";
-    }
+    // @GetMapping("/{id}")
+    // public String detalhes(@PathVariable Integer id, Model model) {
+    //     IngressoDTO dto = ingressoService.buscarPorId(id);
+    //     model.addAttribute("ingresso", dto);
+    //     return "ingressos/detalhes";
+    // }
 
-    // EDITAR
     @GetMapping("/editar/{id}")
     public String editarIngresso(@PathVariable Integer id, Model model) {
         IngressoDTO dto = ingressoService.buscarPorId(id);

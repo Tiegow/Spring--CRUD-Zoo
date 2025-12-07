@@ -21,7 +21,6 @@ public class IngressoService {
     @Autowired
     private IngressoRepository ingressoRepository;
 
-    // LISTAGEM
     @Transactional(readOnly = true)
     public List<IngressoDTO> listarTodos() {
         return ingressoRepository.findAll()
@@ -36,7 +35,6 @@ public class IngressoService {
                 .map(IngressoDTO::fromEntity);
     }
 
-    // BUSCA POR ID
     @Transactional(readOnly = true)
     public IngressoDTO buscarPorId(Integer id) {
         Ingresso ingresso = ingressoRepository.findById(id)
@@ -46,16 +44,12 @@ public class IngressoService {
         return IngressoDTO.fromEntity(ingresso);
     }
 
-    // CRIAÇÃO
-
     @Transactional
     public IngressoDTO criar(IngressoDTO dto) {
         Ingresso ingresso = dto.toEntity();
         ingressoRepository.save(ingresso);
         return IngressoDTO.fromEntity(ingresso);
     }
-
-    // ATUALIZAÇÃO
 
     @Transactional
     public IngressoDTO atualizar(Integer id, IngressoDTO dto) {
@@ -75,8 +69,6 @@ public class IngressoService {
         return IngressoDTO.fromEntity(ingresso);
     }
 
-    // DELETAR
-
     @Transactional
     public void deletar(Integer id) {
         if (!ingressoRepository.existsById(id)) {
@@ -85,7 +77,6 @@ public class IngressoService {
         ingressoRepository.deleteById(id);
     }
 
-    // FILTROS
     @Transactional(readOnly = true)
     public List<IngressoDTO> filtrarPorDataCompra(LocalDate inicio, LocalDate fim) {
         return ingressoRepository
@@ -113,8 +104,6 @@ public class IngressoService {
                 .toList();
     }
 
-    // Versões paginadas dos filtros
-
     @Transactional(readOnly = true)
     public Page<IngressoDTO> filtrarPorDataCompra(
             LocalDate inicio, LocalDate fim, Pageable pageable) {
@@ -140,5 +129,10 @@ public class IngressoService {
         return ingressoRepository
                 .findByCustoBetween(min, max, pageable)
                 .map(IngressoDTO::fromEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public Long obterQtdIngressos() {
+        return ingressoRepository.count();
     }
 }

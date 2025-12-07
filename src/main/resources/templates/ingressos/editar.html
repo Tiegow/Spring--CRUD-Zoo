@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingressos - Editar</title>
+
+    <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                
+                <div class="mb-4">
+                    <h1 class="mb-1 text-success">
+                        <i class="fa-solid fa-ticket me-2"></i>Editar Ingresso
+                    </h1>
+                    <p class="lead text-muted">Reagendar visita do ingresso #<span th:text="${ingresso.idIngresso}"></span></p>
+                </div>
+
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4">
+                        
+                        <form id="edit-form" th:attr="data-id=${ingresso.idIngresso}">
+                
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold">Data da Compra</label>
+                                    <input type="text" class="form-control bg-light" th:value="${#temporals.format(ingresso.dataCompra, 'dd/MM/yyyy')}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold">Custo (R$)</label>
+                                    <input type="text" class="form-control bg-light" th:value="${#numbers.formatDecimal(ingresso.custo, 1, 'POINT', 2, 'COMMA')}" readonly>
+                                </div>
+                            </div>
+
+                            <hr class="text-muted my-4">
+
+                            <div class="mb-3">
+                                <label for="dataVisita" class="form-label fw-bold text-secondary">
+                                    <i class="fa-regular fa-calendar me-1"></i> Nova Data da Visita
+                                </label>
+                                <input required type="date" class="form-control form-control-lg" id="dataVisita" name="dataVisita" 
+                                       th:value="${ingresso.dataVisita}">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="horaVisita" class="form-label fw-bold text-secondary">
+                                    <i class="fa-regular fa-clock me-1"></i> Novo Horário
+                                </label>
+                                <input required type="time" class="form-control form-control-lg" id="horaVisita" name="horaVisita" 
+                                       th:value="${ingresso.horaVisita}">
+                                <div class="form-text ms-1">Horário de funcionamento: 08:00 às 17:00.</div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button id="edit-submit" type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">
+                                    <i class="fa-solid fa-check me-2"></i>Salvar Alterações
+                                </button>
+                                
+                                <button id="btn-cancelar-ingresso" type="button" class="btn btn-outline-danger fw-bold shadow-sm">
+                                    <i class="fa-solid fa-trash me-2"></i>Cancelar Ingresso
+                                </button>
+
+                                <a th:href="@{/visitantes/ingressos}" class="btn btn-link text-decoration-none text-muted mt-2">Voltar</a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/visitantes/editar.js}"></script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,6 @@ public class IngressoController {
     @Autowired
     private IngressoService ingressoService;
 
-    // -------------------- FILTROS --------------------
     @GetMapping
     public ResponseEntity<Page<IngressoDTO>> filtrar(
             @RequestParam(required = false) Double min,   // filtrar custo mínimo
@@ -34,32 +34,27 @@ public class IngressoController {
             Pageable pageable
     ) {
 
-        // Filtro por preço
         if (min != null && max != null) {
             return ResponseEntity.ok(
                 ingressoService.filtrarPorCusto(min, max, pageable)
             );
         }
 
-        // Filtro por data de compra
         if (compraInicio != null && compraFim != null) {
             return ResponseEntity.ok(
                 ingressoService.filtrarPorDataCompra(compraInicio, compraFim, pageable)
             );
         }
 
-        // Filtro por data de visita
         if (visitaInicio != null && visitaFim != null) {
             return ResponseEntity.ok(
                 ingressoService.filtrarPorDataVisita(visitaInicio, visitaFim, pageable)
             );
         }
 
-        // Sem filtros → retornar tudo paginado
         return ResponseEntity.ok(ingressoService.listarTodos(pageable));
     }
 
-    // -------------------- CRUD --------------------
     @GetMapping("/{id}")
     public ResponseEntity<IngressoDTO> buscarPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(ingressoService.buscarPorId(id));
@@ -83,5 +78,19 @@ public class IngressoController {
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         ingressoService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/consultar")
+    public ResponseEntity<IngressoDTO> consultarIngresso(
+            @RequestParam Integer id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataVisita) {
+        
+        IngressoDTO ingresso = ingressoService.buscarPorId(id);
+        
+        if (ingresso != null && ingresso.getDataVisita().equals(dataVisita)) {
+            return ResponseEntity.ok(ingresso);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

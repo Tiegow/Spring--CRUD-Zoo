@@ -62,7 +62,6 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Nome</th>
-                    <!-- <th scope="col">Espécie</th> -->
                     <th scope="col">Data de Nascimento</th>
                     <th scope="col">Sexo</th>
                     <th scope="col">Origem</th>
@@ -72,7 +71,6 @@
                 <tr th:each="animal : ${animalPage.content}">
                     <td th:text="${animal.id}"></td>    
                     <td th:text="${animal.nome}"></td>
-                    <!-- <td th:text="${animal.especie}"></td> -->
                     <td th:text="${#temporals.format(animal.nascimento, 'dd/MM/yyyy')}"></td>
                     <td th:text="${animal.sexo}"></td>
                     <td th:text="${animal.origem}"></td>

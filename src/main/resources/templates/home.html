@@ -30,49 +30,61 @@
     <div class="container my-5">
         <div class="card mt-4">
             <div class="card-body">
-                <div class="row">
-                    <div sec:authorize="hasAnyRole('ADMIN', 'GERENTE_OPERACOES')" class="col-12 col-md my-1">
-                        <a th:href="@{/funcionarios}" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" aria-label="Funcionários">
-                            <i class="fa-solid fa-user me-2" aria-hidden="true"></i>
-                            <span>Funcionários</span>
+                <div class="row g-3">
+                    
+                    <div sec:authorize="hasAnyRole('ADMIN', 'GERENTE_OPERACOES')" class="col-12 col-sm-6 col-md-4 col-lg-3 flex-grow-1">
+                        <a th:href="@{/funcionarios}" class="btn btn-primary w-100 h-100 d-flex align-items-center justify-content-center py-3" aria-label="Funcionários">
+                            <i class="fa-solid fa-user me-2 fa-lg" aria-hidden="true"></i>
+                            <span class="fw-bold">Funcionários</span>
                         </a>
                     </div>
 
-                    <div class="col-12 col-md my-1">
-                        <a th:href="@{/animais}" class="btn btn-success w-100 d-flex align-items-center justify-content-center" aria-label="Animais">
-                            <i class="fa-solid fa-paw me-2" aria-hidden="true"></i>
-                            <span>Animais</span>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 flex-grow-1">
+                        <a th:href="@{/animais}" class="btn btn-success w-100 h-100 d-flex align-items-center justify-content-center py-3" aria-label="Animais">
+                            <i class="fa-solid fa-paw me-2 fa-lg" aria-hidden="true"></i>
+                            <span class="fw-bold">Animais</span>
                         </a>
                     </div>
 
-                    <div class="col-12 col-md my-1">
-                        <a th:href="@{/especies}" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center" aria-label="Catálogo de espécies">
-                            <i class="fa-solid fa-book me-2" aria-hidden="true"></i>
-                            <span>Catálogo de espécies</span>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 flex-grow-1">
+                        <a th:href="@{/especies}" class="btn btn-secondary w-100 h-100 d-flex align-items-center justify-content-center py-3" aria-label="Catálogo de espécies">
+                            <i class="fa-solid fa-book me-2 fa-lg" aria-hidden="true"></i>
+                            <span class="fw-bold">Espécies</span>
                         </a>
                     </div>
 
-                    <div class="col-12 col-md my-1">
-                        <a th:href="@{/eventos}" class="btn btn-warning w-100 d-flex align-items-center justify-content-center" aria-label="Eventos">
-                            <i class="fa-solid fa-calendar-days me-2" aria-hidden="true"></i>
-                            <span>Eventos</span>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 flex-grow-1">
+                        <a th:href="@{/eventos}" class="btn btn-warning w-100 h-100 d-flex align-items-center justify-content-center py-3" aria-label="Eventos">
+                            <i class="fa-solid fa-calendar-days me-2 fa-lg" aria-hidden="true"></i>
+                            <span class="fw-bold">Eventos</span>
                         </a>
                     </div>
 
-                    <div class="col-12 col-md my-1">
-                        <a th:href="@{/recintos}" class="btn btn-info w-100 d-flex align-items-center justify-content-center" aria-label="Recintos">
-                            <i class="fa-solid fa-building me-2" aria-hidden="true"></i>
-                            <span>Recintos</span>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 flex-grow-1">
+                        <a th:href="@{/recintos}" class="btn btn-info w-100 h-100 d-flex align-items-center justify-content-center py-3 text-white" aria-label="Recintos">
+                            <i class="fa-solid fa-building me-2 fa-lg" aria-hidden="true"></i>
+                            <span class="fw-bold">Recintos</span>
                         </a>
                     </div>
-                    <div class="col-12 col-md my-1">
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 flex-grow-1">
                         <a th:href="@{/ordensServico}" 
-                        class="btn btn-dark w-100 d-flex align-items-center justify-content-center"
+                        class="btn btn-dark w-100 h-100 d-flex align-items-center justify-content-center py-3"
                         aria-label="Ordens de Serviço">
-                            <i class="fa-solid fa-clipboard-list me-2"></i>
-                            <span>Ordens de Serviço</span>
+                            <i class="fa-solid fa-clipboard-list me-2 fa-lg"></i>
+                            <span class="fw-bold">Ordens de Serviço</span>
                         </a>
                     </div>
+
+                    <div sec:authorize="hasAnyRole('ADMIN')" class="col-12 col-sm-6 col-md-4 col-lg-3 flex-grow-1">
+                        <a th:href="@{/ingressos}" 
+                        class="btn btn-light w-100 h-100 d-flex align-items-center justify-content-center py-3 border"
+                        aria-label="Ingressos">
+                            <i class="fa-solid fa-ticket me-2 fa-lg text-success"></i>
+                            <span class="fw-bold text-success">Ingressos</span>
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -189,6 +201,20 @@
                                     <div>
                                         <i class="fa-solid fa-pencil fa-2x text-secondary-emphasis"></i>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="card shadow-sm border-left-success">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-xs fw-bold text-success text-uppercase mb-1">Ingressos Vendidos</div>
+                                        <div class="h4 mb-0 fw-bold text-gray-800" th:text="${qtdIngressos}">0</div>
+                                    </div>
+                                    <div><i class="fa-solid fa-ticket fa-2x text-success-emphasis"></i></div>
                                 </div>
                             </div>
                         </div>
