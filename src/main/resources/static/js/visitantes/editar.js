@@ -1,7 +1,6 @@
 const form = document.getElementById('edit-form');
-const btnCancelar = document.getElementById('btn-cancelar-ingresso'); // Botão de deletar
+const btnCancelar = document.getElementById('btn-cancelar-ingresso'); 
 
-// --- LÓGICA DE ATUALIZAÇÃO (PUT) ---
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 

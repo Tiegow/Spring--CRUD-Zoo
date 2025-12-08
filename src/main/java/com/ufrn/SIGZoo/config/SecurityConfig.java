@@ -29,10 +29,8 @@ public class SecurityConfig {
 
                 .requestMatchers("/ingressos/**").permitAll()
                 
-                // Áreas restritas por perfil
                 .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                // Requisições de API
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
